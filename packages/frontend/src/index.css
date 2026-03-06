@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #FFCB05;
+    --color-primary-dark: #C7A008;
+    --color-secondary: #3466AF;
+    --color-secondary-dark: #1D3A68;
+    --color-bg: #121212;
+    --color-text-light: #ffffff;
+    --color-text-dark: #333333;
+    --color-glass-bg: rgba(255, 255, 255, 0.05);
+    --color-glass-border: rgba(255, 255, 255, 0.1);
+
+    --animate-float: float 4s ease-in-out infinite;
+    --animate-fade-in: fadeIn 0.6s ease-out;
+    --animate-fade-in-slow: fadeIn 0.8s ease-out;
+    --animate-spin-slow: spin 4s linear infinite;
+
+    @keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    @apply bg-bg text-text-light min-h-screen flex justify-center items-center overflow-x-hidden;
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(52, 102, 175, 0.15), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(255, 203, 5, 0.1), transparent 25%);
+}
+
+#root {
+    @apply w-full max-w-[1200px] mx-auto p-8;
+}
+
+@utility glass-panel {
+    background: var(--color-glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--color-glass-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+h1,
+h2,
+h3 {
+    line-height: 1.2;
+}
