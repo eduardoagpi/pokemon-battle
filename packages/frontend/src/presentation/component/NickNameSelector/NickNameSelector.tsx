@@ -8,7 +8,7 @@ export function NickNameSelector({ onConfirm }: Props) {
     const { nickname, setNickname, handleSubmit } = useNickNameSelector(onConfirm);
 
     return (
-        <section className="w-full max-w-[500px] p-8 md:p-12 flex flex-col gap-8 text-center glass-panel">
+        <section className="w-full max-w-[500px] p-8 md:p-12 flex flex-col gap-8 text-center glass-panel mt-1000">
             <h2 className="text-3xl font-semibold text-text-light mb-4">¡Bienvenido Entrenador!</h2>
             <p>Para comenzar tu aventura, por favor introduce tu nickname.</p>
 
