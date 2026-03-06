@@ -15,6 +15,10 @@ function App() {
     setIsConfirmed(true);
   };
 
+  const handleBackToNickname = () => {
+    setIsConfirmed(false);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] gap-12 animate-fade-in">
       {/* Header with Image Title */}
@@ -33,7 +37,7 @@ function App() {
       {!isConfirmed ? (
         <NickNameSelector onConfirm={handleConfirmNickname} />
       ) : (
-        <LobbyStatus nickname={nickname} />
+        <LobbyStatus nickname={nickname} onBack={handleBackToNickname} />
       )}
     </div>
   );

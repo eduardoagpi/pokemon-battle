@@ -2,13 +2,24 @@ import { useLobbyStatus } from './LobbyStatusViewController';
 
 interface Props {
     nickname: string;
+    onBack: () => void;
 }
 
-export function LobbyStatus({ nickname }: Props) {
+export function LobbyStatus({ nickname, onBack }: Props) {
     const { assignedPokemons, isWaitingForOpponent } = useLobbyStatus();
 
     return (
         <section className="w-full max-w-[900px] flex flex-col items-center gap-12 animate-fade-in-slow">
+            <div className="w-full flex justify-start">
+                <button
+                    onClick={onBack}
+                    className="group flex items-center gap-3 px-6 py-3 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all duration-300 cursor-pointer"
+                >
+                    <span className="text-primary group-hover:-translate-x-1 transition-transform">←</span>
+                    <span className="text-white/80 font-medium group-hover:text-primary transition-colors">Regresar</span>
+                </button>
+            </div>
+
             <div className="text-center glass-panel w-full p-8">
                 <h2 className="text-[2.2rem] mb-2 text-primary">¡Hola, {nickname}!</h2>
                 <p className="text-[1.2rem] text-white/80">Estos son los Pokémon que te han sido asignados.</p>
