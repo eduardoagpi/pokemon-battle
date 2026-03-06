@@ -1,0 +1,1881 @@
+[
+  {
+    "id": 1,
+    "name": "Bulbasaur",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 45,
+    "attack": 49,
+    "defense": 49,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/1.gif"
+  },
+  {
+    "id": 2,
+    "name": "Ivysaur",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 60,
+    "attack": 62,
+    "defense": 63,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/2.gif"
+  },
+  {
+    "id": 3,
+    "name": "Venusaur",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 80,
+    "attack": 82,
+    "defense": 83,
+    "speed": 80,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/3.gif"
+  },
+  {
+    "id": 4,
+    "name": "Charmander",
+    "type": [
+      "Fire"
+    ],
+    "hp": 39,
+    "attack": 52,
+    "defense": 43,
+    "speed": 65,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/4.gif"
+  },
+  {
+    "id": 5,
+    "name": "Charmeleon",
+    "type": [
+      "Fire"
+    ],
+    "hp": 58,
+    "attack": 64,
+    "defense": 58,
+    "speed": 80,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/5.gif"
+  },
+  {
+    "id": 6,
+    "name": "Charizard",
+    "type": [
+      "Fire",
+      "Flying"
+    ],
+    "hp": 78,
+    "attack": 84,
+    "defense": 78,
+    "speed": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/6.gif"
+  },
+  {
+    "id": 7,
+    "name": "Squirtle",
+    "type": [
+      "Water"
+    ],
+    "hp": 44,
+    "attack": 48,
+    "defense": 65,
+    "speed": 43,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/7.gif"
+  },
+  {
+    "id": 8,
+    "name": "Wartortle",
+    "type": [
+      "Water"
+    ],
+    "hp": 59,
+    "attack": 63,
+    "defense": 80,
+    "speed": 58,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/8.gif"
+  },
+  {
+    "id": 9,
+    "name": "Blastoise",
+    "type": [
+      "Water"
+    ],
+    "hp": 79,
+    "attack": 83,
+    "defense": 100,
+    "speed": 78,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/9.gif"
+  },
+  {
+    "id": 10,
+    "name": "Caterpie",
+    "type": [
+      "Bug"
+    ],
+    "hp": 45,
+    "attack": 30,
+    "defense": 35,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/10.gif"
+  },
+  {
+    "id": 11,
+    "name": "Metapod",
+    "type": [
+      "Bug"
+    ],
+    "hp": 50,
+    "attack": 20,
+    "defense": 55,
+    "speed": 30,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/11.gif"
+  },
+  {
+    "id": 12,
+    "name": "Butterfree",
+    "type": [
+      "Bug",
+      "Flying"
+    ],
+    "hp": 60,
+    "attack": 45,
+    "defense": 50,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/12.gif"
+  },
+  {
+    "id": 13,
+    "name": "Weedle",
+    "type": [
+      "Bug",
+      "Poison"
+    ],
+    "hp": 40,
+    "attack": 35,
+    "defense": 30,
+    "speed": 50,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/13.gif"
+  },
+  {
+    "id": 14,
+    "name": "Kakuna",
+    "type": [
+      "Bug",
+      "Poison"
+    ],
+    "hp": 45,
+    "attack": 25,
+    "defense": 50,
+    "speed": 35,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/14.gif"
+  },
+  {
+    "id": 15,
+    "name": "Beedrill",
+    "type": [
+      "Bug",
+      "Poison"
+    ],
+    "hp": 65,
+    "attack": 90,
+    "defense": 40,
+    "speed": 75,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/15.gif"
+  },
+  {
+    "id": 16,
+    "name": "Pidgey",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 40,
+    "attack": 45,
+    "defense": 40,
+    "speed": 56,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/16.gif"
+  },
+  {
+    "id": 17,
+    "name": "Pidgeotto",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 63,
+    "attack": 60,
+    "defense": 55,
+    "speed": 71,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/17.gif"
+  },
+  {
+    "id": 18,
+    "name": "Pidgeot",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 83,
+    "attack": 80,
+    "defense": 75,
+    "speed": 101,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/18.gif"
+  },
+  {
+    "id": 19,
+    "name": "Rattata",
+    "type": [
+      "Normal"
+    ],
+    "hp": 30,
+    "attack": 56,
+    "defense": 35,
+    "speed": 72,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/19.gif"
+  },
+  {
+    "id": 20,
+    "name": "Raticate",
+    "type": [
+      "Normal"
+    ],
+    "hp": 55,
+    "attack": 81,
+    "defense": 60,
+    "speed": 97,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/20.gif"
+  },
+  {
+    "id": 21,
+    "name": "Spearow",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 40,
+    "attack": 60,
+    "defense": 30,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/21.gif"
+  },
+  {
+    "id": 22,
+    "name": "Fearow",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 65,
+    "attack": 90,
+    "defense": 65,
+    "speed": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/22.gif"
+  },
+  {
+    "id": 23,
+    "name": "Ekans",
+    "type": [
+      "Poison"
+    ],
+    "hp": 35,
+    "attack": 60,
+    "defense": 44,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/23.gif"
+  },
+  {
+    "id": 24,
+    "name": "Arbok",
+    "type": [
+      "Poison"
+    ],
+    "hp": 60,
+    "attack": 95,
+    "defense": 69,
+    "speed": 80,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/24.gif"
+  },
+  {
+    "id": 25,
+    "name": "Pikachu",
+    "type": [
+      "Electric"
+    ],
+    "hp": 35,
+    "attack": 55,
+    "defense": 40,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/25.gif"
+  },
+  {
+    "id": 26,
+    "name": "Raichu",
+    "type": [
+      "Electric"
+    ],
+    "hp": 60,
+    "attack": 90,
+    "defense": 55,
+    "speed": 110,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/26.gif"
+  },
+  {
+    "id": 27,
+    "name": "Sandshrew",
+    "type": [
+      "Ground"
+    ],
+    "hp": 50,
+    "attack": 75,
+    "defense": 85,
+    "speed": 40,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/27.gif"
+  },
+  {
+    "id": 28,
+    "name": "Sandslash",
+    "type": [
+      "Ground"
+    ],
+    "hp": 75,
+    "attack": 100,
+    "defense": 110,
+    "speed": 65,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/28.gif"
+  },
+  {
+    "id": 29,
+    "name": "Nidoran-f",
+    "type": [
+      "Poison"
+    ],
+    "hp": 55,
+    "attack": 47,
+    "defense": 52,
+    "speed": 41,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/29.gif"
+  },
+  {
+    "id": 30,
+    "name": "Nidorina",
+    "type": [
+      "Poison"
+    ],
+    "hp": 70,
+    "attack": 62,
+    "defense": 67,
+    "speed": 56,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/30.gif"
+  },
+  {
+    "id": 31,
+    "name": "Nidoqueen",
+    "type": [
+      "Poison",
+      "Ground"
+    ],
+    "hp": 90,
+    "attack": 92,
+    "defense": 87,
+    "speed": 76,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/31.gif"
+  },
+  {
+    "id": 32,
+    "name": "Nidoran-m",
+    "type": [
+      "Poison"
+    ],
+    "hp": 46,
+    "attack": 57,
+    "defense": 40,
+    "speed": 50,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/32.gif"
+  },
+  {
+    "id": 33,
+    "name": "Nidorino",
+    "type": [
+      "Poison"
+    ],
+    "hp": 61,
+    "attack": 72,
+    "defense": 57,
+    "speed": 65,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/33.gif"
+  },
+  {
+    "id": 34,
+    "name": "Nidoking",
+    "type": [
+      "Poison",
+      "Ground"
+    ],
+    "hp": 81,
+    "attack": 102,
+    "defense": 77,
+    "speed": 85,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/34.gif"
+  },
+  {
+    "id": 35,
+    "name": "Clefairy",
+    "type": [
+      "Fairy"
+    ],
+    "hp": 70,
+    "attack": 45,
+    "defense": 48,
+    "speed": 35,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/35.gif"
+  },
+  {
+    "id": 36,
+    "name": "Clefable",
+    "type": [
+      "Fairy"
+    ],
+    "hp": 95,
+    "attack": 70,
+    "defense": 73,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/36.gif"
+  },
+  {
+    "id": 37,
+    "name": "Vulpix",
+    "type": [
+      "Fire"
+    ],
+    "hp": 38,
+    "attack": 41,
+    "defense": 40,
+    "speed": 65,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/37.gif"
+  },
+  {
+    "id": 38,
+    "name": "Ninetales",
+    "type": [
+      "Fire"
+    ],
+    "hp": 73,
+    "attack": 76,
+    "defense": 75,
+    "speed": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/38.gif"
+  },
+  {
+    "id": 39,
+    "name": "Jigglypuff",
+    "type": [
+      "Normal",
+      "Fairy"
+    ],
+    "hp": 115,
+    "attack": 45,
+    "defense": 20,
+    "speed": 20,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/39.gif"
+  },
+  {
+    "id": 40,
+    "name": "Wigglytuff",
+    "type": [
+      "Normal",
+      "Fairy"
+    ],
+    "hp": 140,
+    "attack": 70,
+    "defense": 45,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/40.gif"
+  },
+  {
+    "id": 41,
+    "name": "Zubat",
+    "type": [
+      "Poison",
+      "Flying"
+    ],
+    "hp": 40,
+    "attack": 45,
+    "defense": 35,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/41.gif"
+  },
+  {
+    "id": 42,
+    "name": "Golbat",
+    "type": [
+      "Poison",
+      "Flying"
+    ],
+    "hp": 75,
+    "attack": 80,
+    "defense": 70,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/42.gif"
+  },
+  {
+    "id": 43,
+    "name": "Oddish",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 45,
+    "attack": 50,
+    "defense": 55,
+    "speed": 30,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/43.gif"
+  },
+  {
+    "id": 44,
+    "name": "Gloom",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 60,
+    "attack": 65,
+    "defense": 70,
+    "speed": 40,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/44.gif"
+  },
+  {
+    "id": 45,
+    "name": "Vileplume",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 75,
+    "attack": 80,
+    "defense": 85,
+    "speed": 50,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/45.gif"
+  },
+  {
+    "id": 46,
+    "name": "Paras",
+    "type": [
+      "Bug",
+      "Grass"
+    ],
+    "hp": 35,
+    "attack": 70,
+    "defense": 55,
+    "speed": 25,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/46.gif"
+  },
+  {
+    "id": 47,
+    "name": "Parasect",
+    "type": [
+      "Bug",
+      "Grass"
+    ],
+    "hp": 60,
+    "attack": 95,
+    "defense": 80,
+    "speed": 30,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/47.gif"
+  },
+  {
+    "id": 48,
+    "name": "Venonat",
+    "type": [
+      "Bug",
+      "Poison"
+    ],
+    "hp": 60,
+    "attack": 55,
+    "defense": 50,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/48.gif"
+  },
+  {
+    "id": 49,
+    "name": "Venomoth",
+    "type": [
+      "Bug",
+      "Poison"
+    ],
+    "hp": 70,
+    "attack": 65,
+    "defense": 60,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/49.gif"
+  },
+  {
+    "id": 50,
+    "name": "Diglett",
+    "type": [
+      "Ground"
+    ],
+    "hp": 10,
+    "attack": 55,
+    "defense": 25,
+    "speed": 95,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/50.gif"
+  },
+  {
+    "id": 51,
+    "name": "Dugtrio",
+    "type": [
+      "Ground"
+    ],
+    "hp": 35,
+    "attack": 100,
+    "defense": 50,
+    "speed": 120,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/51.gif"
+  },
+  {
+    "id": 52,
+    "name": "Meowth",
+    "type": [
+      "Normal"
+    ],
+    "hp": 40,
+    "attack": 45,
+    "defense": 35,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/52.gif"
+  },
+  {
+    "id": 53,
+    "name": "Persian",
+    "type": [
+      "Normal"
+    ],
+    "hp": 65,
+    "attack": 70,
+    "defense": 60,
+    "speed": 115,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/53.gif"
+  },
+  {
+    "id": 54,
+    "name": "Psyduck",
+    "type": [
+      "Water"
+    ],
+    "hp": 50,
+    "attack": 52,
+    "defense": 48,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/54.gif"
+  },
+  {
+    "id": 55,
+    "name": "Golduck",
+    "type": [
+      "Water"
+    ],
+    "hp": 80,
+    "attack": 82,
+    "defense": 78,
+    "speed": 85,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/55.gif"
+  },
+  {
+    "id": 56,
+    "name": "Mankey",
+    "type": [
+      "Fighting"
+    ],
+    "hp": 40,
+    "attack": 80,
+    "defense": 35,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/56.gif"
+  },
+  {
+    "id": 57,
+    "name": "Primeape",
+    "type": [
+      "Fighting"
+    ],
+    "hp": 65,
+    "attack": 105,
+    "defense": 60,
+    "speed": 95,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/57.gif"
+  },
+  {
+    "id": 58,
+    "name": "Growlithe",
+    "type": [
+      "Fire"
+    ],
+    "hp": 55,
+    "attack": 70,
+    "defense": 45,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/58.gif"
+  },
+  {
+    "id": 59,
+    "name": "Arcanine",
+    "type": [
+      "Fire"
+    ],
+    "hp": 90,
+    "attack": 110,
+    "defense": 80,
+    "speed": 95,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/59.gif"
+  },
+  {
+    "id": 60,
+    "name": "Poliwag",
+    "type": [
+      "Water"
+    ],
+    "hp": 40,
+    "attack": 50,
+    "defense": 40,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/60.gif"
+  },
+  {
+    "id": 61,
+    "name": "Poliwhirl",
+    "type": [
+      "Water"
+    ],
+    "hp": 65,
+    "attack": 65,
+    "defense": 65,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/61.gif"
+  },
+  {
+    "id": 62,
+    "name": "Poliwrath",
+    "type": [
+      "Water",
+      "Fighting"
+    ],
+    "hp": 90,
+    "attack": 95,
+    "defense": 95,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/62.gif"
+  },
+  {
+    "id": 63,
+    "name": "Abra",
+    "type": [
+      "Psychic"
+    ],
+    "hp": 25,
+    "attack": 20,
+    "defense": 15,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/63.gif"
+  },
+  {
+    "id": 64,
+    "name": "Kadabra",
+    "type": [
+      "Psychic"
+    ],
+    "hp": 40,
+    "attack": 35,
+    "defense": 30,
+    "speed": 105,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/64.gif"
+  },
+  {
+    "id": 65,
+    "name": "Alakazam",
+    "type": [
+      "Psychic"
+    ],
+    "hp": 55,
+    "attack": 50,
+    "defense": 45,
+    "speed": 120,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/65.gif"
+  },
+  {
+    "id": 66,
+    "name": "Machop",
+    "type": [
+      "Fighting"
+    ],
+    "hp": 70,
+    "attack": 80,
+    "defense": 50,
+    "speed": 35,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/66.gif"
+  },
+  {
+    "id": 67,
+    "name": "Machoke",
+    "type": [
+      "Fighting"
+    ],
+    "hp": 80,
+    "attack": 100,
+    "defense": 70,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/67.gif"
+  },
+  {
+    "id": 68,
+    "name": "Machamp",
+    "type": [
+      "Fighting"
+    ],
+    "hp": 90,
+    "attack": 130,
+    "defense": 80,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/68.gif"
+  },
+  {
+    "id": 69,
+    "name": "Bellsprout",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 50,
+    "attack": 75,
+    "defense": 35,
+    "speed": 40,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/69.gif"
+  },
+  {
+    "id": 70,
+    "name": "Weepinbell",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 65,
+    "attack": 90,
+    "defense": 50,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/70.gif"
+  },
+  {
+    "id": 71,
+    "name": "Victreebel",
+    "type": [
+      "Grass",
+      "Poison"
+    ],
+    "hp": 80,
+    "attack": 105,
+    "defense": 65,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/71.gif"
+  },
+  {
+    "id": 72,
+    "name": "Tentacool",
+    "type": [
+      "Water",
+      "Poison"
+    ],
+    "hp": 40,
+    "attack": 40,
+    "defense": 35,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/72.gif"
+  },
+  {
+    "id": 73,
+    "name": "Tentacruel",
+    "type": [
+      "Water",
+      "Poison"
+    ],
+    "hp": 80,
+    "attack": 70,
+    "defense": 65,
+    "speed": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/73.gif"
+  },
+  {
+    "id": 74,
+    "name": "Geodude",
+    "type": [
+      "Rock",
+      "Ground"
+    ],
+    "hp": 40,
+    "attack": 80,
+    "defense": 100,
+    "speed": 20,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/74.gif"
+  },
+  {
+    "id": 75,
+    "name": "Graveler",
+    "type": [
+      "Rock",
+      "Ground"
+    ],
+    "hp": 55,
+    "attack": 95,
+    "defense": 115,
+    "speed": 35,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/75.gif"
+  },
+  {
+    "id": 76,
+    "name": "Golem",
+    "type": [
+      "Rock",
+      "Ground"
+    ],
+    "hp": 80,
+    "attack": 120,
+    "defense": 130,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/76.gif"
+  },
+  {
+    "id": 77,
+    "name": "Ponyta",
+    "type": [
+      "Fire"
+    ],
+    "hp": 50,
+    "attack": 85,
+    "defense": 55,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/77.gif"
+  },
+  {
+    "id": 78,
+    "name": "Rapidash",
+    "type": [
+      "Fire"
+    ],
+    "hp": 65,
+    "attack": 100,
+    "defense": 70,
+    "speed": 105,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/78.gif"
+  },
+  {
+    "id": 79,
+    "name": "Slowpoke",
+    "type": [
+      "Water",
+      "Psychic"
+    ],
+    "hp": 90,
+    "attack": 65,
+    "defense": 65,
+    "speed": 15,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/79.gif"
+  },
+  {
+    "id": 80,
+    "name": "Slowbro",
+    "type": [
+      "Water",
+      "Psychic"
+    ],
+    "hp": 95,
+    "attack": 75,
+    "defense": 110,
+    "speed": 30,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/80.gif"
+  },
+  {
+    "id": 81,
+    "name": "Magnemite",
+    "type": [
+      "Electric",
+      "Steel"
+    ],
+    "hp": 25,
+    "attack": 35,
+    "defense": 70,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/81.gif"
+  },
+  {
+    "id": 82,
+    "name": "Magneton",
+    "type": [
+      "Electric",
+      "Steel"
+    ],
+    "hp": 50,
+    "attack": 60,
+    "defense": 95,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/82.gif"
+  },
+  {
+    "id": 83,
+    "name": "Farfetchd",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 52,
+    "attack": 90,
+    "defense": 55,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/83.gif"
+  },
+  {
+    "id": 84,
+    "name": "Doduo",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 35,
+    "attack": 85,
+    "defense": 45,
+    "speed": 75,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/84.gif"
+  },
+  {
+    "id": 85,
+    "name": "Dodrio",
+    "type": [
+      "Normal",
+      "Flying"
+    ],
+    "hp": 60,
+    "attack": 110,
+    "defense": 70,
+    "speed": 110,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/85.gif"
+  },
+  {
+    "id": 86,
+    "name": "Seel",
+    "type": [
+      "Water"
+    ],
+    "hp": 65,
+    "attack": 45,
+    "defense": 55,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/86.gif"
+  },
+  {
+    "id": 87,
+    "name": "Dewgong",
+    "type": [
+      "Water",
+      "Ice"
+    ],
+    "hp": 90,
+    "attack": 70,
+    "defense": 80,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/87.gif"
+  },
+  {
+    "id": 88,
+    "name": "Grimer",
+    "type": [
+      "Poison"
+    ],
+    "hp": 80,
+    "attack": 80,
+    "defense": 50,
+    "speed": 25,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/88.gif"
+  },
+  {
+    "id": 89,
+    "name": "Muk",
+    "type": [
+      "Poison"
+    ],
+    "hp": 105,
+    "attack": 105,
+    "defense": 75,
+    "speed": 50,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/89.gif"
+  },
+  {
+    "id": 90,
+    "name": "Shellder",
+    "type": [
+      "Water"
+    ],
+    "hp": 30,
+    "attack": 65,
+    "defense": 100,
+    "speed": 40,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/90.gif"
+  },
+  {
+    "id": 91,
+    "name": "Cloyster",
+    "type": [
+      "Water",
+      "Ice"
+    ],
+    "hp": 50,
+    "attack": 95,
+    "defense": 180,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/91.gif"
+  },
+  {
+    "id": 92,
+    "name": "Gastly",
+    "type": [
+      "Ghost",
+      "Poison"
+    ],
+    "hp": 30,
+    "attack": 35,
+    "defense": 30,
+    "speed": 80,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/92.gif"
+  },
+  {
+    "id": 93,
+    "name": "Haunter",
+    "type": [
+      "Ghost",
+      "Poison"
+    ],
+    "hp": 45,
+    "attack": 50,
+    "defense": 45,
+    "speed": 95,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/93.gif"
+  },
+  {
+    "id": 94,
+    "name": "Gengar",
+    "type": [
+      "Ghost",
+      "Poison"
+    ],
+    "hp": 60,
+    "attack": 65,
+    "defense": 60,
+    "speed": 110,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/94.gif"
+  },
+  {
+    "id": 95,
+    "name": "Onix",
+    "type": [
+      "Rock",
+      "Ground"
+    ],
+    "hp": 35,
+    "attack": 45,
+    "defense": 160,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/95.gif"
+  },
+  {
+    "id": 96,
+    "name": "Drowzee",
+    "type": [
+      "Psychic"
+    ],
+    "hp": 60,
+    "attack": 48,
+    "defense": 45,
+    "speed": 42,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/96.gif"
+  },
+  {
+    "id": 97,
+    "name": "Hypno",
+    "type": [
+      "Psychic"
+    ],
+    "hp": 85,
+    "attack": 73,
+    "defense": 70,
+    "speed": 67,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/97.gif"
+  },
+  {
+    "id": 98,
+    "name": "Krabby",
+    "type": [
+      "Water"
+    ],
+    "hp": 30,
+    "attack": 105,
+    "defense": 90,
+    "speed": 50,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/98.gif"
+  },
+  {
+    "id": 99,
+    "name": "Kingler",
+    "type": [
+      "Water"
+    ],
+    "hp": 55,
+    "attack": 130,
+    "defense": 115,
+    "speed": 75,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/99.gif"
+  },
+  {
+    "id": 100,
+    "name": "Voltorb",
+    "type": [
+      "Electric"
+    ],
+    "hp": 40,
+    "attack": 30,
+    "defense": 50,
+    "speed": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/100.gif"
+  },
+  {
+    "id": 101,
+    "name": "Electrode",
+    "type": [
+      "Electric"
+    ],
+    "hp": 60,
+    "attack": 50,
+    "defense": 70,
+    "speed": 150,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/101.gif"
+  },
+  {
+    "id": 102,
+    "name": "Exeggcute",
+    "type": [
+      "Grass",
+      "Psychic"
+    ],
+    "hp": 60,
+    "attack": 40,
+    "defense": 80,
+    "speed": 40,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/102.gif"
+  },
+  {
+    "id": 103,
+    "name": "Exeggutor",
+    "type": [
+      "Grass",
+      "Psychic"
+    ],
+    "hp": 95,
+    "attack": 95,
+    "defense": 85,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/103.gif"
+  },
+  {
+    "id": 104,
+    "name": "Cubone",
+    "type": [
+      "Ground"
+    ],
+    "hp": 50,
+    "attack": 50,
+    "defense": 95,
+    "speed": 35,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/104.gif"
+  },
+  {
+    "id": 105,
+    "name": "Marowak",
+    "type": [
+      "Ground"
+    ],
+    "hp": 60,
+    "attack": 80,
+    "defense": 110,
+    "speed": 45,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/105.gif"
+  },
+  {
+    "id": 106,
+    "name": "Hitmonlee",
+    "type": [
+      "Fighting"
+    ],
+    "hp": 50,
+    "attack": 120,
+    "defense": 53,
+    "speed": 87,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/106.gif"
+  },
+  {
+    "id": 107,
+    "name": "Hitmonchan",
+    "type": [
+      "Fighting"
+    ],
+    "hp": 50,
+    "attack": 105,
+    "defense": 79,
+    "speed": 76,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/107.gif"
+  },
+  {
+    "id": 108,
+    "name": "Lickitung",
+    "type": [
+      "Normal"
+    ],
+    "hp": 90,
+    "attack": 55,
+    "defense": 75,
+    "speed": 30,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/108.gif"
+  },
+  {
+    "id": 109,
+    "name": "Koffing",
+    "type": [
+      "Poison"
+    ],
+    "hp": 40,
+    "attack": 65,
+    "defense": 95,
+    "speed": 35,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/109.gif"
+  },
+  {
+    "id": 110,
+    "name": "Weezing",
+    "type": [
+      "Poison"
+    ],
+    "hp": 65,
+    "attack": 90,
+    "defense": 120,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/110.gif"
+  },
+  {
+    "id": 111,
+    "name": "Rhyhorn",
+    "type": [
+      "Ground",
+      "Rock"
+    ],
+    "hp": 80,
+    "attack": 85,
+    "defense": 95,
+    "speed": 25,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/111.gif"
+  },
+  {
+    "id": 112,
+    "name": "Rhydon",
+    "type": [
+      "Ground",
+      "Rock"
+    ],
+    "hp": 105,
+    "attack": 130,
+    "defense": 120,
+    "speed": 40,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/112.gif"
+  },
+  {
+    "id": 113,
+    "name": "Chansey",
+    "type": [
+      "Normal"
+    ],
+    "hp": 250,
+    "attack": 5,
+    "defense": 5,
+    "speed": 50,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/113.gif"
+  },
+  {
+    "id": 114,
+    "name": "Tangela",
+    "type": [
+      "Grass"
+    ],
+    "hp": 65,
+    "attack": 55,
+    "defense": 115,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/114.gif"
+  },
+  {
+    "id": 115,
+    "name": "Kangaskhan",
+    "type": [
+      "Normal"
+    ],
+    "hp": 105,
+    "attack": 95,
+    "defense": 80,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/115.gif"
+  },
+  {
+    "id": 116,
+    "name": "Horsea",
+    "type": [
+      "Water"
+    ],
+    "hp": 30,
+    "attack": 40,
+    "defense": 70,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/116.gif"
+  },
+  {
+    "id": 117,
+    "name": "Seadra",
+    "type": [
+      "Water"
+    ],
+    "hp": 55,
+    "attack": 65,
+    "defense": 95,
+    "speed": 85,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/117.gif"
+  },
+  {
+    "id": 118,
+    "name": "Goldeen",
+    "type": [
+      "Water"
+    ],
+    "hp": 45,
+    "attack": 67,
+    "defense": 60,
+    "speed": 63,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/118.gif"
+  },
+  {
+    "id": 119,
+    "name": "Seaking",
+    "type": [
+      "Water"
+    ],
+    "hp": 80,
+    "attack": 92,
+    "defense": 65,
+    "speed": 68,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/119.gif"
+  },
+  {
+    "id": 120,
+    "name": "Staryu",
+    "type": [
+      "Water"
+    ],
+    "hp": 30,
+    "attack": 45,
+    "defense": 55,
+    "speed": 85,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/120.gif"
+  },
+  {
+    "id": 121,
+    "name": "Starmie",
+    "type": [
+      "Water",
+      "Psychic"
+    ],
+    "hp": 60,
+    "attack": 75,
+    "defense": 85,
+    "speed": 115,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/121.gif"
+  },
+  {
+    "id": 122,
+    "name": "Mr-mime",
+    "type": [
+      "Psychic",
+      "Fairy"
+    ],
+    "hp": 40,
+    "attack": 45,
+    "defense": 65,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/122.gif"
+  },
+  {
+    "id": 123,
+    "name": "Scyther",
+    "type": [
+      "Bug",
+      "Flying"
+    ],
+    "hp": 70,
+    "attack": 110,
+    "defense": 80,
+    "speed": 105,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/123.gif"
+  },
+  {
+    "id": 124,
+    "name": "Jynx",
+    "type": [
+      "Ice",
+      "Psychic"
+    ],
+    "hp": 65,
+    "attack": 50,
+    "defense": 35,
+    "speed": 95,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/124.gif"
+  },
+  {
+    "id": 125,
+    "name": "Electabuzz",
+    "type": [
+      "Electric"
+    ],
+    "hp": 65,
+    "attack": 83,
+    "defense": 57,
+    "speed": 105,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/125.gif"
+  },
+  {
+    "id": 126,
+    "name": "Magmar",
+    "type": [
+      "Fire"
+    ],
+    "hp": 65,
+    "attack": 95,
+    "defense": 57,
+    "speed": 93,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/126.gif"
+  },
+  {
+    "id": 127,
+    "name": "Pinsir",
+    "type": [
+      "Bug"
+    ],
+    "hp": 65,
+    "attack": 125,
+    "defense": 100,
+    "speed": 85,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/127.gif"
+  },
+  {
+    "id": 128,
+    "name": "Tauros",
+    "type": [
+      "Normal"
+    ],
+    "hp": 75,
+    "attack": 100,
+    "defense": 95,
+    "speed": 110,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/128.gif"
+  },
+  {
+    "id": 129,
+    "name": "Magikarp",
+    "type": [
+      "Water"
+    ],
+    "hp": 20,
+    "attack": 10,
+    "defense": 55,
+    "speed": 80,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/129.gif"
+  },
+  {
+    "id": 130,
+    "name": "Gyarados",
+    "type": [
+      "Water",
+      "Flying"
+    ],
+    "hp": 95,
+    "attack": 125,
+    "defense": 79,
+    "speed": 81,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/130.gif"
+  },
+  {
+    "id": 131,
+    "name": "Lapras",
+    "type": [
+      "Water",
+      "Ice"
+    ],
+    "hp": 130,
+    "attack": 85,
+    "defense": 80,
+    "speed": 60,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/131.gif"
+  },
+  {
+    "id": 132,
+    "name": "Ditto",
+    "type": [
+      "Normal"
+    ],
+    "hp": 48,
+    "attack": 48,
+    "defense": 48,
+    "speed": 48,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/132.gif"
+  },
+  {
+    "id": 133,
+    "name": "Eevee",
+    "type": [
+      "Normal"
+    ],
+    "hp": 55,
+    "attack": 55,
+    "defense": 50,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/133.gif"
+  },
+  {
+    "id": 134,
+    "name": "Vaporeon",
+    "type": [
+      "Water"
+    ],
+    "hp": 130,
+    "attack": 65,
+    "defense": 60,
+    "speed": 65,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/134.gif"
+  },
+  {
+    "id": 135,
+    "name": "Jolteon",
+    "type": [
+      "Electric"
+    ],
+    "hp": 65,
+    "attack": 65,
+    "defense": 60,
+    "speed": 130,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/135.gif"
+  },
+  {
+    "id": 136,
+    "name": "Flareon",
+    "type": [
+      "Fire"
+    ],
+    "hp": 65,
+    "attack": 130,
+    "defense": 60,
+    "speed": 65,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/136.gif"
+  },
+  {
+    "id": 137,
+    "name": "Porygon",
+    "type": [
+      "Normal"
+    ],
+    "hp": 65,
+    "attack": 60,
+    "defense": 70,
+    "speed": 40,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/137.gif"
+  },
+  {
+    "id": 138,
+    "name": "Omanyte",
+    "type": [
+      "Rock",
+      "Water"
+    ],
+    "hp": 35,
+    "attack": 40,
+    "defense": 100,
+    "speed": 35,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/138.gif"
+  },
+  {
+    "id": 139,
+    "name": "Omastar",
+    "type": [
+      "Rock",
+      "Water"
+    ],
+    "hp": 70,
+    "attack": 60,
+    "defense": 125,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/139.gif"
+  },
+  {
+    "id": 140,
+    "name": "Kabuto",
+    "type": [
+      "Rock",
+      "Water"
+    ],
+    "hp": 30,
+    "attack": 80,
+    "defense": 90,
+    "speed": 55,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/140.gif"
+  },
+  {
+    "id": 141,
+    "name": "Kabutops",
+    "type": [
+      "Rock",
+      "Water"
+    ],
+    "hp": 60,
+    "attack": 115,
+    "defense": 105,
+    "speed": 80,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/141.gif"
+  },
+  {
+    "id": 142,
+    "name": "Aerodactyl",
+    "type": [
+      "Rock",
+      "Flying"
+    ],
+    "hp": 80,
+    "attack": 105,
+    "defense": 65,
+    "speed": 130,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/142.gif"
+  },
+  {
+    "id": 143,
+    "name": "Snorlax",
+    "type": [
+      "Normal"
+    ],
+    "hp": 160,
+    "attack": 110,
+    "defense": 65,
+    "speed": 30,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/143.gif"
+  },
+  {
+    "id": 144,
+    "name": "Articuno",
+    "type": [
+      "Ice",
+      "Flying"
+    ],
+    "hp": 90,
+    "attack": 85,
+    "defense": 100,
+    "speed": 85,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/144.gif"
+  },
+  {
+    "id": 145,
+    "name": "Zapdos",
+    "type": [
+      "Electric",
+      "Flying"
+    ],
+    "hp": 90,
+    "attack": 90,
+    "defense": 85,
+    "speed": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/145.gif"
+  },
+  {
+    "id": 146,
+    "name": "Moltres",
+    "type": [
+      "Fire",
+      "Flying"
+    ],
+    "hp": 90,
+    "attack": 100,
+    "defense": 90,
+    "speed": 90,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/146.gif"
+  },
+  {
+    "id": 147,
+    "name": "Dratini",
+    "type": [
+      "Dragon"
+    ],
+    "hp": 41,
+    "attack": 64,
+    "defense": 45,
+    "speed": 50,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/147.gif"
+  },
+  {
+    "id": 148,
+    "name": "Dragonair",
+    "type": [
+      "Dragon"
+    ],
+    "hp": 61,
+    "attack": 84,
+    "defense": 65,
+    "speed": 70,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/148.gif"
+  },
+  {
+    "id": 149,
+    "name": "Dragonite",
+    "type": [
+      "Dragon",
+      "Flying"
+    ],
+    "hp": 91,
+    "attack": 134,
+    "defense": 95,
+    "speed": 80,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/149.gif"
+  },
+  {
+    "id": 150,
+    "name": "Mewtwo",
+    "type": [
+      "Psychic"
+    ],
+    "hp": 106,
+    "attack": 110,
+    "defense": 90,
+    "speed": 130,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/150.gif"
+  },
+  {
+    "id": 151,
+    "name": "Mew",
+    "type": [
+      "Psychic"
+    ],
+    "hp": 100,
+    "attack": 100,
+    "defense": 100,
+    "speed": 100,
+    "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/151.gif"
+  }
+]

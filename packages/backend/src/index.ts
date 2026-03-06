@@ -1,5 +1,11 @@
 import express, { Request, Response } from 'express';
-import { logMessage } from '@poke-albo/shared';
+import { logMessage, PokemonListResponseSchema, PokemonDetailResponseSchema } from '@poke-albo/shared';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,6 +15,46 @@ app.use(express.json());
 app.get('/api/hello', (req: Request, res: Response) => {
     logMessage('GET /api/hello request received');
     res.json({ message: 'Hello from poke-albo backend!' });
+});
+
+app.get('/list', (req: Request, res: Response) => {
+    try {
+        const filePath = path.join(__dirname, 'assets', 'pokemon-list.json');
+        const rawData = fs.readFileSync(filePath, 'utf-8');
+        const data = JSON.parse(rawData);
+
+        const result = PokemonListResponseSchema.parse(data);
+        res.json(result);
+    } catch (error) {
+        console.error('Error serving /list:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+app.get('/list/:id', (req: Request, res: Response) => {
+    try {
+        const id = parseInt(req.params.id, 10);
+        if (isNaN(id)) {
+            res.status(400).json({ error: 'Invalid ID format' });
+            return;
+        }
+
+        const filePath = path.join(__dirname, 'assets', 'pokemon-detail.json');
+        const rawData = fs.readFileSync(filePath, 'utf-8');
+        const data = JSON.parse(rawData) as any[];
+
+        const pokemon = data.find(p => p.id === id);
+        if (!pokemon) {
+            res.status(404).json({ error: 'Pokemon not found' });
+            return;
+        }
+
+        const result = PokemonDetailResponseSchema.parse(pokemon);
+        res.json(result);
+    } catch (error) {
+        console.error('Error serving /list/:id:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
 });
 
 app.listen(port, () => {
