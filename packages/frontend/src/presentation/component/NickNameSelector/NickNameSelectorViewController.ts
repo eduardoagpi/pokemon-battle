@@ -1,34 +1,48 @@
 import { useState, useEffect } from 'react';
 import { useGetRandomPokemons } from '../../../business/getRandomPokemons';
-import type { PokemonDetailResponse } from '@poke-albo/shared';
-import { NUM_POKEMONS } from '../../../util';
+import { useNavigate } from 'react-router-dom';
+import { useGeneralAppContext } from '../../context/GeneralAppContext';
 
-export function useNickNameSelector(
-    onConfirm: (
-        nickname: string,
-        selectedPokemons: PokemonDetailResponse[]
-    ) => void,
-    initialNickname: string = ''
+export function useNickNameSelectorViewController(
 ) {
-    const [nickname, setNickname] = useState(initialNickname);
+    const [nickname, setNickname] = useState('');
     const [enabled, setEnabled] = useState(false);
+    const navigate = useNavigate();
+    const {
+        setNickname: setNicknameContext,
+        setSelectedPokemons,
+        nickname: contextNickName,
+        selectedPokemons: contextSelectedPokemons
+    } = useGeneralAppContext()
 
-    const { pokemons } = useGetRandomPokemons(NUM_POKEMONS, enabled);
+    const { pokemons } = useGetRandomPokemons(enabled);
 
-    const handleSubmit = () => {
+    const onClickedConfirm = () => {
         if (!nickname.trim()) return;
         setEnabled(true);
     };
 
     useEffect(() => {
-        if (!enabled || pokemons.length !== NUM_POKEMONS) return;
-        onConfirm(nickname, pokemons);
-    }, [pokemons, enabled, nickname, onConfirm]);
+        if (!enabled || pokemons.length === 0) return;
+        setNicknameContext(nickname);
+        setSelectedPokemons(pokemons);
+    }, [pokemons, enabled, nickname]);
+
+    useEffect(() => {
+        if (!contextNickName.trim() || !contextSelectedPokemons.length) return;
+        console.log("will nabigate")
+        navigate('/lobby')
+    }, [contextNickName, contextSelectedPokemons])
 
 
     return {
-        nickname,
-        setNickname,
-        handleSubmit
+        uiState: {
+            nickname,
+            buttonDisabled: !nickname.trim(),
+        },
+        actions: {
+            setNickname,
+            onClickedConfirm
+        }
     };
 }

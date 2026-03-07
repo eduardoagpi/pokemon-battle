@@ -1,8 +1,29 @@
-import type { PokemonDetailResponse } from "@poke-albo/shared";
+import { useNavigate } from "react-router-dom";
+import { useGeneralAppContext } from "../../context/GeneralAppContext";
+import { useEffect } from "react";
 
-export function useLobbyStatus(pokemons: PokemonDetailResponse[]) {
+export function useLobbyStatusViewController() {
+    const { nickname, selectedPokemons, resetSession } = useGeneralAppContext();
+    const navigate = useNavigate()
+
+    const onClickedGoBack = () => {
+        resetSession()
+    }
+
+    useEffect(() => {
+        if (!nickname || !selectedPokemons.length) {
+            navigate('/')
+            return;
+        }
+    }, [nickname, selectedPokemons])
+
     return {
-        assignedPokemons: pokemons,
-        isWaitingForOpponent: true
+        uiState: {
+            nickname: nickname,
+            assignedPokemons: selectedPokemons,
+        },
+        actions: {
+            onClickedGoBack
+        }
     };
 }

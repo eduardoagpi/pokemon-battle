@@ -5,15 +5,18 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import './index.css'
 import App from './App.tsx'
 import { SnackbarProvider } from './presentation/context/SnackbarContext.tsx'
+import { GeneralAppContextProvider } from './presentation/context/GeneralAppContext.tsx'
 
 const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <SnackbarProvider>
-        <App />
-      </SnackbarProvider>
+      <GeneralAppContextProvider>
+        <SnackbarProvider>
+          <App />
+        </SnackbarProvider>
+      </GeneralAppContextProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </StrictMode>,
