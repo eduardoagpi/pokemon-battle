@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo_db
+    hostname: mongo-server
+
+    ports:
+      - "27017:27017"
+
+    command: >
+      bash -c "
+        mongod --replSet rs0 --bind_ip_all &
+        pid=$$!;
+        sleep 5;
+        mongosh --eval 'rs.initiate({_id:\"rs0\",members:[{_id:0,host:\"mongo-server:27017\"}]})';
+        wait $$pid
+      "
+
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
