@@ -64,6 +64,7 @@ export function useGetRandomPokemons(count: number = NUM_POKEMONS, enabled: bool
     useEffect(() => {
         if (pokemonListError) {
             showError("Error al obtener la lista de pokemon");
+            return;
         }
 
         if (failedPokemonNames.length > 0) {

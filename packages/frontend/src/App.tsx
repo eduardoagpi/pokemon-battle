@@ -16,7 +16,6 @@ function App() {
   const handleConfirmNickname = (name: string, pokemons: PokemonDetailResponse[]) => {
     setNickname(name);
     setSelectedPokemons(pokemons);
-    alert(pokemons)
     setIsConfirmed(true);
   };
 
@@ -40,7 +39,7 @@ function App() {
 
       {/* Main Content Area */}
       {!isConfirmed ? (
-        <NickNameSelector onConfirm={handleConfirmNickname} />
+        <NickNameSelector nickname={nickname} onConfirm={handleConfirmNickname} />
       ) : (
         <LobbyStatus nickname={nickname} onBack={handleBackToNickname} pokemons={selectedPokemons} />
       )}

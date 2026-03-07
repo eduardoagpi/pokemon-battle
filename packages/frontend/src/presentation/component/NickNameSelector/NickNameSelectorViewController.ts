@@ -7,9 +7,10 @@ export function useNickNameSelector(
     onConfirm: (
         nickname: string,
         selectedPokemons: PokemonDetailResponse[]
-    ) => void
+    ) => void,
+    initialNickname: string = ''
 ) {
-    const [nickname, setNickname] = useState('');
+    const [nickname, setNickname] = useState(initialNickname);
     const [enabled, setEnabled] = useState(false);
 
     const { pokemons } = useGetRandomPokemons(NUM_POKEMONS, enabled);
@@ -20,9 +21,9 @@ export function useNickNameSelector(
     };
 
     useEffect(() => {
-        if (pokemons.length !== NUM_POKEMONS) return;
+        if (!enabled || pokemons.length !== NUM_POKEMONS) return;
         onConfirm(nickname, pokemons);
-    }, [pokemons]);
+    }, [pokemons, enabled, nickname, onConfirm]);
 
 
     return {
