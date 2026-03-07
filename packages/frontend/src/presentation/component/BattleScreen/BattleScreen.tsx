@@ -34,7 +34,7 @@ export const BattleScreen = () => {
                         {/* Battle UI - Opponent (Top Right) */}
                         <div className="self-end w-40 bg-white/90 p-1 border-2 border-black/20 rounded-sm shadow-sm z-10">
                             <div className="flex justify-between text-[10px] font-bold">
-                                <span className="text-red-700">OPONENTE</span>
+                                <span className="text-red-700">{uiState.opponent.name}</span>
                                 <span>Lv100</span>
                             </div>
                             <div className="w-full h-2 bg-gray-200 border border-black/10 mt-1 relative overflow-hidden rounded-full">
@@ -46,11 +46,11 @@ export const BattleScreen = () => {
                         <div className="flex-1 relative flex items-center justify-center">
                             {/* Opponent Sprite Placeholder */}
                             <div className="absolute top-2 right-4 w-16 h-16 opacity-30 filter drop-shadow-md">
-                                <img src={pokeAlboLogo} alt="Enemy" className="w-full h-full object-contain grayscale opacity-60" />
+                                <img src={uiState.opponent.graphicUrl} alt="Enemy" className="w-full h-full object-contain grayscale opacity-60" />
                             </div>
                             {/* Player Sprite Placeholder */}
                             <div className="absolute bottom-2 left-4 w-20 h-20 opacity-80 filter drop-shadow-lg">
-                                <img src={pokeAlboLogo} alt="Player" className="w-full h-full object-contain" />
+                                <img src={uiState.myPokemon.graphicUrl} alt="Player" className="w-full h-full object-contain" />
                             </div>
 
                             {/* Retro Ground Effect */}
@@ -61,7 +61,7 @@ export const BattleScreen = () => {
                         {/* Battle UI - Player (Bottom Left) */}
                         <div className="self-start w-40 bg-white/90 p-1 border-2 border-black/20 rounded-sm shadow-sm z-10">
                             <div className="flex justify-between text-[10px] font-bold">
-                                <span className="text-blue-700">TU POKÉMON</span>
+                                <span className="text-blue-700">{uiState.myPokemon.name}</span>
                                 <span>Lv100</span>
                             </div>
                             <div className="w-full h-2 bg-gray-200 border border-black/10 mt-1 relative overflow-hidden rounded-full">
