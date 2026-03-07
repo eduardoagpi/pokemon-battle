@@ -1,9 +1,9 @@
-import { useState } from 'react';
 import pokeAlboLogo from '../../../assets/pokealbo.png';
+import { useBattleScreenViewController } from './BattleScreenViewController';
 
 export const BattleScreen = () => {
-    // isAttackEnabled will be used later when logic is added
-    const [isAttackEnabled] = useState(true);
+
+    const { uiState, actions } = useBattleScreenViewController()
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] animate-fade-in py-10">
@@ -108,9 +108,9 @@ export const BattleScreen = () => {
                             {/* A Button (Attack) */}
                             <div className="flex flex-col items-center">
                                 <button
-                                    disabled={!isAttackEnabled}
+                                    disabled={!uiState.isAttackEnabled}
                                     onClick={() => alert('¡Atacando!')}
-                                    className={`w-14 h-14 rounded-full shadow-[2px_4px_0_rgba(0,0,0,0.4)] border-b-2 transition-all hover:scale-105 active:scale-95 active:translate-y-1 active:shadow-none flex items-center justify-center ${isAttackEnabled
+                                    className={`w-14 h-14 rounded-full shadow-[2px_4px_0_rgba(0,0,0,0.4)] border-b-2 transition-all hover:scale-105 active:scale-95 active:translate-y-1 active:shadow-none flex items-center justify-center ${uiState.isAttackEnabled
                                         ? 'bg-red-600 border-red-800'
                                         : 'bg-gray-400 border-gray-600 cursor-not-allowed opacity-50'
                                         }`}

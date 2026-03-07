@@ -17,6 +17,12 @@ export function useLobbyStatusViewController() {
         }
     }, [nickname, selectedPokemons])
 
+    useEffect(() => {
+        setTimeout(() => {
+            navigate('/battle')
+        }, 3000)
+    }, [])
+
     return {
         uiState: {
             nickname: nickname,
