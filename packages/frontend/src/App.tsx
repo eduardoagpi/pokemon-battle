@@ -3,15 +3,20 @@ import pokeAlboLogo from './assets/pokealbo.png';
 import { NickNameSelector } from './presentation/component/NickNameSelector/NickNameSelector';
 import { LobbyStatus } from './presentation/component/LobbyStatus/LobbyStatus';
 import { useSnackbar } from './presentation/hooks/useSnackbar';
+import type { PokemonDetailResponse } from '@poke-albo/shared';
 
 function App() {
   // Global state for application progress
   const [nickname, setNickname] = useState('');
+  const [selectedPokemons, setSelectedPokemons] = useState<PokemonDetailResponse[]>([]);
   const [isConfirmed, setIsConfirmed] = useState(false);
   const { showSuccess, showError, showInfo } = useSnackbar();
 
-  const handleConfirmNickname = (name: string) => {
+
+  const handleConfirmNickname = (name: string, pokemons: PokemonDetailResponse[]) => {
     setNickname(name);
+    setSelectedPokemons(pokemons);
+    alert(pokemons)
     setIsConfirmed(true);
   };
 
@@ -27,7 +32,7 @@ function App() {
       </header>
 
       {/* Test Snackbar Buttons */}
-      <div className="flex gap-4 mb-4 z-50 relative">
+      <div className="flex gap-4 mb-4 z-50 relative hidden">
         <button onClick={() => showSuccess('Acción completada con éxito!')} className="px-4 py-2 bg-green-500 rounded text-white font-bold cursor-pointer hover:bg-green-600 transition-colors">Test Success</button>
         <button onClick={() => showError('Ha ocurrido un error inesperado')} className="px-4 py-2 bg-red-500 rounded text-white font-bold cursor-pointer hover:bg-red-600 transition-colors">Test Error</button>
         <button onClick={() => showInfo('Información importante sobre tu cuenta')} className="px-4 py-2 bg-gray-500 rounded text-white font-bold cursor-pointer hover:bg-gray-600 transition-colors">Test Info</button>
@@ -37,7 +42,7 @@ function App() {
       {!isConfirmed ? (
         <NickNameSelector onConfirm={handleConfirmNickname} />
       ) : (
-        <LobbyStatus nickname={nickname} onBack={handleBackToNickname} />
+        <LobbyStatus nickname={nickname} onBack={handleBackToNickname} pokemons={selectedPokemons} />
       )}
     </div>
   );

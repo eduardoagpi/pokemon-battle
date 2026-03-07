@@ -1,7 +1,8 @@
+import type { PokemonDetailResponse } from '@poke-albo/shared';
 import { useNickNameSelector } from './NickNameSelectorViewController';
 
 interface Props {
-    onConfirm: (nickname: string) => void;
+    onConfirm: (nickname: string, selectedPokemons: PokemonDetailResponse[]) => void;
 }
 
 export function NickNameSelector({ onConfirm }: Props) {
@@ -24,7 +25,8 @@ export function NickNameSelector({ onConfirm }: Props) {
                     autoFocus
                 />
                 <button
-                    type="submit"
+                    type="button"
+                    onClick={handleSubmit}
                     className="p-[1.2rem] text-[1.2rem] font-bold uppercase tracking-[1px] text-secondary-dark bg-gradient-to-br from-primary to-[#FFE373] border-none rounded-xl cursor-pointer transition-all duration-300 shadow-[0_4px_15px_rgba(255,203,5,0.4)] hover:-translate-y-[2px] hover:shadow-[0_6px_20px_rgba(255,203,5,0.6)] hover:from-[#FFE373] hover:to-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
                     disabled={!nickname.trim()}
                 >

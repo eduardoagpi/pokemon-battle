@@ -1,4 +1,5 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors';
 import { logMessage, PokemonListResponseSchema, PokemonDetailResponseSchema } from '@poke-albo/shared';
 import fs from 'fs';
 import path from 'path';
@@ -10,6 +11,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/api/hello', (req: Request, res: Response) => {

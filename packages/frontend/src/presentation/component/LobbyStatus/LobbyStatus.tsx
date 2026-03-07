@@ -1,12 +1,14 @@
+import type { PokemonDetailResponse } from '@poke-albo/shared';
 import { useLobbyStatus } from './LobbyStatusViewController';
 
 interface Props {
     nickname: string;
     onBack: () => void;
+    pokemons: PokemonDetailResponse[];
 }
 
-export function LobbyStatus({ nickname, onBack }: Props) {
-    const { assignedPokemons, isWaitingForOpponent } = useLobbyStatus();
+export function LobbyStatus({ nickname, onBack, pokemons }: Props) {
+    const { assignedPokemons, isWaitingForOpponent } = useLobbyStatus(pokemons);
 
     return (
         <section className="w-full max-w-[900px] flex flex-col items-center gap-12 animate-fade-in-slow">
@@ -30,7 +32,7 @@ export function LobbyStatus({ nickname, onBack }: Props) {
                     <div key={pokemon.id} className="flex flex-col items-center p-8 gap-6 transition-transform duration-300 bg-gradient-to-b from-white/10 to-[rgba(255,255,255,0.02)] hover:-translate-y-[10px] hover:border-primary hover:shadow-[0_10px_30px_rgba(255,203,5,0.2)] glass-panel">
                         <div className="w-[120px] h-[120px] rounded-full bg-black/40 flex justify-center items-center shadow-[inset_0_0_20px_rgba(0,0,0,0.5)] relative overflow-hidden after:content-[''] after:absolute after:-top-[50%] after:-left-[50%] after:w-[200%] after:h-[200%] after:bg-[conic-gradient(transparent,transparent,transparent,rgba(255,255,255,0.1))] after:animate-spin-slow">
                             <img
-                                src={pokemon.imageUrl}
+                                src={pokemon.sprite}
                                 alt={pokemon.name}
                                 className="w-[80%] h-[80%] object-contain z-[1] drop-shadow-[0_5px_10px_rgba(0,0,0,0.5)]"
                             />
