@@ -1,8 +1,17 @@
+import { useState } from 'react';
 import { useBattleScreenViewController } from './BattleScreenViewController';
 
 export const BattleScreen = () => {
 
     const { uiState, actions } = useBattleScreenViewController()
+    const [bounceClass, setBounceClass] = useState('');
+
+    const handleDpadClick = (direction: 'up' | 'down' | 'left' | 'right') => {
+        actions.onClickedDPad(direction);
+        const animationClass = `animate-bounce-${direction}`;
+        setBounceClass(animationClass);
+        setTimeout(() => setBounceClass(''), 300);
+    };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[80vh] animate-fade-in py-10">
@@ -50,7 +59,7 @@ export const BattleScreen = () => {
 
                         {/* Player */}
                         <div className='flex flex-row'>
-                            <div className="left-4 w-20 h-20 opacity-80 filter drop-shadow-lg">
+                            <div className={`left-4 w-20 h-20 opacity-80 filter drop-shadow-lg ${bounceClass}`}>
                                 <img src={uiState.myPokemon.graphicUrl} alt="Player" className="w-full h-full object-contain" />
                             </div>
                             <div className="self-start w-30 bg-white/90 p-1 border-2 border-black/20 rounded-sm shadow-sm z-10">
@@ -90,10 +99,18 @@ export const BattleScreen = () => {
                             <div className="absolute w-6 h-6 bg-[#333] rounded-full z-20 border border-black/10 shadow-inner"></div>
 
                             {/* Visual Directional Buttons (Clickable but do nothing) */}
-                            <button className="absolute top-0 w-8 h-8 rounded-t-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"></button>
-                            <button className="absolute bottom-0 w-8 h-8 rounded-b-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"></button>
-                            <button className="absolute left-0 w-8 h-8 rounded-l-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"></button>
-                            <button className="absolute right-0 w-8 h-8 rounded-r-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"></button>
+                            <button
+                                className="absolute top-0 w-8 h-8 rounded-t-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"
+                                onClick={() => handleDpadClick('up')} />
+                            <button
+                                className="absolute bottom-0 w-8 h-8 rounded-b-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"
+                                onClick={() => handleDpadClick('down')} />
+                            <button
+                                className="absolute left-0 w-8 h-8 rounded-l-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"
+                                onClick={() => handleDpadClick('left')} />
+                            <button
+                                className="absolute right-0 w-8 h-8 rounded-r-sm hover:bg-white/10 active:scale-95 z-30 cursor-pointer"
+                                onClick={() => handleDpadClick('right')} />
                         </div>
 
                         {/* Action Buttons A/B */}
@@ -107,7 +124,7 @@ export const BattleScreen = () => {
                             <div className="flex flex-col items-center">
                                 <button
                                     disabled={!uiState.isAttackEnabled}
-                                    onClick={() => alert('¡Atacando!')}
+                                    onClick={actions.onClickedAttack}
                                     className={`w-14 h-14 rounded-full shadow-[2px_4px_0_rgba(0,0,0,0.4)] border-b-2 transition-all hover:scale-105 active:scale-95 active:translate-y-1 active:shadow-none flex items-center justify-center ${uiState.isAttackEnabled
                                         ? 'bg-red-600 border-red-800'
                                         : 'bg-gray-400 border-gray-600 cursor-not-allowed opacity-50'

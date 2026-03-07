@@ -24,6 +24,14 @@ export function useBattleScreenViewController() {
         window.history.back()
     }
 
+    const onClickedDPad = (action: 'left' | 'up' | 'right' | 'down') => {
+        // TODO
+    }
+
+    const onClickedAttack = () => {
+        // TODO
+    }
+
     return {
         uiState: {
             myPokemon: myPokemon,
@@ -32,7 +40,9 @@ export function useBattleScreenViewController() {
             isAttackEnabled: true,
         },
         actions: {
-            onClickedMenu
+            onClickedMenu,
+            onClickedDPad,
+            onClickedAttack,
         }
     }
 }
