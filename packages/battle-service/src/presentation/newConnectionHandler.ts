@@ -82,7 +82,7 @@ export async function handleNewClientConnection(
             console.error(`Mensaje invalido para ${authId}`);
             return;
         }
-        await handleClientMessage(battleRepository, serverMessageEmitter, message, authId, battleId,);
+        await handleClientMessage(battleRepository, message, authId, battleId,);
     });
 
     // Cleanup al cerrar

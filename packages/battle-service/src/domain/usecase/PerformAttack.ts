@@ -1,9 +1,7 @@
 import { BattleRepository } from "../repository/BattleRepository";
-import { ServerMessageEmitter } from "../repository/ServerMessageEmitter";
 
 export async function performAttack(
     battleRepository: BattleRepository,
-    serverMessageEmitter: ServerMessageEmitter,
     battleId: string,
     nickname: string
 ) {
@@ -28,15 +26,6 @@ export async function performAttack(
     // Calculo de daño
     let damage = Math.max(1, activeAttacker.attackPoints - activeDefender.defensePoints)
     activeDefender.healthPoints = Math.max(0, activeDefender.healthPoints - damage);
-
-    /*
-    if (activeDefender.healthPoints === 0) {
-        serverMessageEmitter.emitMessage({
-            type: "notify_pokemon_defeated", pokemonDefeated: {
-                pokemonName: activeDefender.name
-            }
-        })
-    }*/
 
     console.log(`${nickname}'s ${activeAttacker.name} attacks ${activeDefender.name} for ${damage} damage.`);
 
