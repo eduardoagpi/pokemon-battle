@@ -1,4 +1,4 @@
-import { Battle } from "../../domain/entity/entity";
+import { Battle } from "../../domain/entity/Battle";
 import { BattleReactiveRepository } from "../../domain/repository/BattleReactiveRepository";
 import { BattleDocToBattle } from "../mapper/dataToDomain";
 import { Collections, db } from "../mongoDb";
@@ -7,7 +7,7 @@ import { BattleDoc } from "../types";
 export class MongoBattleReactiveRepository implements BattleReactiveRepository {
     constructor(private matchId: string) { }
 
-    subscribeToBattleCreation(callback: () => void): void {
+    subscribeToBattleCreation(callback: (battle: Battle) => void): void {
         const collection = db.collection<BattleDoc>(Collections.BATTLE);
         const changeStream = collection.watch([
             {
@@ -20,7 +20,7 @@ export class MongoBattleReactiveRepository implements BattleReactiveRepository {
 
         changeStream.on('change', (change) => {
             if (change.operationType === 'insert') {
-                callback();
+                callback(BattleDocToBattle(change.fullDocument));
                 changeStream.close();
             }
         });

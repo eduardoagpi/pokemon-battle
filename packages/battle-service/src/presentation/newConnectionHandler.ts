@@ -1,4 +1,4 @@
-import { WebSocket } from 'ws';
+import { RawData, WebSocket } from 'ws';
 import url from 'url';
 import http from 'http';
 import { ExtWebSocket } from './webSocket';
@@ -6,11 +6,21 @@ import { handleNewConnection } from '../domain/usecase/HandleNewConnection';
 import { handleMatchMaking } from '../domain/usecase/HandleMatchMaking';
 import { handleClientMessage } from './clientMessageHandler';
 import { handleFighterDisconnection } from '../domain/usecase/HandleDisconnection';
-import { PokemonDetailResponse, PokemonDetailResponseSchema } from '@poke-albo/shared';
+import { BattleWSClientMessage, BattleWSClientMessageSchema, PokemonDetailResponse, PokemonDetailResponseSchema } from '@poke-albo/shared';
 import { PokemonDetailResponseToPokemon } from '../data/mapper/dataToDomain';
+import { MatchmakingRepository } from '../domain/repository/MatchmakingRepository';
+import { BattleRepository } from '../domain/repository/BattleRepository';
+import { BattleReactiveRepository } from '../domain/repository/BattleReactiveRepository';
+import { MongoBattleReactiveRepository } from '../data/repository/BattleReactiveRepositoryImpl';
+import { handleBattleChange } from '../domain/usecase/HandleBattleChange';
 
+export async function handleNewClientConnection(
+    webSocket: WebSocket,
+    req: http.IncomingMessage,
+    matchmakingRepository: MatchmakingRepository,
+    battleRepository: BattleRepository
+) {
 
-export async function handleNewClientConnection(webSocket: WebSocket, req: http.IncomingMessage) {
     // Extraer user ID del query string
     const location = url.parse(req.url || '', true);
     const authId = location.query.auth_id as string;
@@ -42,20 +52,34 @@ export async function handleNewClientConnection(webSocket: WebSocket, req: http.
 
 
     // Maneja la conexion inicial
-    const newConnectionResult = await handleNewConnection(authId, pokemonData.map(PokemonDetailResponseToPokemon));
+    const newConnectionResult = await handleNewConnection(authId, pokemonData.map(PokemonDetailResponseToPokemon), matchmakingRepository);
     if (!newConnectionResult.success) {
         console.error(`Error en matchmaking inicial para ${authId}:`, newConnectionResult.error);
         return;
     }
-    let battleId: string;
-    handleMatchMaking(extWs, newConnectionResult.value, (_battleId) => {
-        if (!battleId) battleId = _battleId
+    const battleReactiveRepository: BattleReactiveRepository = new MongoBattleReactiveRepository(newConnectionResult.value.matchId);
+    let battleId: string | undefined;
+    battleReactiveRepository.subscribeToBattleCreation((battle) => {
+        battleId = battle.id;
+    });
+    battleReactiveRepository.subscribeToBattle((previousBattleState, currentBattleState) => {
+        handleBattleChange(previousBattleState, currentBattleState);
     });
 
+    handleMatchMaking(newConnectionResult.value, battleRepository);
 
     // Manejar mensajes desde los clientes
     extWs.on('message', async (data) => {
-        handleClientMessage(data, authId, battleId);
+        if (!battleId) {
+            console.error(`No se encontro el id de la batalla para ${authId}`);
+            return;
+        }
+        const message = validateClientMessage(data);
+        if (!message) {
+            console.error(`Mensaje invalido para ${authId}`);
+            return;
+        }
+        handleClientMessage(message, authId, battleId);
     });
 
     // Cleanup al cerrar
@@ -63,4 +87,15 @@ export async function handleNewClientConnection(webSocket: WebSocket, req: http.
         console.log(`Cliente ${authId} desconectado`);
         handleFighterDisconnection(authId);
     });
+}
+
+function validateClientMessage(data: RawData): BattleWSClientMessage | null {
+    try {
+        const message = JSON.parse(data.toString());
+        const parsedMessage = BattleWSClientMessageSchema.parse(message);
+        return parsedMessage;
+    } catch (error) {
+        console.error("Error al validar el mensaje del cliente", error);
+        return null;
+    }
 }

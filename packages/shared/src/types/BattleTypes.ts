@@ -1,6 +1,6 @@
 import z from "zod"
 
-export const BattleWSServerMessage = z.discriminatedUnion("battleWSMessage", [
+export const BattleWSServerMessageSchema = z.discriminatedUnion("battleWSMessage", [
     z.object({
         type: z.literal("start_battle")
     }),
@@ -29,8 +29,12 @@ export const BattleWSServerMessage = z.discriminatedUnion("battleWSMessage", [
     })
 ])
 
-export const BattleWSClientMessage = z.discriminatedUnion("clientMessage", [
+export type BattleWSServerMessage = z.infer<typeof BattleWSServerMessageSchema>
+
+export const BattleWSClientMessageSchema = z.discriminatedUnion("clientMessage", [
     z.object({
         type: z.literal("atack")
     }),
 ])
+
+export type BattleWSClientMessage = z.infer<typeof BattleWSClientMessageSchema>

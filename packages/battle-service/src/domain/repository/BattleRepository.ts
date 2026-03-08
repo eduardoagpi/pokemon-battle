@@ -1,22 +1,7 @@
-import { BattlePlayer, Pokemon } from "../entity/entity";
+import { Battle } from "../entity/Battle";
 
 export interface BattleRepository {
-    createBattle(
-        player1: BattlePlayer,
-        player2: BattlePlayer,
-        player1PokemonList: Pokemon[],
-        player2PokemonList: Pokemon[]
-    ): void;
-
-    registerAttack(
-        battleId: string,
-        playerId: string,
-        pokemonId: string,
-        attack: string
-    ): void;
-
-    changeBattleStatus(
-        battleId: string,
-        status: 'waiting' | 'battling' | 'finished'
-    ): void;
+    getBattle(battleId: string): Promise<Battle | null>
+    createBattle(battle: Battle): Promise<void>
+    updateBattle(battle: Battle): Promise<void>
 }

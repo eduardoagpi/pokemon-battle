@@ -1,10 +1,11 @@
+import { BattleWSClientMessage } from '@poke-albo/shared';
 import { RawData } from 'ws';
 
-export function handleClientMessage(data: RawData, user: string, battleId: string,) {
-    try {
-        const message = JSON.parse(data.toString());
-        console.log(message);
-    } catch (error) {
-        console.error('Error al parsear el mensaje:', error);
+export function handleClientMessage(message: BattleWSClientMessage, user: string, battleId: string,) {
+    switch (message.type) {
+        case 'atack':
+            break;
+        default:
+            break;
     }
 }

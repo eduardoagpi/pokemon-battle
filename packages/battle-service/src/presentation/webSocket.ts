@@ -1,6 +1,10 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import http from 'http';
 import { handleNewClientConnection } from './newConnectionHandler';
+import { MatchmakingRepositoryImpl } from '../data/repository/MatchmakingRepositoryImpl';
+import { MatchmakingRepository } from '../domain/repository/MatchmakingRepository';
+import { BattleRepository } from '../domain/repository/BattleRepository';
+import { BattleRepositoryImpl } from '../data/repository/BattleRepositoryImpl';
 
 export interface ExtWebSocket extends WebSocket {
     isAlive: boolean;
@@ -11,8 +15,10 @@ export function initWebSocketServer() {
 
     const server = http.createServer();
     const socketServer = new WebSocketServer({ server });
+    const matchmakingRepository: MatchmakingRepository = new MatchmakingRepositoryImpl();
+    const battleRepository: BattleRepository = new BattleRepositoryImpl();
 
-    socketServer.on('connection', handleNewClientConnection);
+    socketServer.on('connection', (ws, req) => handleNewClientConnection(ws, req, matchmakingRepository, battleRepository));
 
     const heartbeatInterval = setInterval(() => {
         socketServer.clients.forEach((ws) => {

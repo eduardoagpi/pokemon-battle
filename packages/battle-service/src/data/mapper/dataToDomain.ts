@@ -1,5 +1,5 @@
 import { PokemonDetailResponse } from "@poke-albo/shared";
-import { Battle, Matchmaking, Pokemon } from "../../domain/entity/entity";
+import { Battle, Matchmaking, Pokemon } from "../../domain/entity/Battle";
 import { BattleDoc, MatchmakingDoc, PokemonDoc } from "../types";
 
 export function MatchmakingDocToPendingMatch(matchmakingDoc: MatchmakingDoc): Matchmaking {

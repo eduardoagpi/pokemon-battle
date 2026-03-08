@@ -1,6 +1,7 @@
+import { Pokemon } from "../entity/Battle";
+import BattleRepository from "../../data/repository/BattleRepositoryImpl";
 import { Result, success } from "../entity/result";
-import { Pokemon } from "../entity/entity";
-import BattleRepository from "../../data/repository/BattleRepository";
+import { MatchmakingRepository } from "../repository/MatchmakingRepository";
 
 export type NewConnectionWaitingOpponent = {
     matchId: string;
@@ -20,9 +21,13 @@ export type NewConnectionOpponentFound = {
 
 export type NewConnectionSuccess = NewConnectionOpponentFound | NewConnectionWaitingOpponent
 
-export async function handleNewConnection(userId: string, pokemonList: Pokemon[]): Promise<Result<NewConnectionSuccess, unknown>> {
+export async function handleNewConnection(
+    userId: string,
+    pokemonList: Pokemon[],
+    matchmakingRepository: MatchmakingRepository,
+): Promise<Result<NewConnectionSuccess, unknown>> {
 
-    const matchWaiting = await BattleRepository.popMatchmakingOrNull(userId)
+    const matchWaiting = await matchmakingRepository.popMatchmakingOrNull(userId)
 
     if (matchWaiting) {
         return success({
@@ -34,7 +39,7 @@ export async function handleNewConnection(userId: string, pokemonList: Pokemon[]
             userBPokemons: pokemonList
         });
     } else {
-        const matchMakingId = await BattleRepository.createMatchmaking(userId, pokemonList);
+        const matchMakingId = await matchmakingRepository.createMatchmaking(userId, pokemonList);
         return success({
             matchId: matchMakingId,
             type: "waitingOpponent",
