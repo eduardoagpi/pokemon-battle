@@ -1,5 +1,6 @@
 import { PokemonDetailResponse } from "@poke-albo/shared";
-import { Battle, Matchmaking, Pokemon } from "../../domain/entity/Battle";
+import { Battle, Pokemon } from "../../domain/entity/Battle";
+import { Matchmaking } from "../../domain/entity/MatchMaking";
 import { BattleDoc, MatchmakingDoc, PokemonDoc } from "../types";
 
 export function MatchmakingDocToPendingMatch(matchmakingDoc: MatchmakingDoc): Matchmaking {
@@ -52,6 +53,7 @@ export function PokemonToPokemonDoc(pokemon: Pokemon): PokemonDoc {
 export function BattleDocToBattle(battleDoc: BattleDoc): Battle {
     return {
         id: battleDoc._id?.toString() ?? '',
+        matchmakingId: battleDoc.matchmakingId,
         player1: {
             playerInfo: {
                 nickname: battleDoc.playerA.nickname

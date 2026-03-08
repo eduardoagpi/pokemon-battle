@@ -1,9 +1,18 @@
 import { BattleWSClientMessage } from '@poke-albo/shared';
-import { RawData } from 'ws';
+import { BattleRepository } from '../domain/repository/BattleRepository';
+import { performAttack } from '../domain/usecase/PerformAttack';
+import { ServerMessageEmitter } from '../domain/repository/ServerMessageEmitter';
 
-export function handleClientMessage(message: BattleWSClientMessage, user: string, battleId: string,) {
+export async function handleClientMessage(
+    battleRepository: BattleRepository,
+    serverMessageEmitter: ServerMessageEmitter,
+    message: BattleWSClientMessage,
+    user: string,
+    battleId: string,
+) {
     switch (message.type) {
-        case 'atack':
+        case 'attack':
+            await performAttack(battleRepository, serverMessageEmitter, battleId, user);
             break;
         default:
             break;

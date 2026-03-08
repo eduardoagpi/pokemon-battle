@@ -13,6 +13,8 @@ import { BattleRepository } from '../domain/repository/BattleRepository';
 import { BattleReactiveRepository } from '../domain/repository/BattleReactiveRepository';
 import { MongoBattleReactiveRepository } from '../data/repository/BattleReactiveRepositoryImpl';
 import { handleBattleChange } from '../domain/usecase/HandleBattleChange';
+import { ServerMessageEmitter } from '../domain/repository/ServerMessageEmitter';
+import { ServerMessageEmitterRepositoryImpl } from '../data/repository/ServerMessageEmitterImpl';
 
 export async function handleNewClientConnection(
     webSocket: WebSocket,
@@ -58,12 +60,13 @@ export async function handleNewClientConnection(
         return;
     }
     const battleReactiveRepository: BattleReactiveRepository = new MongoBattleReactiveRepository(newConnectionResult.value.matchId);
+    const serverMessageEmitter: ServerMessageEmitter = new ServerMessageEmitterRepositoryImpl(extWs)
     let battleId: string | undefined;
     battleReactiveRepository.subscribeToBattleCreation((battle) => {
         battleId = battle.id;
     });
     battleReactiveRepository.subscribeToBattle((previousBattleState, currentBattleState) => {
-        handleBattleChange(previousBattleState, currentBattleState);
+        handleBattleChange(serverMessageEmitter, authId, previousBattleState, currentBattleState);
     });
 
     handleMatchMaking(newConnectionResult.value, battleRepository);
@@ -79,7 +82,7 @@ export async function handleNewClientConnection(
             console.error(`Mensaje invalido para ${authId}`);
             return;
         }
-        handleClientMessage(message, authId, battleId);
+        await handleClientMessage(battleRepository, serverMessageEmitter, message, authId, battleId,);
     });
 
     // Cleanup al cerrar

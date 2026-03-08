@@ -1,5 +1,4 @@
 import { Pokemon } from "../entity/Battle";
-import BattleRepository from "../../data/repository/BattleRepositoryImpl";
 import { Result, success } from "../entity/result";
 import { MatchmakingRepository } from "../repository/MatchmakingRepository";
 

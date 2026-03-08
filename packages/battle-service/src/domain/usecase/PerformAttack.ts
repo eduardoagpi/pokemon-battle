@@ -1,11 +1,11 @@
-import { Pokemon } from "../entity/Pokemon";
 import { BattleRepository } from "../repository/BattleRepository";
+import { ServerMessageEmitter } from "../repository/ServerMessageEmitter";
 
 export async function performAttack(
     battleRepository: BattleRepository,
+    serverMessageEmitter: ServerMessageEmitter,
     battleId: string,
-    nickname: string,
-    pokemonId: number
+    nickname: string
 ) {
     const battle = await battleRepository.getBattle(battleId);
     if (!battle) {
@@ -13,31 +13,32 @@ export async function performAttack(
         return;
     }
 
-    let pokemonAttacking: Pokemon | undefined;
-    let pokemonDeffending: Pokemon | undefined;
-    if (battle.player1.playerInfo.nickname === nickname) {
-        pokemonAttacking = battle.player1.pokemonList.find(pokemon => { pokemon.healthPoints > 0 })
-        pokemonDeffending = battle.player2.pokemonList.find(pokemon => { pokemon.healthPoints > 0 })
-    } else {
-        pokemonAttacking = battle.player2.pokemonList.find(pokemon => { pokemon.healthPoints > 0 })
-        pokemonDeffending = battle.player1.pokemonList.find(pokemon => { pokemon.healthPoints > 0 })
-    }
-    if (pokemonAttacking === undefined) {
-        console.error("No se pudo determinar el pokemon atacante")
-        return
-    }
-    if (pokemonDeffending === undefined) {
-        console.error("No se pudo determinar el pokemon atacado")
+    const attackerPlayer = battle.player1.playerInfo.nickname === nickname ? battle.player1 : battle.player2;
+    const defenderPlayer = battle.player1.playerInfo.nickname === nickname ? battle.player2 : battle.player1;
+
+    // Determine active pokemon (first with healthPoints > 0)
+    const activeAttacker = attackerPlayer.pokemonList.find(p => p.healthPoints > 0);
+    const activeDefender = defenderPlayer.pokemonList.find(p => p.healthPoints > 0);
+
+    if (!activeAttacker || !activeDefender) {
+        console.error("No se pudo determinar el pokemon atacante o defensor");
         return;
     }
 
+    // Calculo de daño
+    let damage = Math.max(1, activeAttacker.attackPoints - activeDefender.defensePoints)
+    activeDefender.healthPoints = Math.max(0, activeDefender.healthPoints - damage);
 
+    /*
+    if (activeDefender.healthPoints === 0) {
+        serverMessageEmitter.emitMessage({
+            type: "notify_pokemon_defeated", pokemonDefeated: {
+                pokemonName: activeDefender.name
+            }
+        })
+    }*/
 
-    const player = battle.player1.playerInfo.nickname === nickname ? battle.player1 : battle.player2;
-    const pokemon = player.pokemonList.find(p => p.pokemonId === pokemonId);
-    if (!pokemon) {
-        throw new Error('Pokemon not found');
-    }
-    pokemon.hp -= 10;
-    await battleRepository.updateBattle(battleId, battle);
+    console.log(`${nickname}'s ${activeAttacker.name} attacks ${activeDefender.name} for ${damage} damage.`);
+
+    await battleRepository.updateBattle(battle);
 }

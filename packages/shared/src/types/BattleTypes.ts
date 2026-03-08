@@ -18,10 +18,22 @@ export const BattleWSServerMessageSchema = z.discriminatedUnion("battleWSMessage
         })
     }),
     z.object({
-        type: z.literal("notify_pokemon_defeated"),
+        type: z.literal("notify_your_pokemon_defeated"),
         pokemonDefeated: z.object({
             pokemonName: z.string()
         })
+    }),
+    z.object({
+        type: z.literal("notify_oponent_pokemon_defeated"),
+        pokemonDefeated: z.object({
+            pokemonName: z.string()
+        })
+    }),
+    z.object({
+        type: z.literal("notify_you_won")
+    }),
+    z.object({
+        type: z.literal("notify_you_lost")
     }),
     z.object({
         type: z.literal("notify_battle_finished"),
@@ -33,7 +45,7 @@ export type BattleWSServerMessage = z.infer<typeof BattleWSServerMessageSchema>
 
 export const BattleWSClientMessageSchema = z.discriminatedUnion("clientMessage", [
     z.object({
-        type: z.literal("atack")
+        type: z.literal("attack")
     }),
 ])
 
