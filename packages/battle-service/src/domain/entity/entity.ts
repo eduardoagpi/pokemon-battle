@@ -1,12 +1,20 @@
-export type BattlePlayer = {
+
+export type Matchmaking = {
     id: string;
+    player: BattlePlayer;
+    pokemonList: Pokemon[];
+    createdAt: Date;
+}
+
+export type BattlePlayer = {
     nickname: string;
 }
 
 export type Pokemon = {
-    id: string;
+    index: number;
     name: string;
-    type: string[];
+    type: string[]; /// remove?
+
     healthPoints: number;
     attackPoints: number;
     defensePoints: number;

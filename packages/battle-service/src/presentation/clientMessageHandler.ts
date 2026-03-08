@@ -1,6 +1,6 @@
 import { RawData } from 'ws';
 
-export function handleClientMessage(data: RawData) {
+export function handleClientMessage(data: RawData, user: string, battleId: string,) {
     try {
         const message = JSON.parse(data.toString());
         console.log(message);

@@ -7,7 +7,7 @@ export interface ExtWebSocket extends WebSocket {
     authId: string;
 }
 
-export function configureWebSocket() {
+export function initWebSocketServer() {
 
     const server = http.createServer();
     const socketServer = new WebSocketServer({ server });

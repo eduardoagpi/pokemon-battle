@@ -1,19 +1,22 @@
-import { Db } from "mongodb";
 import { ExtWebSocket } from "../../presentation/webSocket";
 import { subscribeToBattle } from "../usecase/SubscribeToBattle";
 import { NewConnectionSuccess } from "./HandleNewConnection";
-import { db } from "../../data/mongoDb";
+import BattleRepository from "../../data/repository/BattleRepository";
 
-export async function handleMatchMaking(socket: ExtWebSocket, newConnection: NewConnectionSuccess) {
-    subscribeToBattle(socket, newConnection.matchId, db);
-    if (newConnection.status === 'matched') {
-        // insertar la batalla
-        const battles = db.collection('battles');
-        await battles.insertOne({
-            matchId: newConnection.matchId,
-            players: [newConnection.userA, newConnection.userB],
-            status: 'active',
-            updatedAt: new Date()
-        });
+export async function handleMatchMaking(
+    socket: ExtWebSocket,
+    newConnection: NewConnectionSuccess,
+    onBattleCreated: (battleId: string) => void,
+) {
+    subscribeToBattle(socket, newConnection.matchId, onBattleCreated);
+    if (newConnection.type === 'opponentFound') {
+        const battleId = await BattleRepository.createBattle({
+            matchmakingId: newConnection.matchId,
+            playerA: newConnection.userA,
+            playerB: newConnection.userB,
+            pokemonsA: newConnection.userAPokemons,
+            pokemonsB: newConnection.userBPokemons
+        })
+        onBattleCreated(battleId)
     }
 }

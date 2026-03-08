@@ -1,29 +1,45 @@
-import { Db } from "mongodb";
 import { Result, success } from "../entity/result";
-import { db } from "../../data/mongoDb";
+import { Pokemon } from "../entity/entity";
+import BattleRepository from "../../data/repository/BattleRepository";
 
-export type NewConnectionSuccess = {
+export type NewConnectionWaitingOpponent = {
     matchId: string;
-    status: 'waiting' | 'matched';
+    type: "waitingOpponent";
+    userId: string;
+    pokemons: Pokemon[];
 }
 
-export async function handleNewConnection(userId: string): Promise<Result<NewConnectionSuccess, unknown>> {
-    const col = db.collection('matchmaking');
+export type NewConnectionOpponentFound = {
+    matchId: string;
+    type: "opponentFound";
+    userA: string;
+    userB: string;
+    userAPokemons: Pokemon[];
+    userBPokemons: Pokemon[];
+}
 
-    const waitingPlayer = await col.findOneAndDelete(
-        { userA: { $ne: userId } },
-        { sort: { createdAt: 1 } }
-    );
+export type NewConnectionSuccess = NewConnectionOpponentFound | NewConnectionWaitingOpponent
 
-    if (waitingPlayer) {
-        return success({ matchId: waitingPlayer.roomId, status: 'matched' });
-    } else {
-        const matchId = `match_${userId}_${Date.now()}`;
-        await col.insertOne({
-            roomId: matchId,
-            userA: userId,
-            createdAt: new Date()
+export async function handleNewConnection(userId: string, pokemonList: Pokemon[]): Promise<Result<NewConnectionSuccess, unknown>> {
+
+    const matchWaiting = await BattleRepository.popMatchmakingOrNull(userId)
+
+    if (matchWaiting) {
+        return success({
+            matchId: matchWaiting.id,
+            type: "opponentFound",
+            userA: matchWaiting.player.nickname,
+            userB: userId,
+            userAPokemons: matchWaiting.pokemonList,
+            userBPokemons: pokemonList
         });
-        return success({ matchId: matchId, status: 'waiting' });
+    } else {
+        const matchMakingId = await BattleRepository.createMatchmaking(userId, pokemonList);
+        return success({
+            matchId: matchMakingId,
+            type: "waitingOpponent",
+            userId: userId,
+            pokemons: pokemonList
+        });
     }
 }

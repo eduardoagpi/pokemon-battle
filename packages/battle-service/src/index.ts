@@ -1,9 +1,9 @@
 import { initDB } from './data/mongoDb';
-import { configureWebSocket } from './presentation/webSocket';
+import { initWebSocketServer } from './presentation/webSocket';
 
 async function start() {
     await initDB();
-    configureWebSocket();
+    initWebSocketServer();
 }
 
 start();

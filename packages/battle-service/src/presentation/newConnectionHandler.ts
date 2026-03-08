@@ -5,47 +5,62 @@ import { ExtWebSocket } from './webSocket';
 import { handleNewConnection } from '../domain/usecase/HandleNewConnection';
 import { handleMatchMaking } from '../domain/usecase/HandleMatchMaking';
 import { handleClientMessage } from './clientMessageHandler';
+import { handleFighterDisconnection } from '../domain/usecase/HandleDisconnection';
+import { PokemonDetailResponse, PokemonDetailResponseSchema } from '@poke-albo/shared';
+import { PokemonDetailResponseToPokemon } from '../data/mapper/dataToDomain';
 
-const clients = new Map<string, ExtWebSocket>();
 
 export async function handleNewClientConnection(webSocket: WebSocket, req: http.IncomingMessage) {
-    // 1. Extraer ID del query string
+    // Extraer user ID del query string
     const location = url.parse(req.url || '', true);
     const authId = location.query.auth_id as string;
+    const pokemonListSerialized = location.query.pokemonList as string;
 
     if (!authId) {
         webSocket.close(4001, "Auth ID Required");
         return;
     }
 
-    // 2. Setup del socket extendido
+    let pokemonData: PokemonDetailResponse[];
+    try {
+        pokemonData = PokemonDetailResponseSchema.array().parse(JSON.parse(pokemonListSerialized));
+        console.log("¡Válido!", pokemonData);
+    } catch (error) {
+        console.error("Error, pokemones no validos", error);
+        return
+    }
+
+    // Setup del socket extendido
     const extWs = webSocket as ExtWebSocket;
     extWs.authId = authId;
     extWs.isAlive = true;
-    clients.set(authId, extWs);
 
-    console.log(`Cliente conectado y registrado: ${authId}`);
+    console.log(`Cliente conectado: ${authId}`);
 
-    // 3. Configurar Heartbeat individual
+    // Configurar Heartbeat individual
     extWs.on('pong', () => { extWs.isAlive = true; });
 
 
-    const result = await handleNewConnection(authId);
-    if (!result.success) {
-        console.error(`Error en matchmaking inicial para ${authId}:`, result.error);
+    // Maneja la conexion inicial
+    const newConnectionResult = await handleNewConnection(authId, pokemonData.map(PokemonDetailResponseToPokemon));
+    if (!newConnectionResult.success) {
+        console.error(`Error en matchmaking inicial para ${authId}:`, newConnectionResult.error);
         return;
     }
-    handleMatchMaking(extWs, result.value);
+    let battleId: string;
+    handleMatchMaking(extWs, newConnectionResult.value, (_battleId) => {
+        if (!battleId) battleId = _battleId
+    });
 
 
     // Manejar mensajes desde los clientes
     extWs.on('message', async (data) => {
-        handleClientMessage(data);
+        handleClientMessage(data, authId, battleId);
     });
 
-    // 5. Cleanup al cerrar
+    // Cleanup al cerrar
     extWs.on('close', async () => {
         console.log(`Cliente ${authId} desconectado`);
-        clients.delete(authId);
+        handleFighterDisconnection(authId);
     });
 }

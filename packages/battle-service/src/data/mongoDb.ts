@@ -40,3 +40,7 @@ export async function initDB() {
     await matchmaking.deleteMany({});
 }
 
+export const Collections = {
+    BATTLE: "battle",
+    MATCH_MAKING: "matchmaking",
+}
