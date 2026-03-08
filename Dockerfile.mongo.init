@@ -1,0 +1,7 @@
+FROM alpine:latest
+RUN apk add --no-cache openssl
+RUN mkdir -p /mnt/shared
+# Generamos la llave directamente donde se va a compartir
+CMD openssl rand -base64 756 > /mnt/shared/keyfile && \
+    chmod 400 /mnt/shared/keyfile && \
+    chown 999:999 /mnt/shared/keyfile

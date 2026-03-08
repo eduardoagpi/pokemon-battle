@@ -6,6 +6,7 @@ import './index.css'
 import App from './App.tsx'
 import { SnackbarProvider } from './presentation/context/SnackbarContext.tsx'
 import { GeneralAppContextProvider } from './presentation/context/GeneralAppContext.tsx'
+import { BattleContextProvider } from './presentation/context/BattleContext.tsx'
 
 const queryClient = new QueryClient()
 
@@ -14,7 +15,9 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <GeneralAppContextProvider>
         <SnackbarProvider>
-          <App />
+          <BattleContextProvider>
+            <App />
+          </BattleContextProvider>
         </SnackbarProvider>
       </GeneralAppContextProvider>
       <ReactQueryDevtools initialIsOpen={false} />
