@@ -1,6 +1,6 @@
 import { PokemonDetailResponse } from "@poke-albo/shared";
-import { Matchmaking, Pokemon } from "../../domain/entity/entity";
-import { MatchmakingDoc, PokemonDoc } from "../types";
+import { Battle, Matchmaking, Pokemon } from "../../domain/entity/entity";
+import { BattleDoc, MatchmakingDoc, PokemonDoc } from "../types";
 
 export function MatchmakingDocToPendingMatch(matchmakingDoc: MatchmakingDoc): Matchmaking {
     return {
@@ -46,5 +46,25 @@ export function PokemonToPokemonDoc(pokemon: Pokemon): PokemonDoc {
         attackPoints: pokemon.attackPoints,
         defensePoints: pokemon.defensePoints,
         speedPoints: pokemon.speedPoints
+    };
+}
+
+export function BattleDocToBattle(battleDoc: BattleDoc): Battle {
+    return {
+        id: battleDoc._id?.toString() ?? '',
+        player1: {
+            playerInfo: {
+                nickname: battleDoc.playerA.nickname
+            },
+            pokemonList: battleDoc.playerA.pokemons.map(PokemonDocToPokemon)
+        },
+        player2: {
+            playerInfo: {
+                nickname: battleDoc.playerB.nickname
+            },
+            pokemonList: battleDoc.playerB.pokemons.map(PokemonDocToPokemon)
+        },
+        turn: battleDoc.turn,
+        created: battleDoc.createdAt
     };
 }

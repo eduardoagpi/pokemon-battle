@@ -31,13 +31,6 @@ export type Battle = {
         playerInfo: BattlePlayer;
         pokemonList: Pokemon[];
     }
-    status: BattleStatus;
     turn: number;
     created: Date;
-}
-
-export enum BattleStatus {
-    WAITING = 'waiting',
-    Battling = 'battling',
-    FINISHED = 'finished'
 }

@@ -36,6 +36,7 @@ const BattleRepository = {
                 pokemons: args.pokemonsB
             },
             status: "active",
+            turn: 0,
             createdAt: new Date()
         }
         const result = await battleCollection.insertOne(battleData);

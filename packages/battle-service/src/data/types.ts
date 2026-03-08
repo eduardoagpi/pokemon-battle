@@ -19,6 +19,7 @@ export interface BattleDoc {
         pokemons: PokemonDoc[]
     },
     status: 'active' | 'finished';
+    turn: number;
     createdAt: Date;
 }
 
