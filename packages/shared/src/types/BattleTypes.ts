@@ -1,21 +1,30 @@
 import z from "zod"
 
-export const BattleWSServerMessageSchema = z.discriminatedUnion("battleWSMessage", [
+export const BattleStateSchema = z.object({
+    oponent: z.object({
+        pokemonId: z.number(),
+        pokemonGraphicUrl: z.string(),
+        name: z.string(),
+        hp: z.number(),
+    }),
+    myPokemon: z.object({
+        pokemonId: z.number(),
+        pokemonGraphicUrl: z.string(),
+        name: z.string(),
+        hp: z.number(),
+    }),
+    attackEnabled: z.boolean()
+})
+export type BattleState = z.infer<typeof BattleStateSchema>
+
+export const BattleWSServerMessageSchema = z.discriminatedUnion("type", [
     z.object({
-        type: z.literal("start_battle")
+        type: z.literal("start_battle"),
+
     }),
     z.object({
         type: z.literal("updateBattleStatus"),
-        oponent: z.object({
-            pokemonId: z.number(),
-            name: z.string(), // delete?
-            hp: z.number(),
-        }),
-        myPokemon: z.object({
-            pokemonId: z.number(),
-            name: z.string(), // delete?
-            hp: z.number(),
-        })
+        battleState: BattleStateSchema,
     }),
     z.object({
         type: z.literal("notify_your_pokemon_defeated"),
@@ -43,7 +52,7 @@ export const BattleWSServerMessageSchema = z.discriminatedUnion("battleWSMessage
 
 export type BattleWSServerMessage = z.infer<typeof BattleWSServerMessageSchema>
 
-export const BattleWSClientMessageSchema = z.discriminatedUnion("clientMessage", [
+export const BattleWSClientMessageSchema = z.discriminatedUnion("type", [
     z.object({
         type: z.literal("attack")
     }),

@@ -7,6 +7,7 @@ export class ServerMessageEmitterRepositoryImpl implements ServerMessageEmitter 
     constructor(private extendedWebSocket: ExtWebSocket) { }
 
     emitMessage(message: BattleWSServerMessage) {
+        console.log(`Emitted messaf: ${JSON.stringify(message)}`)
         this.extendedWebSocket.send(JSON.stringify(message))
     }
 }

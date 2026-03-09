@@ -29,5 +29,7 @@ export async function performAttack(
 
     console.log(`${nickname}'s ${activeAttacker.name} attacks ${activeDefender.name} for ${damage} damage.`);
 
+    battle.turn = battle.turn + 1
+
     await battleRepository.updateBattle(battle);
 }

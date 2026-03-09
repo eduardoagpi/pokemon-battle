@@ -8,7 +8,7 @@ import { BattleRepositoryImpl } from '../data/repository/BattleRepositoryImpl';
 
 export interface ExtWebSocket extends WebSocket {
     isAlive: boolean;
-    authId: string;
+    nickname: string;
 }
 
 export function initWebSocketServer() {
@@ -30,10 +30,14 @@ export function initWebSocketServer() {
         });
     }, 30000);
 
-    socketServer.on('close', () => clearInterval(heartbeatInterval));
+    socketServer.on('close', () => {
+        clearInterval(heartbeatInterval)
+    });
 
-    const port = 3001;
+    const port = 3003;
     server.listen(port, () => {
         console.log(`Battle service running on ws://localhost:${port}`);
     });
+
+    return { server, socketServer };
 }

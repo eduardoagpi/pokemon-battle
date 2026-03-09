@@ -1,8 +1,8 @@
 import { MongoClient, Db } from 'mongodb';
 import { MatchmakingDoc } from './types';
 
-const url = 'mongodb://localhost:27017';
-const client = new MongoClient(url);
+const url = 'mongodb://mi_usuario:mi_password_seguro@localhost:27017/?authSource=admin&directConnection=true';
+export const client = new MongoClient(url);
 export let db: Db;
 
 export async function connectDB(): Promise<Db> {

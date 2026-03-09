@@ -5,8 +5,14 @@ import { Collections, db } from "../mongoDb";
 import { BattleDoc } from "../types";
 
 export class MongoBattleReactiveRepository implements BattleReactiveRepository {
-    constructor(private matchId: string) { }
 
+    constructor(private matchId: string) {
+        console.log(`created BattleReactiveRepo for matchId: ${matchId}`)
+    }
+
+    private lastBattleState: Battle | null = null;
+
+    /*
     subscribeToBattleCreation(callback: (battle: Battle) => void): void {
         const collection = db.collection<BattleDoc>(Collections.BATTLE);
         const changeStream = collection.watch([
@@ -24,9 +30,7 @@ export class MongoBattleReactiveRepository implements BattleReactiveRepository {
                 changeStream.close();
             }
         });
-    }
-
-    private lastBattleState: Battle | null = null;
+    }*/
 
     subscribeToBattle(callback: (previousBattleState: Battle, currentBattleState: Battle) => void): void {
         const collection = db.collection<BattleDoc>(Collections.BATTLE);

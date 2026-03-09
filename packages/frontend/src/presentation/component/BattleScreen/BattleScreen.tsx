@@ -7,7 +7,6 @@ export const BattleScreen = () => {
     const [bounceClass, setBounceClass] = useState('');
 
     const handleDpadClick = (direction: 'up' | 'down' | 'left' | 'right') => {
-        actions.onClickedDPad(direction);
         const animationClass = `animate-bounce-${direction}`;
         setBounceClass(animationClass);
         setTimeout(() => setBounceClass(''), 300);

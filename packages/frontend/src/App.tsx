@@ -1,11 +1,11 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import pokeAlboLogo from './assets/pokealbo.png';
 import { NickNameSelector } from './presentation/component/NickNameSelector/NickNameSelector';
 import { LobbyStatus } from './presentation/component/LobbyStatus/LobbyStatus';
 import { BattleScreen } from './presentation/component/BattleScreen/BattleScreen';
+import { BattleGuard } from './presentation/component/BattleScreen/BattleGuard';
 
-function AppContent() {
-
+function App() {
   return (
     <div className="flex flex-col items-center justify-center min-h-[80vh] gap-12 animate-fade-in">
       {/* Header with Image Title */}
@@ -25,18 +25,14 @@ function AppContent() {
         />
         <Route
           path="/battle"
-          element={<BattleScreen />}
+          element={
+            <BattleGuard>
+              <BattleScreen />
+            </BattleGuard>
+          }
         />
       </Routes>
     </div>
-  );
-}
-
-function App() {
-  return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
   );
 }
 

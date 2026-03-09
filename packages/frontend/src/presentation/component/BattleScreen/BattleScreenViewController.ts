@@ -1,35 +1,36 @@
 import { useMemo } from "react";
-import { useGeneralAppContext } from "../../context/GeneralAppContext";
+import { useBattleContext } from "../../context/BattleContext";
 import type { PokemonBattlingUi } from "./BattleScreenUI";
+import { useGeneralAppContext } from "../../context/GeneralAppContext";
 
 export function useBattleScreenViewController() {
-    const { selectedPokemons } = useGeneralAppContext()
+
+    const generalAppContext = useGeneralAppContext()
+    const battleStateContext = useBattleContext()
+
     const myPokemon: PokemonBattlingUi = useMemo(() => {
         return {
-            name: selectedPokemons[0].name,
-            graphicUrl: selectedPokemons[0].sprite,
-            healthPoints: selectedPokemons[0].hp,
+            name: battleStateContext.battleState?.myPokemon.name ?? '',
+            graphicUrl: battleStateContext.battleState?.myPokemon.pokemonGraphicUrl ?? '',
+            healthPoints: battleStateContext.battleState?.myPokemon.hp ?? 0,
         }
-    }, [selectedPokemons])
+    }, [battleStateContext.battleState])
 
     const opponent: PokemonBattlingUi = useMemo(() => {
         return {
-            name: selectedPokemons[1].name,
-            graphicUrl: selectedPokemons[1].sprite,
-            healthPoints: selectedPokemons[1].hp,
+            name: battleStateContext.battleState?.oponent.name ?? '',
+            graphicUrl: battleStateContext.battleState?.oponent.pokemonGraphicUrl ?? '',
+            healthPoints: battleStateContext.battleState?.oponent.hp ?? 0,
         }
-    }, [selectedPokemons])
+    }, [battleStateContext.battleState])
 
     const onClickedMenu = () => {
-        window.history.back()
-    }
-
-    const onClickedDPad = (action: 'left' | 'up' | 'right' | 'down') => {
-        // TODO
+        generalAppContext.resetSession();
+        battleStateContext.disconnect();
     }
 
     const onClickedAttack = () => {
-        // TODO
+        battleStateContext.send({ type: "attack" })
     }
 
     return {
@@ -37,11 +38,10 @@ export function useBattleScreenViewController() {
             myPokemon: myPokemon,
             opponent: opponent,
             message: "",
-            isAttackEnabled: true,
+            isAttackEnabled: battleStateContext.battleState?.attackEnabled,
         },
         actions: {
             onClickedMenu,
-            onClickedDPad,
             onClickedAttack,
         }
     }

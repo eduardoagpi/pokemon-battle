@@ -7,12 +7,14 @@ import App from './App.tsx'
 import { SnackbarProvider } from './presentation/context/SnackbarContext.tsx'
 import { GeneralAppContextProvider } from './presentation/context/GeneralAppContext.tsx'
 import { BattleContextProvider } from './presentation/context/BattleContext.tsx'
+import { BrowserRouter } from 'react-router-dom'
 
 const queryClient = new QueryClient()
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
+
+  <QueryClientProvider client={queryClient}>
+    <BrowserRouter>
       <GeneralAppContextProvider>
         <SnackbarProvider>
           <BattleContextProvider>
@@ -21,6 +23,7 @@ createRoot(document.getElementById('root')!).render(
         </SnackbarProvider>
       </GeneralAppContextProvider>
       <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
-  </StrictMode>,
+    </BrowserRouter>
+  </QueryClientProvider>
+
 )

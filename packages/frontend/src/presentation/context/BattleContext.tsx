@@ -1,20 +1,28 @@
 // context/WebSocketContext.tsx
 import { createContext, useContext, useRef, useState, type ReactNode, useCallback } from 'react';
+import { useSnackbar } from '../hooks/useSnackbar';
+import { useGeneralAppContext } from './GeneralAppContext';
+import { BattleWSServerMessageSchema, parseJsonSerializedOrNull, type BattleState, type BattleWSClientMessage, type PokemonDetailResponse } from '@poke-albo/shared';
+import { useNavigate } from 'react-router-dom';
 
 interface WebSocketContextType {
     isReady: boolean;
-    val: any;
-    connect: (nickname: string) => void;
+    battleState: BattleState | null;
+    connect: (nickname: string, pokemonList: PokemonDetailResponse[]) => void;
     disconnect: () => void;
-    send: (data: any) => void;
+    send: (data: BattleWSClientMessage) => void;
 }
 
 const BattleContext = createContext<WebSocketContextType | undefined>(undefined);
 
 export function BattleContextProvider({ children }: { children: ReactNode }) {
     const [isReady, setIsReady] = useState(false);
-    const [val, setVal] = useState<any>(null);
     const ws = useRef<WebSocket | null>(null);
+    const { showError, showInfo } = useSnackbar();
+    const { resetSession } = useGeneralAppContext();
+    const navigate = useNavigate();
+
+    const [battleState, setBattleState] = useState<BattleState | null>(null);
 
     const disconnect = useCallback(() => {
         if (ws.current) {
@@ -24,37 +32,74 @@ export function BattleContextProvider({ children }: { children: ReactNode }) {
         }
     }, []);
 
-    const connect = useCallback((nickname: string) => {
+    const connect = useCallback((nickname: string, pokemonList: PokemonDetailResponse[]) => {
 
         // Evitar múltiples conexiones simultáneas
         if (ws.current?.readyState === WebSocket.OPEN) return;
 
-        const socket = new WebSocket(`ws://localhost:3001?nickname=${nickname}`);
+        const socket = new WebSocket(`ws://localhost:3003?nickname=${nickname}&pokemonList=${JSON.stringify(pokemonList)}`);
 
         socket.onopen = () => {
             console.log("Conexión establecida");
             setIsReady(true);
         }
-        socket.onclose = () => setIsReady(false);
+        socket.onclose = (event) => {
+            console.log("Conexión cerrada", event);
+            setIsReady(false);
+            showError("Conexión cerrada");
+
+            setTimeout(() => {
+                resetSession();
+            }, 1000);
+        }
         socket.onmessage = (event) => {
-            try {
-                setVal(JSON.parse(event.data));
-            } catch {
-                setVal(event.data);
+            const parsedData = parseJsonSerializedOrNull(BattleWSServerMessageSchema, event.data);
+            if (!parsedData) {
+                console.error("Mensaje no válido");
+                console.error(JSON.stringify(event.data));
+                return;
+            }
+            console.log(JSON.stringify(parsedData));
+            switch (parsedData.type) {
+                case "start_battle":
+                    navigate("/battle");
+                    break;
+                case "updateBattleStatus":
+                    setBattleState(parsedData.battleState);
+                    break;
+                case "notify_your_pokemon_defeated":
+                    showInfo("Tu Pokémon ha sido derrotado");
+                    break;
+                case "notify_oponent_pokemon_defeated":
+                    showInfo("El oponente ha sido derrotado");
+                    break;
+                case "notify_you_won":
+                    showInfo("Has ganado la batalla");
+                    break;
+                case "notify_you_lost":
+                    showInfo("Has perdido la batalla");
+                    break;
+                case "notify_battle_finished":
+                    showInfo(`La batalla ha terminado. El ganador es ${parsedData.winnerNickname}`);
+                    break;
+                default:
+                    console.error("Mensaje no válido");
+                    break;
             }
         };
 
         ws.current = socket;
     }, []);
 
-    const send = useCallback((data: any) => {
+    const send = useCallback((data: BattleWSClientMessage) => {
         if (ws.current?.readyState === WebSocket.OPEN) {
+            console.log("Enviando mensaje ", JSON.stringify(data));
             ws.current.send(JSON.stringify(data));
         }
     }, []);
 
     return (
-        <BattleContext.Provider value={{ isReady, val, connect, disconnect, send }}>
+        <BattleContext.Provider value={{ isReady, battleState, connect, disconnect, send }}>
             {children}
         </BattleContext.Provider>
     );

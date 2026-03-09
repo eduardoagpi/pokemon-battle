@@ -16,18 +16,33 @@ export async function handleBattleChange(
     const myFirstAlivePokemon = currentPlayer.pokemonList.find(pokemon => pokemon.healthPoints > 0)
     const oponentFirstAlivePokemon = opponentPlayer.pokemonList.find(pokemon => pokemon.healthPoints > 0)
 
+    const firstAttackPlayer = currentPlayer.pokemonList[0].speedPoints > opponentPlayer.pokemonList[0].speedPoints ? currentPlayer : opponentPlayer
+    let attackEnabled: boolean;
+    if (currentUserNickname === firstAttackPlayer.playerInfo.nickname) {
+        attackEnabled = currentState.turn % 2 === 0
+    } else {
+        attackEnabled = currentState.turn % 2 === 1
+    }
+
+
     serverMessageEmitter.emitMessage({
         type: "updateBattleStatus",
-        myPokemon: {
-            pokemonId: myFirstAlivePokemon?.index ?? -1,
-            name: myFirstAlivePokemon?.name ?? '',
-            hp: myFirstAlivePokemon?.healthPoints ?? -1
-        },
-        oponent: {
-            pokemonId: oponentFirstAlivePokemon?.index ?? -1,
-            name: oponentFirstAlivePokemon?.name ?? '',
-            hp: oponentFirstAlivePokemon?.healthPoints ?? -1
-        },
+        battleState: {
+            myPokemon: {
+                pokemonId: myFirstAlivePokemon?.index ?? -1,
+                pokemonGraphicUrl: myFirstAlivePokemon?.sprite ?? '',
+                name: myFirstAlivePokemon?.name ?? '',
+                hp: myFirstAlivePokemon?.healthPoints ?? -1
+            },
+            oponent: {
+                pokemonId: oponentFirstAlivePokemon?.index ?? -1,
+                pokemonGraphicUrl: oponentFirstAlivePokemon?.sprite ?? '',
+                name: oponentFirstAlivePokemon?.name ?? '',
+                hp: oponentFirstAlivePokemon?.healthPoints ?? -1
+            },
+            attackEnabled
+        }
+
     })
 
 

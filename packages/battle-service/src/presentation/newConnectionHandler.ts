@@ -25,70 +25,77 @@ export async function handleNewClientConnection(
 
     // Extraer user ID del query string
     const location = url.parse(req.url || '', true);
-    const authId = location.query.auth_id as string;
+    const nickname = location.query.nickname as string;
     const pokemonListSerialized = location.query.pokemonList as string;
 
-    if (!authId) {
-        webSocket.close(4001, "Auth ID Required");
+    if (!nickname) {
+        webSocket.close(4001, "Nickname Required");
+        console.warn("Nickname Required, connection closed");
         return;
     }
 
     let pokemonData: PokemonDetailResponse[];
     try {
         pokemonData = PokemonDetailResponseSchema.array().parse(JSON.parse(pokemonListSerialized));
-        console.log("¡Válido!", pokemonData);
     } catch (error) {
         console.error("Error, pokemones no validos", error);
+        webSocket.close(4001, "Pokemons no validos");
         return
     }
 
     // Setup del socket extendido
     const extWs = webSocket as ExtWebSocket;
-    extWs.authId = authId;
+    extWs.nickname = nickname;
     extWs.isAlive = true;
 
-    console.log(`Cliente conectado: ${authId}`);
+    console.log(`Cliente conectado: ${nickname}`);
 
     // Configurar Heartbeat individual
     extWs.on('pong', () => { extWs.isAlive = true; });
 
 
     // Maneja la conexion inicial
-    const newConnectionResult = await handleNewConnection(authId, pokemonData.map(PokemonDetailResponseToPokemon), matchmakingRepository);
+    const newConnectionResult = await handleNewConnection(nickname, pokemonData.map(PokemonDetailResponseToPokemon), matchmakingRepository);
     if (!newConnectionResult.success) {
-        console.error(`Error en matchmaking inicial para ${authId}:`, newConnectionResult.error);
+        console.error(`Error en matchmaking inicial para ${nickname}:`, newConnectionResult.error);
         return;
     }
     const battleReactiveRepository: BattleReactiveRepository = new MongoBattleReactiveRepository(newConnectionResult.value.matchId);
     const serverMessageEmitter: ServerMessageEmitter = new ServerMessageEmitterRepositoryImpl(extWs)
     let battleId: string | undefined;
-    battleReactiveRepository.subscribeToBattleCreation((battle) => {
-        battleId = battle.id;
-    });
     battleReactiveRepository.subscribeToBattle((previousBattleState, currentBattleState) => {
-        handleBattleChange(serverMessageEmitter, authId, previousBattleState, currentBattleState);
+        console.log("battle changed")
+        if (!battleId) {
+            battleId = currentBattleState.id
+            serverMessageEmitter.emitMessage({ type: "start_battle" })
+        }
+        handleBattleChange(serverMessageEmitter, nickname, previousBattleState, currentBattleState);
     });
 
-    handleMatchMaking(newConnectionResult.value, battleRepository);
+    setTimeout(() => handleMatchMaking(newConnectionResult.value, battleRepository), 1000);
 
     // Manejar mensajes desde los clientes
     extWs.on('message', async (data) => {
         if (!battleId) {
-            console.error(`No se encontro el id de la batalla para ${authId}`);
+            console.error(`No se encontro el id de la batalla para ${nickname}`);
             return;
         }
         const message = validateClientMessage(data);
         if (!message) {
-            console.error(`Mensaje invalido para ${authId}`);
+            console.error(`Mensaje invalido para ${nickname}`);
             return;
         }
-        await handleClientMessage(battleRepository, message, authId, battleId,);
+        await handleClientMessage(battleRepository, message, nickname, battleId,);
     });
 
     // Cleanup al cerrar
     extWs.on('close', async () => {
-        console.log(`Cliente ${authId} desconectado`);
-        handleFighterDisconnection(authId);
+        console.log(`Cliente ${nickname} desconectado`);
+        if (!battleId) {
+            console.error(`No se encontro el id de la batalla para ${nickname}`);
+            return;
+        }
+        handleFighterDisconnection(battleRepository, nickname, battleId);
     });
 }
 

@@ -1,7 +1,7 @@
 import { Battle } from "../entity/Battle";
 
-export interface BattleRepository {
-    getBattle(battleId: string): Promise<Battle | null>
-    createBattle(battle: Battle): Promise<void>
-    updateBattle(battle: Battle): Promise<void>
+export abstract class BattleRepository {
+    abstract getBattle(battleId: string): Promise<Battle | null>
+    abstract createBattle(battle: Battle): Promise<void>
+    abstract updateBattle(battle: Battle): Promise<void>
 }

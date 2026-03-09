@@ -14,16 +14,12 @@ export function useLobbyStatusViewController() {
     }
 
     useEffect(() => {
-        if (!nickname || !selectedPokemons.length) {
+        if (!nickname.trim() || !selectedPokemons.length) {
             navigate('/')
             return;
         }
+        battleContext.connect(nickname, selectedPokemons)
     }, [nickname, selectedPokemons])
-
-    useEffect(() => {
-        if (!nickname.trim()) return;
-        battleContext.connect(nickname)
-    }, [nickname])
 
     return {
         uiState: {

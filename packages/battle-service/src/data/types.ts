@@ -28,6 +28,7 @@ export interface PokemonDoc {
     index: number;
     name: string;
     type: string[];
+    sprite: string;
     healthPoints: number;
     attackPoints: number;
     defensePoints: number;
