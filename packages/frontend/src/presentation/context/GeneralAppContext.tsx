@@ -7,6 +7,8 @@ interface GeneralContextType {
     setNickname: (name: string) => void;
     setSelectedPokemons: (pokemons: PokemonDetailResponse[]) => void;
     resetSession: () => void;
+    isMenuOpen: boolean;
+    setIsMenuOpen: (isOpen: boolean) => void;
 }
 
 const GeneralAppContext = createContext<GeneralContextType | undefined>(undefined);
@@ -14,6 +16,7 @@ const GeneralAppContext = createContext<GeneralContextType | undefined>(undefine
 export const GeneralAppContextProvider = ({ children }: { children: ReactNode }) => {
     const [nickname, setNicknameState] = useState<string>('');
     const [selectedPokemons, setSelectedPokemonsState] = useState<PokemonDetailResponse[]>([]);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const setNickname = (name: string) => setNicknameState(name);
     const setSelectedPokemons = (pokemons: PokemonDetailResponse[]) => setSelectedPokemonsState(pokemons);
@@ -24,7 +27,15 @@ export const GeneralAppContextProvider = ({ children }: { children: ReactNode })
     };
 
     return (
-        <GeneralAppContext.Provider value={{ nickname, selectedPokemons, setNickname, setSelectedPokemons, resetSession }}>
+        <GeneralAppContext.Provider value={{
+            nickname,
+            selectedPokemons,
+            setNickname,
+            setSelectedPokemons,
+            resetSession,
+            isMenuOpen,
+            setIsMenuOpen,
+        }}>
             {children}
         </GeneralAppContext.Provider>
     );

@@ -9,7 +9,13 @@ import { GeneralAppContextProvider } from './presentation/context/GeneralAppCont
 import { BattleContextProvider } from './presentation/context/BattleContext.tsx'
 import { BrowserRouter } from 'react-router-dom'
 
-const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 createRoot(document.getElementById('root')!).render(
 

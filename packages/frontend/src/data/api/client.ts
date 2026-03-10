@@ -43,6 +43,10 @@ class ApiClient {
         localStorage.setItem(API_URL_STORAGE_KEY, url)
     }
 
+    public getBaseUrl(): string {
+        return this.axiosInstance.defaults.baseURL as string || DEFAULT_URL;
+    }
+
     public async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
         const response: AxiosResponse<T> = await this.axiosInstance.get(url, config);
         return response.data;
