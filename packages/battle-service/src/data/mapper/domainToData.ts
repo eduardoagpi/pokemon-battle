@@ -12,7 +12,8 @@ export function BattleToBattleDoc(battle: Battle): BattleDoc {
             nickname: battle.player2.playerInfo.nickname,
             pokemons: battle.player2.pokemonList
         },
-        status: "active",
+        status: battle.status,
+        result: battle.result,
         turn: battle.turn,
         createdAt: battle.created
     }

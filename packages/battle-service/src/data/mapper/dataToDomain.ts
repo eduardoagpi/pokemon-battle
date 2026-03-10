@@ -69,6 +69,8 @@ export function BattleDocToBattle(battleDoc: BattleDoc): Battle {
             },
             pokemonList: battleDoc.playerB.pokemons.map(PokemonDocToPokemon)
         },
+        status: battleDoc.status,
+        result: battleDoc.result ? { ...battleDoc.result } : undefined,
         turn: battleDoc.turn,
         created: battleDoc.createdAt
     };

@@ -21,6 +21,7 @@ export async function handleMatchMaking(
                 },
                 pokemonList: newConnection.userBPokemons
             },
+            status: 'active',
             turn: 0,
             created: new Date()
         }

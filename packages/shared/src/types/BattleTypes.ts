@@ -6,13 +6,13 @@ export const BattleStateSchema = z.object({
         pokemonGraphicUrl: z.string(),
         name: z.string(),
         hp: z.number(),
-    }),
+    }).optional(),
     myPokemon: z.object({
         pokemonId: z.number(),
         pokemonGraphicUrl: z.string(),
         name: z.string(),
         hp: z.number(),
-    }),
+    }).optional(),
     attackEnabled: z.boolean()
 })
 export type BattleState = z.infer<typeof BattleStateSchema>
@@ -20,7 +20,6 @@ export type BattleState = z.infer<typeof BattleStateSchema>
 export const BattleWSServerMessageSchema = z.discriminatedUnion("type", [
     z.object({
         type: z.literal("start_battle"),
-
     }),
     z.object({
         type: z.literal("updateBattleStatus"),
@@ -39,10 +38,11 @@ export const BattleWSServerMessageSchema = z.discriminatedUnion("type", [
         })
     }),
     z.object({
-        type: z.literal("notify_you_won")
+        type: z.literal("notify_you_won"),
+        reason: z.enum(["combat", "desertion"])
     }),
     z.object({
-        type: z.literal("notify_you_lost")
+        type: z.literal("notify_you_lost"),
     }),
     z.object({
         type: z.literal("notify_battle_finished"),

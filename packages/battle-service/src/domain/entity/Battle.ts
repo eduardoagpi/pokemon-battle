@@ -16,6 +16,11 @@ export type Battle = {
         pokemonList: Pokemon[];
     }
     turn: number;
+    status: 'active' | 'finished';
+    result?: {
+        winner: 'a' | 'b';
+        reason: 'combat' | 'desertion'
+    }
     created: Date;
 }
 export { Pokemon };

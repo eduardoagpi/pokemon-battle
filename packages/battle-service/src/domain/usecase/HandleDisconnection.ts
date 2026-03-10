@@ -1,6 +1,16 @@
 import { BattleRepository } from "../repository/BattleRepository";
 
-export function handleFighterDisconnection(battleRepository: BattleRepository, nickname: string, battleId: string) {
-    const battle = battleRepository.getBattle(battleId);
-
+export async function handleFighterDisconnection(battleRepository: BattleRepository, nicknameUserDisconnected: string, battleId: string) {
+    const battle = await battleRepository.getBattle(battleId);
+    if (!battle) {
+        console.error('Battle not found');
+        return
+    }
+    const winner = battle.player1.playerInfo.nickname === nicknameUserDisconnected ? 'b' : 'a'
+    battle.status = 'finished';
+    battle.result = {
+        winner: winner,
+        reason: 'desertion'
+    }
+    await battleRepository.updateBattle(battle);
 }

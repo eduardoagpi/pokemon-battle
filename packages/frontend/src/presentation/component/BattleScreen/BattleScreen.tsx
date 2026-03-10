@@ -39,7 +39,7 @@ export const BattleScreen = () => {
                     {/* Actual Game Screen */}
                     <div className="w-full h-[200px] bg-[#fdfdfd] overflow-hidden relative shadow-[inset_0_0_20px_rgba(0,0,0,0.1)] border-2 border-black/40 flex flex-col justify-between p-3 font-mono">
                         {/* Opponent */}
-                        <div className='flex flex-row'>
+                        {uiState.opponent && (<div className='flex flex-row'>
                             <div className="self-end w-30 bg-white/90 p-1 border-2 border-black/20 rounded-sm shadow-sm z-10">
                                 <div className="flex justify-between text-[10px] font-bold">
                                     <span className="text-red-700">{uiState.opponent.name}</span>
@@ -54,10 +54,11 @@ export const BattleScreen = () => {
                             <div className="absolute top-2 right-4 w-16 h-16">
                                 <img src={uiState.opponent.graphicUrl} alt="Enemy" className="w-full h-full object-contain" />
                             </div>
-                        </div>
+                        </div>)}
+
 
                         {/* Player */}
-                        <div className='flex flex-row'>
+                        {uiState.myPokemon && (<div className='flex flex-row'>
                             <div className={`left-4 w-20 h-20 opacity-80 filter drop-shadow-lg ${bounceClass}`}>
                                 <img src={uiState.myPokemon.graphicUrl} alt="Player" className="w-full h-full object-contain" />
                             </div>
@@ -73,7 +74,7 @@ export const BattleScreen = () => {
                                 </div>
 
                             </div>
-                        </div>
+                        </div>)}
 
                     </div>
                 </div>

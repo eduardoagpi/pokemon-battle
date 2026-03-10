@@ -8,7 +8,8 @@ export function useBattleScreenViewController() {
     const generalAppContext = useGeneralAppContext()
     const battleStateContext = useBattleContext()
 
-    const myPokemon: PokemonBattlingUi = useMemo(() => {
+    const myPokemon: PokemonBattlingUi | undefined = useMemo(() => {
+        if (!battleStateContext.battleState?.myPokemon) return undefined
         return {
             name: battleStateContext.battleState?.myPokemon.name ?? '',
             graphicUrl: battleStateContext.battleState?.myPokemon.pokemonGraphicUrl ?? '',
@@ -16,7 +17,8 @@ export function useBattleScreenViewController() {
         }
     }, [battleStateContext.battleState])
 
-    const opponent: PokemonBattlingUi = useMemo(() => {
+    const opponent: PokemonBattlingUi | undefined = useMemo(() => {
+        if (!battleStateContext.battleState?.oponent) return undefined
         return {
             name: battleStateContext.battleState?.oponent.name ?? '',
             graphicUrl: battleStateContext.battleState?.oponent.pokemonGraphicUrl ?? '',
