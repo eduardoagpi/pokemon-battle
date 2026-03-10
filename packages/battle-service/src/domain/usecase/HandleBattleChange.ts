@@ -1,4 +1,4 @@
-import { Battle } from "../entity/Battle";
+import { Battle, BattlePlayerState } from "../entity/Battle";
 import { ServerMessageEmitter } from "../repository/ServerMessageEmitter";
 
 export async function handleBattleChange(
@@ -7,87 +7,74 @@ export async function handleBattleChange(
     previousState: Battle,
     currentState: Battle
 ) {
+    // Identify current user
+    const isP1 = currentState.player1.playerInfo.nickname === currentUserNickname;
+    const [me, opponent] = isP1 ? [currentState.player1, currentState.player2] : [currentState.player2, currentState.player1];
+    const [prevMe, prevOpponent] = isP1 ? [previousState.player1, previousState.player2] : [previousState.player2, previousState.player1];
 
-    const currentPlayer = currentState.player1.playerInfo.nickname === currentUserNickname ? currentState.player1 : currentState.player2
-    const currentPlayerPreviousState = previousState.player1.playerInfo.nickname === currentUserNickname ? previousState.player1 : previousState.player2
-    const opponentPlayer = currentState.player1.playerInfo.nickname === currentUserNickname ? currentState.player2 : currentState.player1
-    const opponentPlayerPreviousState = previousState.player1.playerInfo.nickname === currentUserNickname ? previousState.player2 : previousState.player1
+    const myId = isP1 ? 'a' : 'b';
 
-    const myFirstAlivePokemon = currentPlayer.pokemonList.find(pokemon => pokemon.healthPoints > 0)
-    const oponentFirstAlivePokemon = opponentPlayer.pokemonList.find(pokemon => pokemon.healthPoints > 0)
+    // Helper function to get active pokemon, given a player
+    const getActivePokemon = (player: BattlePlayerState) => {
+        const p = player.pokemonList.find((p: any) => p.healthPoints > 0);
+        return p ? {
+            pokemonId: p.index,
+            pokemonGraphicUrl: p.sprite,
+            name: p.name,
+            hp: p.healthPoints
+        } : undefined;
+    };
 
-    const currentUser = currentUserNickname === currentState.player1.playerInfo.nickname ? 'a' : 'b'
+    const myPokemon = getActivePokemon(me);
+    const opponentPokemon = getActivePokemon(opponent);
 
-    const firstAttackPlayer = currentPlayer.pokemonList[0].speedPoints > opponentPlayer.pokemonList[0].speedPoints ? currentPlayer : opponentPlayer
-    let attackEnabled: boolean;
-    if (currentUserNickname === firstAttackPlayer.playerInfo.nickname) {
-        attackEnabled = currentState.status === 'active' && currentState.turn % 2 === 0
-    } else {
-        attackEnabled = currentState.status === 'active' && currentState.turn % 2 === 1
+    // Is my turn?
+    const firstAttackerIsMe = me.pokemonList[0].speedPoints > opponent.pokemonList[0].speedPoints;
+    const isMyTurn = firstAttackerIsMe ? (currentState.turn % 2 === 0) : (currentState.turn % 2 === 1);
+    const attackEnabled = currentState.status === 'active' && isMyTurn;
+
+    // Loggic to emmit new state, and notification events
+    if (currentState.status === 'finished') {
+        if (!currentState.result) {
+            console.error("battle finished with no status")
+            return
+        }
+        const iWon = myId === currentState.result?.winner;
+
+        serverMessageEmitter.emitMessage({ type: iWon ? "notify_you_won" : "notify_you_lost", reason: currentState.result?.reason });
+
+        // Emit state with te surviving pokemon
+        serverMessageEmitter.emitMessage({
+            type: "updateBattleStatus",
+            battleState: {
+                ...(iWon ? { myPokemon } : { oponent: opponentPokemon }),
+                attackEnabled
+            }
+        });
+        return;
     }
 
-    const myPokemon = myFirstAlivePokemon ? {
-        pokemonId: myFirstAlivePokemon?.index ?? -1,
-        pokemonGraphicUrl: myFirstAlivePokemon?.sprite ?? '',
-        name: myFirstAlivePokemon?.name ?? '',
-        hp: myFirstAlivePokemon?.healthPoints ?? -1
-    } : undefined
-
-    const oponentPokemon = oponentFirstAlivePokemon ? {
-        pokemonId: oponentFirstAlivePokemon?.index ?? -1,
-        pokemonGraphicUrl: oponentFirstAlivePokemon?.sprite ?? '',
-        name: oponentFirstAlivePokemon?.name ?? '',
-        hp: oponentFirstAlivePokemon?.healthPoints ?? -1
-    } : undefined
-
-
+    // Emit normal state
     serverMessageEmitter.emitMessage({
         type: "updateBattleStatus",
-        battleState: {
-            myPokemon: myPokemon,
-            oponent: oponentPokemon,
-            attackEnabled
-        }
+        battleState: { myPokemon, oponent: opponentPokemon, attackEnabled }
+    });
 
-    })
+    // Detect if any pokemon was defeated, and emmit events if so
+    const prevMyPkmn = prevMe.pokemonList.find((p: any) => p.healthPoints > 0);
+    const prevOppPkmn = prevOpponent.pokemonList.find((p: any) => p.healthPoints > 0);
 
-    // Verify battle finished
-    if (currentState.status === 'finished') {
-        if (currentUser === currentState.result?.winner) {
-            serverMessageEmitter.emitMessage({
-                type: "notify_you_won",
-                reason: currentState.result?.reason
-            })
-        } else {
-            serverMessageEmitter.emitMessage({
-                type: "notify_you_lost",
-            })
-        }
-    }
-
-    const myPreviousFirstAlivePokemon = currentPlayerPreviousState.pokemonList.find(pokemon => pokemon.healthPoints > 0)
-    const oponentPreviousFirstAlivePokemon = opponentPlayerPreviousState.pokemonList.find(pokemon => pokemon.healthPoints > 0)
-
-    if (!myPreviousFirstAlivePokemon || !oponentFirstAlivePokemon || !myFirstAlivePokemon || !oponentPreviousFirstAlivePokemon) return
-
-    // Verify if your pokemon defeated opponent's pokemon
-    if (myPreviousFirstAlivePokemon.index !== myFirstAlivePokemon.index) {
+    if (prevMyPkmn && myPokemon && prevMyPkmn.index !== myPokemon.pokemonId) {
         serverMessageEmitter.emitMessage({
             type: "notify_your_pokemon_defeated",
-            pokemonDefeated: {
-                pokemonName: myPreviousFirstAlivePokemon.name
-            }
-        })
+            pokemonDefeated: { pokemonName: prevMyPkmn.name }
+        });
     }
 
-    // Verify if your pokemon was defeated
-    if (oponentPreviousFirstAlivePokemon.index !== oponentFirstAlivePokemon.index) {
+    if (prevOppPkmn && opponentPokemon && prevOppPkmn.index !== opponentPokemon.pokemonId) {
         serverMessageEmitter.emitMessage({
             type: "notify_oponent_pokemon_defeated",
-            pokemonDefeated: {
-                pokemonName: oponentPreviousFirstAlivePokemon.name
-            }
-        })
+            pokemonDefeated: { pokemonName: prevOppPkmn.name }
+        });
     }
-
 }

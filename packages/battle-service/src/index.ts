@@ -9,10 +9,10 @@ async function start() {
         // 2. Iniciar el servidor de WebSockets
         initWebSocketServer();
 
-        console.log('🚀 Battle Service inicializado correctamente');
+        console.log('Battle Service inicializado correctamente');
 
     } catch (error) {
-        console.error("❌ Error fatal durante el inicio:", error);
+        console.error("Error fatal durante el inicio:", error);
         process.exit(1);
     }
 }

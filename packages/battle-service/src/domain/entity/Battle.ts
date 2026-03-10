@@ -4,17 +4,16 @@ export type BattlePlayer = {
     nickname: string;
 }
 
+export type BattlePlayerState = {
+    playerInfo: BattlePlayer;
+    pokemonList: Pokemon[];
+}
+
 export type Battle = {
     id?: string;
     matchmakingId: string;
-    player1: {
-        playerInfo: BattlePlayer;
-        pokemonList: Pokemon[];
-    }
-    player2: {
-        playerInfo: BattlePlayer;
-        pokemonList: Pokemon[];
-    }
+    player1: BattlePlayerState;
+    player2: BattlePlayerState;
     turn: number;
     status: 'active' | 'finished';
     result?: {
