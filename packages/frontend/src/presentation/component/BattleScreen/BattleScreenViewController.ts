@@ -6,41 +6,58 @@ import { useGeneralAppContext } from "../../context/GeneralAppContext";
 export function useBattleScreenViewController() {
 
     const generalAppContext = useGeneralAppContext()
-    const battleStateContext = useBattleContext()
+    const { battleState, battleMessage, disconnect, send } = useBattleContext()
 
     const myPokemon: PokemonBattlingUi | undefined = useMemo(() => {
-        if (!battleStateContext.battleState?.myPokemon) return undefined
+        if (!battleState?.myPokemon) return undefined
         return {
-            name: battleStateContext.battleState?.myPokemon.name ?? '',
-            graphicUrl: battleStateContext.battleState?.myPokemon.pokemonGraphicUrl ?? '',
-            healthPoints: battleStateContext.battleState?.myPokemon.hp ?? 0,
+            name: battleState?.myPokemon.name ?? '',
+            graphicUrl: battleState?.myPokemon.pokemonGraphicUrl ?? '',
+            healthPoints: battleState?.myPokemon.hp ?? 0,
         }
-    }, [battleStateContext.battleState])
+    }, [battleState])
 
     const opponent: PokemonBattlingUi | undefined = useMemo(() => {
-        if (!battleStateContext.battleState?.oponent) return undefined
+        if (!battleState?.oponent) return undefined
         return {
-            name: battleStateContext.battleState?.oponent.name ?? '',
-            graphicUrl: battleStateContext.battleState?.oponent.pokemonGraphicUrl ?? '',
-            healthPoints: battleStateContext.battleState?.oponent.hp ?? 0,
+            name: battleState?.oponent.name ?? '',
+            graphicUrl: battleState?.oponent.pokemonGraphicUrl ?? '',
+            healthPoints: battleState?.oponent.hp ?? 0,
         }
-    }, [battleStateContext.battleState])
+    }, [battleState])
+
+    const message = useMemo(() => {
+        if (battleMessage?.type === 'notify_you_lost') {
+            return `Oh no! Has perdido!`
+        }
+        if (battleMessage?.type === 'notify_you_won') {
+            if (battleMessage.reason === 'desertion') return `Tu oponente huyó. Has ganado!!`
+            return `Has ganado la batalla!!`
+        }
+        if (battleMessage?.type === 'notify_oponent_pokemon_defeated') {
+            return `Excelente, ${battleMessage.pokemonDefeated.pokemonName} ha sido derrotado`
+        }
+        if (battleMessage?.type === "notify_your_pokemon_defeated") {
+            return `Oh no! tu pokemon fue derrotado`
+        }
+        return null
+    }, [battleMessage])
 
     const onClickedMenu = () => {
         generalAppContext.resetSession();
-        battleStateContext.disconnect();
+        disconnect(true);
     }
 
     const onClickedAttack = () => {
-        battleStateContext.send({ type: "attack" })
+        send({ type: "attack" })
     }
 
     return {
         uiState: {
             myPokemon: myPokemon,
             opponent: opponent,
-            message: "",
-            isAttackEnabled: battleStateContext.battleState?.attackEnabled,
+            message: message,
+            isAttackEnabled: battleState?.attackEnabled && !message,
         },
         actions: {
             onClickedMenu,

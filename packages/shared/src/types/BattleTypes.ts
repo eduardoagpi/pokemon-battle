@@ -44,10 +44,11 @@ export const BattleWSServerMessageSchema = z.discriminatedUnion("type", [
     z.object({
         type: z.literal("notify_you_lost"),
     }),
+    /*
     z.object({
         type: z.literal("notify_battle_finished"),
         winnerNickname: z.string()
-    })
+    })*/
 ])
 
 export type BattleWSServerMessage = z.infer<typeof BattleWSServerMessageSchema>

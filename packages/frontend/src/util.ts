@@ -1,5 +1,7 @@
 export const NUM_POKEMONS = 3;
 
+export const ONE_SECOND_MS = 1000
+
 // Funcion para obtener n elementos unicos aleatorios de un array
 // Los elementos no se repiten
 export function getUniqueItems<T>(array: T[], count: number): T[] {

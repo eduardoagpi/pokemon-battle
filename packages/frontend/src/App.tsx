@@ -7,9 +7,9 @@ import { BattleGuard } from './presentation/component/BattleScreen/BattleGuard';
 
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] gap-12 animate-fade-in">
+    <div className="flex flex-col items-center justify-center min-h-[80vh] gap-1 animate-fade-in">
       {/* Header with Image Title */}
-      <header className="text-center mb-4 animate-float">
+      <header className="text-center mb-0 animate-float">
         <img className="max-w-[90%] w-[500px] h-auto block mx-auto drop-shadow-[4px_4px_0_rgba(0,0,0,0.5)]" src={pokeAlboLogo} alt="Poke-Albo" />
       </header>
 

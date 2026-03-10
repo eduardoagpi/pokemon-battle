@@ -10,7 +10,7 @@ export function useLobbyStatusViewController() {
 
     const onClickedGoBack = () => {
         resetSession()
-        battleContext.disconnect();
+        battleContext.disconnect(true);
     }
 
     useEffect(() => {

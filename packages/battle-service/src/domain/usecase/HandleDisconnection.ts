@@ -6,6 +6,9 @@ export async function handleFighterDisconnection(battleRepository: BattleReposit
         console.error('Battle not found');
         return
     }
+    if (battle.status === 'finished') {
+        return
+    }
     const winner = battle.player1.playerInfo.nickname === nicknameUserDisconnected ? 'b' : 'a'
     battle.status = 'finished';
     battle.result = {

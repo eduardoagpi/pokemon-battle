@@ -76,6 +76,12 @@ export const BattleScreen = () => {
                             </div>
                         </div>)}
 
+                        {/* Battle message */}
+                        {uiState.message &&
+                            (
+                                <span className='absolute bottom-0 text-gray-600 border border-gray-400 ring-4 ring-gray-400 rounded-none p-4 bg-white z-10'>{uiState.message}</span>
+                            )
+                        }
                     </div>
                 </div>
 
@@ -160,7 +166,7 @@ export const BattleScreen = () => {
                             onClick={actions.onClickedMenu}
                             className="text-[10px] text-white/70 font-bold hover:text-white transition-colors mb-4 uppercase tracking-widest bg-black/20 px-3 py-1 rounded-full border border-white/10 cursor-pointer"
                         >
-                            Menu
+                            Exit
                         </button>
                     </div>
                 </div>
