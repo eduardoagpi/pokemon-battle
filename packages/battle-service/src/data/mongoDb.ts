@@ -16,15 +16,12 @@ export async function connectDB(): Promise<Db> {
 
         // 2. Forzamos la creación de la colección y sus índices
         // Esto asegura que la colección exista y sea rápida para búsquedas
-        const matchmaking = db.collection('matchmaking');
+        const matchmaking = db.collection<MatchmakingDoc>('matchmaking');
 
         await matchmaking.createIndex(
             { status: 1, createdAt: 1 },
             { name: "idx_matchmaking_status_date" }
         );
-
-        // Opcional: Índice de roomId para búsquedas rápidas por ID de sala
-        await matchmaking.createIndex({ roomId: 1 }, { unique: true });
 
         console.log('Colecciones e Índices verificados/creados');
         return db;
