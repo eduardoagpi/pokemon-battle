@@ -16,17 +16,20 @@ export async function handleBattleChange(
 
     // Helper function to get active pokemon, given a player
     const getActivePokemon = (player: BattlePlayerState) => {
-        const p = player.pokemonList.find((p: any) => p.healthPoints > 0);
+        const p = player.pokemonList.find((p) => p.healthPoints > 0);
+        const remainingPokemonCount = player.pokemonList.filter(p => p.healthPoints > 0).length;
+
         return p ? {
             pokemonId: p.index,
             pokemonGraphicUrl: p.sprite,
             name: p.name,
-            hp: p.healthPoints
+            hp: p.healthPoints,
+            remainingPokemonCount
         } : undefined;
     };
 
     const myPokemon = getActivePokemon(me);
-    const opponentPokemon = getActivePokemon(opponent);
+    const oponent = getActivePokemon(opponent);
 
     // Is my turn?
     const firstAttackerIsMe = me.pokemonList[0].speedPoints > opponent.pokemonList[0].speedPoints;
@@ -47,7 +50,7 @@ export async function handleBattleChange(
         serverMessageEmitter.emitMessage({
             type: "updateBattleStatus",
             battleState: {
-                ...(iWon ? { myPokemon } : { oponent: opponentPokemon }),
+                ...(iWon ? { myPokemon } : { oponent }),
                 attackEnabled
             }
         });
@@ -57,12 +60,12 @@ export async function handleBattleChange(
     // Emit normal state
     serverMessageEmitter.emitMessage({
         type: "updateBattleStatus",
-        battleState: { myPokemon, oponent: opponentPokemon, attackEnabled }
+        battleState: { myPokemon, oponent, attackEnabled }
     });
 
     // Detect if any pokemon was defeated, and emmit events if so
-    const prevMyPkmn = prevMe.pokemonList.find((p: any) => p.healthPoints > 0);
-    const prevOppPkmn = prevOpponent.pokemonList.find((p: any) => p.healthPoints > 0);
+    const prevMyPkmn = prevMe.pokemonList.find((p) => p.healthPoints > 0);
+    const prevOppPkmn = prevOpponent.pokemonList.find((p) => p.healthPoints > 0);
 
     if (prevMyPkmn && myPokemon && prevMyPkmn.index !== myPokemon.pokemonId) {
         serverMessageEmitter.emitMessage({
@@ -71,7 +74,7 @@ export async function handleBattleChange(
         });
     }
 
-    if (prevOppPkmn && opponentPokemon && prevOppPkmn.index !== opponentPokemon.pokemonId) {
+    if (prevOppPkmn && oponent && prevOppPkmn.index !== oponent.pokemonId) {
         serverMessageEmitter.emitMessage({
             type: "notify_oponent_pokemon_defeated",
             pokemonDefeated: { pokemonName: prevOppPkmn.name }

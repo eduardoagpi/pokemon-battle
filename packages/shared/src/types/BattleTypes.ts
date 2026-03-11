@@ -1,18 +1,18 @@
 import z from "zod"
 
+export const FighterStateSchema = z.object({
+    pokemonId: z.number(),
+    pokemonGraphicUrl: z.string(),
+    name: z.string(),
+    hp: z.number(),
+    remainingPokemonCount: z.number(),
+})
+
+export type FighterState = z.infer<typeof FighterStateSchema>
+
 export const BattleStateSchema = z.object({
-    oponent: z.object({
-        pokemonId: z.number(),
-        pokemonGraphicUrl: z.string(),
-        name: z.string(),
-        hp: z.number(),
-    }).optional(),
-    myPokemon: z.object({
-        pokemonId: z.number(),
-        pokemonGraphicUrl: z.string(),
-        name: z.string(),
-        hp: z.number(),
-    }).optional(),
+    oponent: FighterStateSchema.optional(),
+    myPokemon: FighterStateSchema.optional(),
     attackEnabled: z.boolean()
 })
 export type BattleState = z.infer<typeof BattleStateSchema>

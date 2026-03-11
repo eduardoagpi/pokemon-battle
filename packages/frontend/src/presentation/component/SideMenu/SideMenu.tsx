@@ -13,7 +13,7 @@ export function SideMenu(props: { isOpen: boolean, onClose: () => void; }) {
 
             {/* Side Panel */}
             <div
-                className={`fixed top-0 right-0 h-full w-[80%] sm:w-[50%] md:w-[40%] lg:w-[30%] z-[101] glass-panel rounded-none border-y-0 border-r-0 transform transition-transform duration-300 ease-in-out ${props.isOpen ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}
+                className={`fixed top-0 right-0 h-full w-100 z-[101] glass-panel rounded-none border-y-0 border-r-0 transform transition-transform duration-300 ease-in-out ${props.isOpen ? 'translate-x-0' : 'translate-x-full'} flex flex-col`}
             >
                 {/* Header */}
                 <div className="p-6 border-b border-white/10 flex justify-between items-center bg-black/40">

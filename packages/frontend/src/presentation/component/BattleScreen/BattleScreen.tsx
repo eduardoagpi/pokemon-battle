@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useBattleScreenViewController } from './BattleScreenViewController';
+import pokeball from '../../../assets/pokeball.png';
+
 
 export const BattleScreen = () => {
 
@@ -41,8 +43,13 @@ export const BattleScreen = () => {
                         {/* Opponent */}
                         {uiState.opponent && (<div className='flex flex-row'>
                             <div className="self-end w-30 bg-white/90 p-1 border-2 border-black/20 rounded-sm shadow-sm z-10">
-                                <div className="flex justify-between text-[10px] font-bold">
+                                <div className="flex justify-between items-center text-[10px] font-bold">
                                     <span className="text-red-700">{uiState.opponent.name}</span>
+                                    <div className="flex gap-0.5 ml-2">
+                                        {Array.from({ length: uiState.opponent.remainingPokemons }).map((_, i) => (
+                                            <img key={i} src={pokeball} alt="pokeball" className="w-2 h-2 opacity-80" />
+                                        ))}
+                                    </div>
                                 </div>
                                 <div className="w-full h-2 bg-gray-200 border border-black/10 mt-1 relative overflow-hidden rounded-full">
                                     <div
@@ -56,15 +63,19 @@ export const BattleScreen = () => {
                             </div>
                         </div>)}
 
-
                         {/* Player */}
                         {uiState.myPokemon && (<div className='flex flex-row'>
                             <div className={`left-4 w-20 h-20 opacity-80 filter drop-shadow-lg ${bounceClass}`}>
                                 <img src={uiState.myPokemon.graphicUrl} alt="Player" className="w-full h-full object-contain" />
                             </div>
                             <div className="self-start w-30 bg-white/90 p-1 border-2 border-black/20 rounded-sm shadow-sm z-10">
-                                <div className="flex justify-between text-[10px] font-bold">
+                                <div className="flex justify-between items-center text-[10px] font-bold">
                                     <span className="text-blue-700">{uiState.myPokemon.name}</span>
+                                    <div className="flex gap-0.5 ml-2">
+                                        {Array.from({ length: uiState.myPokemon.remainingPokemons }).map((_, i) => (
+                                            <img key={i} src={pokeball} alt="pokeball" className="w-2 h-2 opacity-80" />
+                                        ))}
+                                    </div>
                                 </div>
                                 <div className="w-full h-2 bg-gray-200 border border-black/10 mt-1 relative overflow-hidden rounded-full">
                                     <div

@@ -11,18 +11,20 @@ export function useBattleScreenViewController() {
     const myPokemon: PokemonBattlingUi | undefined = useMemo(() => {
         if (!battleState?.myPokemon) return undefined
         return {
-            name: battleState?.myPokemon.name ?? '',
-            graphicUrl: battleState?.myPokemon.pokemonGraphicUrl ?? '',
-            healthPoints: battleState?.myPokemon.hp ?? 0,
+            name: battleState.myPokemon.name,
+            graphicUrl: battleState.myPokemon.pokemonGraphicUrl,
+            healthPoints: battleState.myPokemon.hp,
+            remainingPokemons: battleState.myPokemon.remainingPokemonCount
         }
     }, [battleState])
 
     const opponent: PokemonBattlingUi | undefined = useMemo(() => {
         if (!battleState?.oponent) return undefined
         return {
-            name: battleState?.oponent.name ?? '',
-            graphicUrl: battleState?.oponent.pokemonGraphicUrl ?? '',
-            healthPoints: battleState?.oponent.hp ?? 0,
+            name: battleState.oponent.name,
+            graphicUrl: battleState.oponent.pokemonGraphicUrl,
+            healthPoints: battleState.oponent.hp,
+            remainingPokemons: battleState.oponent.remainingPokemonCount
         }
     }, [battleState])
 
