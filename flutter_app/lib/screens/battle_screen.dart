@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/battle/battle_bloc.dart';
 import '../blocs/battle/battle_event.dart';
 import '../blocs/battle/battle_state.dart';
+import '../domain/repositories/battle_repository.dart';
+import '../domain/repositories/general_repository.dart';
 
 class BattleScreen extends StatelessWidget {
   const BattleScreen({super.key});
@@ -10,7 +12,10 @@ class BattleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => BattleBloc()..add(const StartBattle()),
+      create: (context) => BattleBloc(
+        battleRepository: context.read<BattleRepository>(),
+        generalRepository: context.read<GeneralRepository>(),
+      )..add(const StartBattle()),
       child: const BattleView(),
     );
   }
@@ -22,19 +27,20 @@ class BattleView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<BattleBloc, BattleState>(
+      listenWhen: (previous, current) =>
+          previous.message != current.message ||
+          previous.shouldExit != current.shouldExit,
       listener: (context, state) {
         if (state.message != null) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message!),
-              duration: const Duration(seconds: 1),
+              duration: const Duration(seconds: 2),
             ),
           );
         }
-        if (state.status == BattleStatus.finished) {
-          Future.delayed(const Duration(seconds: 2), () {
-            Navigator.pop(context);
-          });
+        if (state.shouldExit) {
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
         }
       },
       child: Scaffold(
@@ -45,49 +51,39 @@ class BattleView extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.red[50],
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Opponent Pokemon',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    const Icon(
-                      Icons.catching_pokemon,
-                      size: 80,
-                      color: Colors.grey,
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: BlocBuilder<BattleBloc, BattleState>(
-                        buildWhen: (previous, current) =>
-                            previous.opponentHp != current.opponentHp,
-                        builder: (context, state) {
-                          return Column(
-                            children: [
-                              LinearProgressIndicator(
-                                value: state.opponentHp,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  state.opponentHp > 0.5
-                                      ? Colors.green
-                                      : (state.opponentHp > 0.2
-                                            ? Colors.orange
-                                            : Colors.red),
-                                ),
-                                minHeight: 10,
-                              ),
-                              Text(
-                                'HP: ${(state.opponentHp * 100).toStringAsFixed(0)}%',
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                child: BlocBuilder<BattleBloc, BattleState>(
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          state.opponentPokemonName ?? 'Opponent',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        _remainingPokemons(state.opponentRemainingPokemons),
+                        const SizedBox(height: 10),
+                        if (state.opponentPokemonGraphicUrl != null)
+                          Image.network(
+                            state.opponentPokemonGraphicUrl!,
+                            height: 120,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.catching_pokemon, size: 80),
+                          )
+                        else
+                          const Icon(
+                            Icons.catching_pokemon,
+                            size: 80,
+                            color: Colors.grey,
+                          ),
+                        const SizedBox(height: 10),
+                        _hpBar(state.opponentHp),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -96,49 +92,39 @@ class BattleView extends StatelessWidget {
             Expanded(
               child: Container(
                 color: Colors.blue[50],
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'My Pokemon',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    const Icon(
-                      Icons.catching_pokemon,
-                      size: 80,
-                      color: Colors.blue,
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 40),
-                      child: BlocBuilder<BattleBloc, BattleState>(
-                        buildWhen: (previous, current) =>
-                            previous.myHp != current.myHp,
-                        builder: (context, state) {
-                          return Column(
-                            children: [
-                              LinearProgressIndicator(
-                                value: state.myHp,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  state.myHp > 0.5
-                                      ? Colors.green
-                                      : (state.myHp > 0.2
-                                            ? Colors.orange
-                                            : Colors.red),
-                                ),
-                                minHeight: 10,
-                              ),
-                              Text(
-                                'HP: ${(state.myHp * 100).toStringAsFixed(0)}%',
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                child: BlocBuilder<BattleBloc, BattleState>(
+                  builder: (context, state) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _hpBar(state.myHp),
+                        const SizedBox(height: 10),
+                        if (state.myPokemonGraphicUrl != null)
+                          Image.network(
+                            state.myPokemonGraphicUrl!,
+                            height: 120,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.catching_pokemon, size: 80),
+                          )
+                        else
+                          const Icon(
+                            Icons.catching_pokemon,
+                            size: 80,
+                            color: Colors.blue,
+                          ),
+                        const SizedBox(height: 10),
+                        _remainingPokemons(state.myRemainingPokemons),
+                        const SizedBox(height: 10),
+                        Text(
+                          state.myPokemonName ?? 'My Pokemon',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -148,26 +134,26 @@ class BattleView extends StatelessWidget {
               color: Colors.white,
               child: BlocBuilder<BattleBloc, BattleState>(
                 builder: (context, state) {
-                  final isLoading = state.status == BattleStatus.finished;
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       ElevatedButton(
-                        onPressed: isLoading
+                        onPressed: !state.attackEnabled
                             ? null
                             : () => context.read<BattleBloc>().add(
                                 const Attack(),
                               ),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(120, 45),
+                        ),
                         child: const Text('Attack'),
                       ),
                       ElevatedButton(
-                        onPressed: isLoading
-                            ? null
-                            : () => context.read<BattleBloc>().add(
-                                const ExitFight(),
-                              ),
+                        onPressed: () =>
+                            context.read<BattleBloc>().add(const ExitFight()),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.grey,
+                          minimumSize: const Size(120, 45),
                         ),
                         child: const Text('Run'),
                       ),
@@ -179,6 +165,51 @@ class BattleView extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _hpBar(double hp) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40),
+      child: Column(
+        children: [
+          LinearProgressIndicator(
+            value: hp,
+            backgroundColor: Colors.grey[300],
+            valueColor: AlwaysStoppedAnimation<Color>(
+              hp > 0.5 ? Colors.green : (hp > 0.2 ? Colors.orange : Colors.red),
+            ),
+            minHeight: 12,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'HP: ${(hp * 100).toStringAsFixed(0)}%',
+            style: const TextStyle(fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _remainingPokemons(int count) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ...List.generate(
+          3,
+          (index) => Icon(
+            Icons.catching_pokemon,
+            size: 20,
+            color: index < count ? Colors.red : Colors.grey[400],
+          ),
+        ),
+        const SizedBox(width: 8),
+        Text(
+          '($count/3)',
+          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }

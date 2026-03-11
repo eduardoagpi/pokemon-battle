@@ -1,77 +1,98 @@
-import 'dart:math';
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/repositories/battle_repository.dart';
+import '../../domain/repositories/general_repository.dart';
+import '../../domain/entities/battle_event.dart' as domain;
 import 'battle_event.dart';
 import 'battle_state.dart';
 
 class BattleBloc extends Bloc<BattleEvent, BattleState> {
-  BattleBloc() : super(const BattleState()) {
+  final BattleRepository battleRepository;
+  final GeneralRepository generalRepository;
+  StreamSubscription? _stateSubscription;
+  StreamSubscription? _eventSubscription;
+
+  BattleBloc({required this.battleRepository, required this.generalRepository})
+    : super(const BattleState()) {
     on<StartBattle>(_onStartBattle);
     on<Attack>(_onAttack);
     on<ExitFight>(_onExitFight);
+    on<UpdateBattleState>(_onUpdateBattleState);
+    on<ShowBattleMessage>(_onShowBattleMessage);
   }
 
   void _onStartBattle(StartBattle event, Emitter<BattleState> emit) {
+    emit(state.copyWith(status: BattleStatus.inProgress));
+
+    _stateSubscription?.cancel();
+    _stateSubscription = battleRepository.subscribeState().listen((
+      domainState,
+    ) {
+      add(UpdateBattleState(domainState));
+    });
+
+    _eventSubscription?.cancel();
+    _eventSubscription = battleRepository.subscribeEvents().listen((
+      domainEvent,
+    ) {
+      if (domainEvent is domain.MyPokemonDefeatedEvent) {
+        add(ShowBattleMessage('Your ${domainEvent.pokemonName} was defeated!'));
+      } else if (domainEvent is domain.OpponentPokemonDefeatedEvent) {
+        add(
+          ShowBattleMessage(
+            "Opponent's ${domainEvent.pokemonName} was defeated!",
+          ),
+        );
+      } else if (domainEvent is domain.BattleWonEvent) {
+        add(ShowBattleMessage('You won! ${domainEvent.reason}'));
+        // Status is handled by state subscription usually, but we can set it here too if needed
+      } else if (domainEvent is domain.BattleLostEvent) {
+        add(ShowBattleMessage('You lost the battle!'));
+      }
+    });
+  }
+
+  void _onUpdateBattleState(
+    UpdateBattleState event,
+    Emitter<BattleState> emit,
+  ) {
+    final domainState = event.battleState;
     emit(
       state.copyWith(
-        status: BattleStatus.inProgress,
-        myHp: 1.0,
-        opponentHp: 1.0,
+        myHp: (domainState.myPokemon?.hp ?? 0) / 100.0,
+        opponentHp: (domainState.opponent?.hp ?? 0) / 100.0,
+        myPokemonName: domainState.myPokemon?.name,
+        opponentPokemonName: domainState.opponent?.name,
+        myPokemonGraphicUrl: domainState.myPokemon?.pokemonGraphicUrl,
+        opponentPokemonGraphicUrl: domainState.opponent?.pokemonGraphicUrl,
+        myRemainingPokemons: domainState.myPokemon?.remainingPokemonCount ?? 0,
+        opponentRemainingPokemons:
+            domainState.opponent?.remainingPokemonCount ?? 0,
+        attackEnabled: domainState.attackEnabled,
       ),
     );
   }
 
-  void _onAttack(Attack event, Emitter<BattleState> emit) async {
-    if (state.status != BattleStatus.inProgress) return;
+  void _onShowBattleMessage(
+    ShowBattleMessage event,
+    Emitter<BattleState> emit,
+  ) {
+    emit(state.copyWith(message: event.message));
+  }
 
-    // My attack
-    final myDamage = Random().nextDouble() * 0.2 + 0.1;
-    final newOpponentHp = max(0.0, state.opponentHp - myDamage);
-
-    emit(
-      state.copyWith(
-        opponentHp: newOpponentHp,
-        message:
-            'You attacked for ${(myDamage * 100).toStringAsFixed(0)}% damage!',
-      ),
-    );
-
-    if (newOpponentHp <= 0) {
-      emit(
-        state.copyWith(
-          status: BattleStatus.finished,
-          message: 'You won the battle!',
-        ),
-      );
-      return;
-    }
-
-    // Opponent attack after a short delay
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    final opponentDamage = Random().nextDouble() * 0.15 + 0.05;
-    final newMyHp = max(0.0, state.myHp - opponentDamage);
-
-    emit(
-      state.copyWith(
-        myHp: newMyHp,
-        message:
-            'Opponent attacked for ${(opponentDamage * 100).toStringAsFixed(0)}% damage!',
-      ),
-    );
-
-    if (newMyHp <= 0) {
-      emit(
-        state.copyWith(
-          status: BattleStatus.finished,
-          message: 'You lost the battle!',
-        ),
-      );
-    }
+  void _onAttack(Attack event, Emitter<BattleState> emit) {
+    battleRepository.attack();
   }
 
   void _onExitFight(ExitFight event, Emitter<BattleState> emit) {
-    emit(
-      state.copyWith(status: BattleStatus.finished, message: 'You ran away!'),
-    );
+    generalRepository.clearSession();
+    emit(state.copyWith(status: BattleStatus.finished, shouldExit: true));
+  }
+
+  @override
+  Future<void> close() {
+    _stateSubscription?.cancel();
+    _eventSubscription?.cancel();
+    return super.close();
   }
 }
