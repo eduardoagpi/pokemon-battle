@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'data/datasources/pokemon_remote_datasource.dart';
+import 'data/repositories/battle_repository_impl.dart';
 import 'data/repositories/general_repository_impl.dart';
 import 'data/repositories/pokemon_repository_impl.dart';
+import 'domain/repositories/battle_repository.dart';
 import 'domain/repositories/general_repository.dart';
 import 'domain/repositories/pokemon_repository.dart';
+import 'domain/usecases/connect_to_battle_use_case.dart';
 import 'domain/usecases/get_active_session.dart';
 import 'domain/usecases/get_random_pokemons.dart';
 import 'screens/nickname_screen.dart';
@@ -42,6 +45,13 @@ class PokeAlboApp extends StatelessWidget {
           create: (context) => GetActiveSessionUseCase(
             generalRepository: context.read<GeneralRepository>(),
           ),
+        ),
+        RepositoryProvider<BattleRepository>(
+          create: (context) => BattleRepositoryImpl(),
+        ),
+        RepositoryProvider<ConnectToBattleUseCase>(
+          create: (context) =>
+              ConnectToBattleUseCase(context.read<BattleRepository>()),
         ),
       ],
       child: MaterialApp(

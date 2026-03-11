@@ -34,6 +34,32 @@ class PokemonResponse {
     );
   }
 
+  factory PokemonResponse.fromDomain(Pokemon pokemon) {
+    return PokemonResponse(
+      id: pokemon.id,
+      name: pokemon.name,
+      types: pokemon.types,
+      hp: pokemon.hp,
+      attack: pokemon.attack,
+      defense: pokemon.defense,
+      speed: pokemon.speed,
+      spriteUrl: pokemon.spriteUrl,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'type': types,
+      'hp': hp,
+      'attack': attack,
+      'defense': defense,
+      'speed': speed,
+      'sprite': spriteUrl,
+    };
+  }
+
   Pokemon toDomain() {
     return Pokemon(
       id: id,
@@ -59,6 +85,14 @@ class PokemonListItemResponse {
       id: json['id'] as int,
       name: json['name'] as String,
     );
+  }
+
+  factory PokemonListItemResponse.fromDomain(PokemonListItem item) {
+    return PokemonListItemResponse(id: item.id, name: item.name);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {'id': id, 'name': name};
   }
 
   PokemonListItem toDomain() {

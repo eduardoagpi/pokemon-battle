@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/lobby/lobby_bloc.dart';
 import '../blocs/lobby/lobby_event.dart';
 import '../blocs/lobby/lobby_state.dart';
+import '../domain/repositories/battle_repository.dart';
+import '../domain/usecases/connect_to_battle_use_case.dart';
 import '../domain/usecases/get_active_session.dart';
 
 class LobbyScreen extends StatelessWidget {
@@ -13,6 +15,8 @@ class LobbyScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => LobbyBloc(
         getActiveSessionUseCase: context.read<GetActiveSessionUseCase>(),
+        connectToBattleUseCase: context.read<ConnectToBattleUseCase>(),
+        battleRepository: context.read<BattleRepository>(),
       )..add(const StartWaiting()),
       child: const LobbyView(),
     );
@@ -27,14 +31,10 @@ class LobbyView extends StatelessWidget {
     return BlocListener<LobbyBloc, LobbyState>(
       listener: (context, state) {
         if (state.status == LobbyStatus.opponentFound) {
-          if (!context.mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Opponent found! Opening battle...')),
           );
-          final navigator = Navigator.of(context);
-          Future.delayed(const Duration(seconds: 1), () {
-            navigator.pushNamed('/battle');
-          });
+          Navigator.of(context).pushNamed('/battle');
         }
       },
       child: Scaffold(
