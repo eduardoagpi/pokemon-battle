@@ -4,16 +4,17 @@
     "type": "module",
     "main": "src/index.ts",
     "scripts": {
-        "dev": "cross-env ENV_FILE=../../.env.dev nodemon --watch src --ext ts --exec \"tsx src/index.ts\"",
+        "dev": "dotenv -e ../../.env.dev -- nodemon --watch src --ext ts --exec \"tsx src/index.ts\"",
         "build": "tsc",
-        "start": "node dist/index.js"
+        "start": "tsx dist/index.js"
     },
     "dependencies": {
         "@poke-albo/shared": "*",
         "cors": "^2.8.5",
         "express": "^4.19.2",
         "mongodb": "^7.1.0",
-        "ws": "^8.19.0"
+        "ws": "^8.19.0",
+        "tsx": "^4.7.2"
     },
     "devDependencies": {
         "@types/cors": "^2.8.17",
@@ -26,7 +27,6 @@
         "kill-port": "^2.0.1",
         "nodemon": "^3.1.14",
         "ts-node": "^10.9.2",
-        "tsx": "^4.7.2",
         "typescript": "^5.9.3"
     }
 }

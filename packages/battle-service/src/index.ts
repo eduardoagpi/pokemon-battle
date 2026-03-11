@@ -1,13 +1,9 @@
 import { initDB } from './data/mongoDb';
 import { initWebSocketServer } from './presentation/webSocket';
-import { config } from 'dotenv';
-
-config({
-    path: process.env.ENV_FILE || '.env'
-});
 
 async function start() {
     try {
+        console.log("Hello")
         // 1. Conectar a la base de datos
         await initDB();
 

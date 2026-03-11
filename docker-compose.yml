@@ -80,6 +80,21 @@ services:
       mongo:
         condition: service_healthy
 
+  battle-service:
+    build:
+      context: .
+      dockerfile: packages/battle-service/Dockerfile
+    container_name: poke-albo-battle-service
+    restart: always
+    environment:
+      - BATTLE_SERVICE_PORT=${BATTLE_SERVICE_PORT}
+      - BATTLE_SERVICE_MONGO_CONNECTION_URL=${BATTLE_SERVICE_MONGO_CONNECTION_URL}
+    ports:
+      - "${BATTLE_SERVICE_PORT}:${BATTLE_SERVICE_PORT}"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
   frontend:
     build:
       context: .
