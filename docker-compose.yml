@@ -52,52 +52,33 @@ services:
       mongo:
         condition: service_healthy
 
-  backend:
+  backend1:
     build:
       context: .
       dockerfile: packages/backend/Dockerfile
-      args:
-        - PORT=${POKEMON_API_1_PORT}
-    container_name: poke-albo-backend
+    container_name: poke-albo-backend1
     restart: always
+    environment:
+      - PORT=${POKEMON_API_1_PORT}
     ports:
       - "${POKEMON_API_1_PORT}:${POKEMON_API_1_PORT}"
-
-  battle-service:
-    build:
-      context: .
-      dockerfile: packages/battle-service/Dockerfile
-      args:
-        - PORT=${BATTLE_SERVICE_PORT:-4000}
-    container_name: poke-albo-battle-service
-    restart: always
-    ports:
-      - "${BATTLE_SERVICE_PORT:-4000}:${BATTLE_SERVICE_PORT:-4000}"
-    environment:
-      - MONGO_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo-server:27017/battle-db?authSource=admin
-    env_file:
-      - .env.prod
     depends_on:
       mongo:
         condition: service_healthy
 
-  frontend:
+  backend2:
     build:
       context: .
-      dockerfile: packages/frontend/Dockerfile
-      args:
-        - PORT=80
-    container_name: poke-albo-frontend
+      dockerfile: packages/backend/Dockerfile
+    container_name: poke-albo-backend2
     restart: always
-    ports:
-      - "${VITE_PORT:-5000}:80"
     environment:
-      - PORT=80
-    env_file:
-      - .env.prod
+      - PORT=${POKEMON_API_2_PORT}
+    ports:
+      - "${POKEMON_API_2_PORT}:${POKEMON_API_2_PORT}"
     depends_on:
-      - backend
-      - battle-service
+      mongo:
+        condition: service_healthy
 
 volumes:
   mongo_data:
