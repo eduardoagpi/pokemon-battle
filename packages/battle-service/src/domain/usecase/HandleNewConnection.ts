@@ -2,14 +2,14 @@ import { Pokemon } from "../entity/Battle";
 import { Result, success } from "../entity/result";
 import { MatchmakingRepository } from "../repository/MatchmakingRepository";
 
-export type NewConnectionWaitingOpponent = {
+export type NewWaitingHallCreated = {
     matchId: string;
     type: "waitingOpponent";
     userId: string;
     pokemons: Pokemon[];
 }
 
-export type NewConnectionOpponentFound = {
+export type JoinedToHall = {
     matchId: string;
     type: "opponentFound";
     userA: string;
@@ -18,7 +18,7 @@ export type NewConnectionOpponentFound = {
     userBPokemons: Pokemon[];
 }
 
-export type NewConnectionSuccess = NewConnectionOpponentFound | NewConnectionWaitingOpponent
+export type NewConnectionSuccess = JoinedToHall | NewWaitingHallCreated
 
 export async function handleNewConnection(
     userId: string,
@@ -27,8 +27,18 @@ export async function handleNewConnection(
 ): Promise<Result<NewConnectionSuccess, unknown>> {
 
     const matchWaiting = await matchmakingRepository.popMatchmakingOrNull(userId)
+    const pokemonsRepeated = pokemonsRepeatedBetweenPlayers(matchWaiting?.pokemonList || [], pokemonList)
 
-    if (matchWaiting) {
+    // si el nickname ya existe o los pokemones se repiten, se crea un nuevo hall
+    if (!matchWaiting || pokemonsRepeated) {
+        const matchMakingId = await matchmakingRepository.createMatchmaking(userId, pokemonList);
+        return success({
+            matchId: matchMakingId,
+            type: "waitingOpponent",
+            userId: userId,
+            pokemons: pokemonList
+        });
+    } else {
         return success({
             matchId: matchWaiting.id,
             type: "opponentFound",
@@ -37,13 +47,11 @@ export async function handleNewConnection(
             userAPokemons: matchWaiting.pokemonList,
             userBPokemons: pokemonList
         });
-    } else {
-        const matchMakingId = await matchmakingRepository.createMatchmaking(userId, pokemonList);
-        return success({
-            matchId: matchMakingId,
-            type: "waitingOpponent",
-            userId: userId,
-            pokemons: pokemonList
-        });
     }
+
+}
+
+function pokemonsRepeatedBetweenPlayers(pokemonsA: Pokemon[], pokemonsB: Pokemon[]): boolean {
+    const pokemonsIndexASet = new Set(pokemonsA.map(p => p.index));
+    return pokemonsB.some(p => pokemonsIndexASet.has(p.index));
 }
