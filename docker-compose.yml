@@ -80,6 +80,22 @@ services:
       mongo:
         condition: service_healthy
 
+  frontend:
+    build:
+      context: .
+      dockerfile: packages/frontend/Dockerfile
+      args:
+        - VITE_INITIAL_API_URL=${VITE_INITIAL_API_URL}
+        - VITE_BATTLE_SERVER=${VITE_BATTLE_SERVER}
+        - VITE_PORT=${VITE_PORT}
+    container_name: poke-albo-frontend
+    restart: always
+    ports:
+      - "${VITE_PORT}:80"
+    depends_on:
+      - backend1
+      - backend2
+
 volumes:
   mongo_data:
   mongo_key:
