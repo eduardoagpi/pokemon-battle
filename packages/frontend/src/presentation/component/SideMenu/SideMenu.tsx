@@ -68,26 +68,76 @@ export function SideMenu(props: { isOpen: boolean, onClose: () => void; }) {
                                     </button>
                                 </div>
                             </div>
-
-
                         </div>
                     ) : (
-                        <div className="animate-fade-in flex flex-col items-center justify-center h-full text-center space-y-6 opacity-60">
-                            <div className="w-20 h-20 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
-                                <span className="text-4xl">📜</span>
+                        <div className="animate-fade-in space-y-6 flex flex-col h-full">
+                            {/* Search Section */}
+                            <div className="space-y-3">
+                                <label className="text-[10px] text-white/40 uppercase tracking-[0.2em] font-bold">Buscar Jugador</label>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        value={uiState.nicknameSearch}
+                                        onChange={(e) => actions.onNicknameSearchChanged(e.target.value)}
+                                        placeholder="Nickname del usuario"
+                                        className="flex-1 p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-secondary/50 transition-all text-sm"
+                                    />
+                                    <button
+                                        onClick={actions.onClickedSearchHistoryButton}
+                                        disabled={uiState.isSearching}
+                                        className="px-4 rounded-xl bg-secondary/20 border border-secondary/50 text-secondary font-bold hover:bg-secondary/30 transition-all disabled:opacity-50"
+                                    >
+                                        {uiState.isSearching ? '...' : '🔍'}
+                                    </button>
+                                    <button
+                                        onClick={actions.onClicekdClearHistoryButton}
+                                        disabled={uiState.isSearching}
+                                        className="px-4 rounded-xl bg-secondary/20 border border-secondary/50 text-secondary font-bold hover:bg-secondary/30 transition-all disabled:opacity-50"
+                                    >
+                                        {uiState.isSearching ? '...' : '❌'}
+                                    </button>
+                                </div>
                             </div>
-                            <div className="space-y-2">
-                                <h3 className="text-lg font-bold text-white">Sin historial</h3>
-                                <p className="text-sm text-white/40 max-w-[200px] mx-auto">
-                                    Tus resultados de batallas aparecerán aquí después de combatir.
-                                </p>
+
+                            {/* Results Section */}
+                            <div className="flex-1 overflow-y-auto min-h-0 -mx-2 px-2 space-y-3">
+                                {uiState.searchError && (
+                                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center">
+                                        {uiState.searchError}
+                                    </div>
+                                )}
+
+                                {uiState.historyResults.length > 0 ? (
+                                    uiState.historyResults.map((item, index) => (
+                                        <div key={index} className="p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all group">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded ${item.result.customStyle}`}>
+                                                    {item.result.text}
+                                                </span>
+                                                <span className="text-[10px] text-white/30 font-mono">
+                                                    {item.date}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center justify-between text-white/80">
+                                                <span className="text-sm font-medium">vs <span className="text-white font-bold">{item.opponentNickname}</span></span>
+                                                {item.reason && (
+                                                    <span className="text-[10px] text-white/20 italic capitalize">{item.reason}</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : !uiState.isSearching && !uiState.searchError && (
+                                    <div className="flex flex-col items-center justify-center py-12 text-center space-y-4 opacity-40">
+                                        <p className="text-xs text-white max-w-[180px]">Ingresa un nickname para ver el historial de batallas.</p>
+                                    </div>
+                                )}
+
+                                {uiState.isSearching && (
+                                    <div className="flex justify-center py-12">
+                                        <div className="w-6 h-6 border-2 border-secondary/30 border-t-secondary rounded-full animate-spin" />
+                                    </div>
+                                )}
                             </div>
-                            <button
-                                onClick={() => actions.onClickedTab('config')}
-                                className="text-xs text-primary hover:underline uppercase tracking-widest font-bold"
-                            >
-                                Volver a configuración
-                            </button>
                         </div>
                     )}
                 </div>

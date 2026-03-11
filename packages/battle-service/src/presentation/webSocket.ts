@@ -11,14 +11,16 @@ export interface ExtWebSocket extends WebSocket {
     nickname: string;
 }
 
-export function initWebSocketServer() {
+import express from 'express';
+
+export function initWebSocketServer(app?: express.Express) {
     const port = process.env.BATTLE_SERVICE_PORT;
     if (!port) {
         console.error("Puerto no definido")
         process.exit(1);
     }
 
-    const server = http.createServer();
+    const server = http.createServer(app);
     const socketServer = new WebSocketServer({ server });
     const matchmakingRepository: MatchmakingRepository = new MatchmakingRepositoryImpl();
     const battleRepository: BattleRepository = new BattleRepositoryImpl();

@@ -44,11 +44,6 @@ export const BattleWSServerMessageSchema = z.discriminatedUnion("type", [
     z.object({
         type: z.literal("notify_you_lost"),
     }),
-    /*
-    z.object({
-        type: z.literal("notify_battle_finished"),
-        winnerNickname: z.string()
-    })*/
 ])
 
 export type BattleWSServerMessage = z.infer<typeof BattleWSServerMessageSchema>
@@ -60,3 +55,13 @@ export const BattleWSClientMessageSchema = z.discriminatedUnion("type", [
 ])
 
 export type BattleWSClientMessage = z.infer<typeof BattleWSClientMessageSchema>
+
+export const BattleHistoryItemSchema = z.object({
+    opponentNickname: z.string(),
+    result: z.enum(["win", "loss"]),
+    date: z.string(),
+    reason: z.enum(["combat", "desertion"]).optional()
+});
+
+export type BattleHistoryItemResponse = z.infer<typeof BattleHistoryItemSchema>;
+

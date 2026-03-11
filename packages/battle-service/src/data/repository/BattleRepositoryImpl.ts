@@ -25,6 +25,18 @@ export class BattleRepositoryImpl implements BattleRepository {
         const battleCollection = db.collection<BattleDoc>(Collections.BATTLE)
         await battleCollection.updateOne({ _id: new ObjectId(battle.id) }, { $set: BattleToBattleDoc(battle) });
     }
+
+    async findHistoryByNickname(nickname: string): Promise<Battle[]> {
+        const battleCollection = db.collection<BattleDoc>(Collections.BATTLE);
+        const battleDocs = await battleCollection.find({
+            status: 'finished',
+            $or: [
+                { 'playerA.nickname': nickname },
+                { 'playerB.nickname': nickname }
+            ]
+        }).sort({ createdAt: -1 }).toArray();
+        return battleDocs.map(BattleDocToBattle);
+    }
 }
 
 
