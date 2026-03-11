@@ -1,30 +1,31 @@
 import 'package:equatable/equatable.dart';
+import '../../domain/entities/user_session.dart';
 
 enum LobbyStatus { initial, waiting, opponentFound, failure }
 
 class LobbyState extends Equatable {
   final LobbyStatus status;
-  final List<String> team;
+  final UserSession? session;
   final String? errorMessage;
 
   const LobbyState({
     this.status = LobbyStatus.initial,
-    this.team = const [],
+    this.session,
     this.errorMessage,
   });
 
   LobbyState copyWith({
     LobbyStatus? status,
-    List<String>? team,
+    UserSession? session,
     String? errorMessage,
   }) {
     return LobbyState(
       status: status ?? this.status,
-      team: team ?? this.team,
+      session: session ?? this.session,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
   @override
-  List<Object?> get props => [status, team, errorMessage];
+  List<Object?> get props => [status, session, errorMessage];
 }

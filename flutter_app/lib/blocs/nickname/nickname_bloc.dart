@@ -1,9 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/usecases/get_random_pokemons.dart';
 import 'nickname_event.dart';
 import 'nickname_state.dart';
 
 class NicknameBloc extends Bloc<NicknameEvent, NicknameState> {
-  NicknameBloc() : super(const NicknameState()) {
+  final GetRandomPokemonsUseCase getRandomPokemonsUseCase;
+
+  NicknameBloc({required this.getRandomPokemonsUseCase})
+    : super(const NicknameState()) {
     on<NicknameChanged>(_onNicknameChanged);
     on<NicknameSubmitted>(_onNicknameSubmitted);
   }
@@ -30,9 +34,16 @@ class NicknameBloc extends Bloc<NicknameEvent, NicknameState> {
 
     emit(state.copyWith(status: NicknameStatus.loading));
 
-    // Simulate API call or validation
-    await Future.delayed(const Duration(milliseconds: 500));
-
-    emit(state.copyWith(status: NicknameStatus.success));
+    try {
+      await getRandomPokemonsUseCase.execute(state.nickname);
+      emit(state.copyWith(status: NicknameStatus.success));
+    } catch (e) {
+      emit(
+        state.copyWith(
+          status: NicknameStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
+    }
   }
 }

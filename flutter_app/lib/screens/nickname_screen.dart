@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/nickname/nickname_bloc.dart';
 import '../blocs/nickname/nickname_event.dart';
 import '../blocs/nickname/nickname_state.dart';
+import '../domain/usecases/get_random_pokemons.dart';
 
 class NicknameScreen extends StatelessWidget {
   const NicknameScreen({super.key});
@@ -10,7 +11,9 @@ class NicknameScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NicknameBloc(),
+      create: (context) => NicknameBloc(
+        getRandomPokemonsUseCase: context.read<GetRandomPokemonsUseCase>(),
+      ),
       child: const NicknameView(),
     );
   }
@@ -23,10 +26,13 @@ class NicknameView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<NicknameBloc, NicknameState>(
       listener: (context, state) {
+        final navigator = Navigator.of(context);
+        final messenger = ScaffoldMessenger.of(context);
+
         if (state.status == NicknameStatus.success) {
-          Navigator.pushNamed(context, '/lobby');
+          navigator.pushNamed('/lobby');
         } else if (state.status == NicknameStatus.failure) {
-          ScaffoldMessenger.of(context).showSnackBar(
+          messenger.showSnackBar(
             SnackBar(content: Text(state.errorMessage ?? 'Error')),
           );
         }

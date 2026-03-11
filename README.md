@@ -86,10 +86,13 @@ docker compose --env-file .env.prod up mongo mongo-init mongo-express --build
 
 2. 
 Los demas servicios se levantaran usando npm run dev desde el root del proyecto
-npm run dev -w backend -- -3001
-npm run dev -w backend -- -3002
-npm run dev -w battle-service
-npm run dev -w frontend
+$ npm run dev -w backend -- -3001
+$ npm run dev -w backend -- -3002
+$ npm run dev -w battle-service
+$ npm run dev -w frontend
+
+$ (cd flutter_app && flutter run -d chrome)
+
 
 ### Modo despliegue
 docker compose --env-file .env.dev up --build -d

@@ -1,36 +1,31 @@
-import 'dart:math';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../domain/usecases/get_active_session.dart';
 import 'lobby_event.dart';
 import 'lobby_state.dart';
 
 class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
-  LobbyBloc() : super(const LobbyState()) {
+  final GetActiveSessionUseCase getActiveSessionUseCase;
+
+  LobbyBloc({required this.getActiveSessionUseCase})
+    : super(const LobbyState()) {
     on<StartWaiting>(_onStartWaiting);
     on<OpponentJoined>(_onOpponentJoined);
   }
 
-  final List<String> _pokemonPool = [
-    'Pikachu',
-    'Charmander',
-    'Squirtle',
-    'Bulbasaur',
-    'Eevee',
-    'Snorlax',
-    'Mewtwo',
-    'Lucario',
-    'Gengar',
-    'Dragonite',
-  ];
-
   void _onStartWaiting(StartWaiting event, Emitter<LobbyState> emit) async {
-    // Randomly assign 3 pokemons
-    final random = Random();
-    final team = List.generate(
-      3,
-      (_) => _pokemonPool[random.nextInt(_pokemonPool.length)],
-    );
+    final session = getActiveSessionUseCase.execute();
 
-    emit(state.copyWith(status: LobbyStatus.waiting, team: team));
+    if (session == null) {
+      emit(
+        state.copyWith(
+          status: LobbyStatus.failure,
+          errorMessage: 'No active session found',
+        ),
+      );
+      return;
+    }
+
+    emit(state.copyWith(status: LobbyStatus.waiting, session: session));
 
     // Simulate waiting for an opponent
     await Future.delayed(const Duration(seconds: 3));

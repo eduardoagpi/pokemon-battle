@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/lobby/lobby_bloc.dart';
 import '../blocs/lobby/lobby_event.dart';
 import '../blocs/lobby/lobby_state.dart';
+import '../domain/usecases/get_active_session.dart';
 
 class LobbyScreen extends StatelessWidget {
   const LobbyScreen({super.key});
@@ -10,7 +11,9 @@ class LobbyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => LobbyBloc()..add(const StartWaiting()),
+      create: (context) => LobbyBloc(
+        getActiveSessionUseCase: context.read<GetActiveSessionUseCase>(),
+      )..add(const StartWaiting()),
       child: const LobbyView(),
     );
   }
@@ -24,11 +27,13 @@ class LobbyView extends StatelessWidget {
     return BlocListener<LobbyBloc, LobbyState>(
       listener: (context, state) {
         if (state.status == LobbyStatus.opponentFound) {
+          if (!context.mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Opponent found! Opening battle...')),
           );
+          final navigator = Navigator.of(context);
           Future.delayed(const Duration(seconds: 1), () {
-            Navigator.pushNamed(context, '/battle');
+            navigator.pushNamed('/battle');
           });
         }
       },
@@ -38,6 +43,19 @@ class LobbyView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(height: 20),
+              BlocBuilder<LobbyBloc, LobbyState>(
+                builder: (context, state) {
+                  return Text(
+                    'Welcome, ${state.session?.nickname ?? 'Trainer'}!',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
+              ),
+              const SizedBox(height: 20),
               BlocBuilder<LobbyBloc, LobbyState>(
                 builder: (context, state) {
                   if (state.status == LobbyStatus.waiting) {
@@ -69,18 +87,33 @@ class LobbyView extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 40),
-              const Text('Your Team:'),
+              const Text(
+                'Your Team:',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 10),
               Expanded(
                 child: BlocBuilder<LobbyBloc, LobbyState>(
                   builder: (context, state) {
+                    final pokemons = state.session?.pokemons ?? [];
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: state.team.length,
+                      itemCount: pokemons.length,
                       itemBuilder: (context, index) {
+                        final pokemon = pokemons[index];
                         return ListTile(
-                          leading: const Icon(Icons.catching_pokemon),
-                          title: Text(state.team[index]),
+                          leading: Image.network(
+                            pokemon.spriteUrl,
+                            width: 50,
+                            height: 50,
+                            errorBuilder: (context, error, stackTrace) =>
+                                const Icon(Icons.catching_pokemon),
+                          ),
+                          title: Text(
+                            pokemon.name.toUpperCase(),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(pokemon.types.join(', ')),
                         );
                       },
                     );
