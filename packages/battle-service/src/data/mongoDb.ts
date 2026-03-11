@@ -1,12 +1,16 @@
 import { MongoClient, Db } from 'mongodb';
 import { MatchmakingDoc } from './types';
 
-const url = 'mongodb://mi_usuario:mi_password_seguro@localhost:27017/?authSource=admin&directConnection=true';
-export const client = new MongoClient(url);
 export let db: Db;
 
 export async function connectDB(): Promise<Db> {
     if (db) return db;
+    const connectionUrl = process.env.BATTLE_SERVICE_MONGO_CONNECTION_URL;
+    if (!connectionUrl) {
+        console.error("Cadena de conexion a mongo no definida")
+        process.exit(1);
+    }
+    const client = new MongoClient(connectionUrl);
 
     try {
         await client.connect();

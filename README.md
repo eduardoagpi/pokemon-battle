@@ -74,3 +74,20 @@ Si deseas correr scripts en un workspace en particular sin moverte de carpeta us
 - `npm run dev -w frontend`: Inicia solo la aplicación web en Vite.
 - `npm run build -w frontend`: Compila el frontend a producción mediante Vite.
 - `npm run preview -w frontend`: Sirve localmente la versión ya compilada a producción del frontend.
+
+
+## Docker
+
+### Modo Development
+En el modo desarrollo, solo es necesario levantar mongo db:
+
+1.
+docker compose --env-file .env.dev up -d mongo-init mongo-express
+
+2. 
+Los demas servicios se levantaran usando npm run dev desde el root del proyecto
+npm run dev -w backend -- -3001
+npm run dev -w backend -- -3002
+
+### Modo despliegue
+docker compose --env-file .env.dev up -d

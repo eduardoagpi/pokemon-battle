@@ -2,7 +2,8 @@ import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 
 const API_URL_STORAGE_KEY = 'api_url';
-const DEFAULT_URL = 'http://localhost:3000';
+const DEFAULT_URL = import.meta.env.VITE_INITIAL_API_URL;
+if (!DEFAULT_URL) console.error('API URL no definida')
 
 /**
  * Singleton instance of Axios for API requests.

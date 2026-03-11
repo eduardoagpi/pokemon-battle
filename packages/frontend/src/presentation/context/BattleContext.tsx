@@ -6,6 +6,7 @@ import { BattleWSServerMessageSchema, parseJsonSerializedOrNull, type BattleStat
 import { useNavigate } from 'react-router-dom';
 import { useMessageQueue } from '../hooks/useMessageQueue';
 
+
 interface WebSocketContextType {
     isReady: boolean;
     battleState: BattleState | null;
@@ -43,7 +44,10 @@ export function BattleContextProvider({ children }: { children: ReactNode }) {
         // Evitar múltiples conexiones simultáneas
         if (ws.current?.readyState === WebSocket.OPEN) return;
 
-        const socket = new WebSocket(`ws://localhost:3003?nickname=${nickname}&pokemonList=${JSON.stringify(pokemonList)}`);
+        const wsBaseUrl = import.meta.env.VITE_BATTLE_SERVER;
+        if (!wsBaseUrl) console.error(`WebSocket URl no válida`)
+
+        const socket = new WebSocket(`${wsBaseUrl}?nickname=${nickname}&pokemonList=${JSON.stringify(pokemonList)}`);
 
         socket.onopen = () => {
             console.log("Conexión establecida");

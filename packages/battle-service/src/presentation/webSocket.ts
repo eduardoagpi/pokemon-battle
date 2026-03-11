@@ -12,6 +12,11 @@ export interface ExtWebSocket extends WebSocket {
 }
 
 export function initWebSocketServer() {
+    const port = process.env.BATTLE_SERVICE_PORT;
+    if (!port) {
+        console.error("Puerto no definido")
+        process.exit(1);
+    }
 
     const server = http.createServer();
     const socketServer = new WebSocketServer({ server });
@@ -34,7 +39,7 @@ export function initWebSocketServer() {
         clearInterval(heartbeatInterval)
     });
 
-    const port = 3003;
+
     server.listen(port, () => {
         console.log(`Battle service running on ws://localhost:${port}`);
     });

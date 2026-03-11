@@ -16,10 +16,10 @@ services:
       key-gen:
         condition: service_completed_successfully
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=mi_usuario
-      - MONGO_INITDB_ROOT_PASSWORD=mi_password_seguro
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
     ports:
-      - "27017:27017"
+      - "${MONGO_PORT:-27017}:27017"
     volumes:
       - mongo_data:/data/db
       - mongo_key:/data/configdb
@@ -36,21 +36,68 @@ services:
       mongo:
         condition: service_healthy
     entrypoint: >
-      mongosh --host mongo-server -u mi_usuario -p mi_password_seguro --authenticationDatabase admin  --eval "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo-server:27017'}]}) }"
+      mongosh --host mongo-server -u ${MONGO_ROOT_USER} -p ${MONGO_ROOT_PASSWORD} --authenticationDatabase admin --eval "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo-server:27017'}]}) }"
 
   mongo-express:
     image: mongo-express:latest
     container_name: mongo-express
     restart: always
     ports:
-      - "8081:8081"
+      - "${MONGO_EXPRESS_PORT}:${MONGO_EXPRESS_PORT}"
     environment:
-      - ME_CONFIG_MONGODB_URL=mongodb://mi_usuario:mi_password_seguro@mongo-server:27017/?authSource=admin&directConnection=true
-      - ME_CONFIG_BASICAUTH_USERNAME=admin
-      - ME_CONFIG_BASICAUTH_PASSWORD=pass
+      - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo-server:27017/?authSource=admin&directConnection=true
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_DASHBOARD_USER}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_DASHBOARD_PASSWORD}
     depends_on:
       mongo:
         condition: service_healthy
+
+  backend:
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+      args:
+        - PORT=${POKEMON_API_1_PORT}
+    container_name: poke-albo-backend
+    restart: always
+    ports:
+      - "${POKEMON_API_1_PORT}:${POKEMON_API_1_PORT}"
+
+  battle-service:
+    build:
+      context: .
+      dockerfile: packages/battle-service/Dockerfile
+      args:
+        - PORT=${BATTLE_SERVICE_PORT:-4000}
+    container_name: poke-albo-battle-service
+    restart: always
+    ports:
+      - "${BATTLE_SERVICE_PORT:-4000}:${BATTLE_SERVICE_PORT:-4000}"
+    environment:
+      - MONGO_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo-server:27017/battle-db?authSource=admin
+    env_file:
+      - .env.prod
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: packages/frontend/Dockerfile
+      args:
+        - PORT=80
+    container_name: poke-albo-frontend
+    restart: always
+    ports:
+      - "${VITE_PORT:-5000}:80"
+    environment:
+      - PORT=80
+    env_file:
+      - .env.prod
+    depends_on:
+      - backend
+      - battle-service
 
 volumes:
   mongo_data:
