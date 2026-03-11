@@ -36,10 +36,17 @@ export function LobbyStatus() {
             </div>
 
 
-            <div className="flex flex-col items-center gap-6 mt-8 p-8 w-full rounded-2xl bg-[#3466AF]/10 border border-dashed border-secondary">
+            {uiState.imReady && <div className="flex flex-col items-center gap-6 mt-8 p-8 w-full rounded-2xl bg-[#3466AF]/10 border border-dashed border-secondary">
                 <div className="w-[50px] h-[50px] border-4 border-white/10 border-t-primary rounded-full animate-spin"></div>
                 <p className="text-[1.2rem] font-medium text-text-light tracking-[2px] uppercase animate-pulse">Esperando contrincante...</p>
-            </div>
+            </div>}
+            {!uiState.imReady && <button
+                type="button"
+                onClick={actions.onClickedImReady}
+                className="p-[1.2rem] text-[1.2rem] font-bold uppercase tracking-[1px] text-secondary-dark bg-gradient-to-br from-primary to-[#FFE373] border-none rounded-xl cursor-pointer transition-all duration-300 shadow-[0_4px_15px_rgba(255,203,5,0.4)] hover:-translate-y-[2px] hover:shadow-[0_6px_20px_rgba(255,203,5,0.6)] hover:from-[#FFE373] hover:to-primary disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            >
+                Estoy Listo!
+            </button>}
 
         </section>
     );

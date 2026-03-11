@@ -30,7 +30,6 @@ export function useNickNameSelectorViewController(
 
     useEffect(() => {
         if (!contextNickName.trim() || !contextSelectedPokemons.length) return;
-        console.log("will nabigate")
         navigate('/lobby')
     }, [contextNickName, contextSelectedPokemons])
 
