@@ -132,17 +132,22 @@ El frontend flutter genera una SPA y utiliza una clean architecture estricta, co
 - BLoCs
 - Views
 
-### Infraestructura y Dockerizacion
-El proyecto está completamente dockerizado.
+## Infraestructura y Dockerizacion
+El proyecto está completamente dockerizadAo.
+
 La base de datos es mongoDB, pero antes de levantarla, se requiere configurar una keyfile para el replica set, asi como la ejecucion de mongo-init para inicializar el replica set. Para dichos procesos se crearon los servicios de docker: `key-gen` y `mongo-init`.
+
+Los archivos .env.xxx con las variables de entorno se agregaron al repositorio. Esto se hizo por ser un proyecto demo, pero **NUNCA** deberían de agregarse en un proyecto "real"
+
+
+El proyecto una vez levantado, consta de la siguiente infraestructura:
+
+<img height="530" alt="Dibujo sin título" src="https://github.com/user-attachments/assets/c75d7afd-a63b-4f84-b21e-1dc4584ee99c" />
+
+### Dashboard Mongo
 
 Se agrega un servicio de `mongo-express` para administrar la base de datos via dashboard web.
 
 <img width="2556" height="1093" alt="Screenshot 2026-03-12 121151" src="https://github.com/user-attachments/assets/7c3fed4c-49d1-434a-a83e-48724d60b714" />
 
 La dockerizacion crea dos instancias del backend, cada una en un puerto diferente, a fin de poder probar la funcionalidad de cambio de endpoint en runtime.
-
-El proyecto una vez levantado, consta de la siguiente infraestructura:
-
-<img width="1192" height="530" alt="Dibujo sin título" src="https://github.com/user-attachments/assets/c75d7afd-a63b-4f84-b21e-1dc4584ee99c" />
-
