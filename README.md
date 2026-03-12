@@ -1,64 +1,80 @@
 # Poke-Albo Documentación
 
-Este es el repository para el proyecto Poke-Albo, un juego de batalla Pokémon real-time.
+Este es el repositorio para el proyecto **Poke-Albo**, un juego de batalla Pokémon en tiempo real.
+
+---
 
 ## Características
-- Los peleadores deberan indicar un nickname. Entonces recibirán una asignación aleatoria de 3 pokemones para la batalla y entrarán a un lobby en espera de un contrincante. Cuando se encuentra un contrincante, la batalla inicia.
-- Las batallas pokemon, ocurren turno por turno, en los cuales solo un jugador puede atacar. Comienza el jugador cuyo primer pokemon sea el más rápido.
-- El jugador gana cuando logra derrotar a todos los pokemones del oponente, o bien si el oponente huye del combate.
-- Se pude modificar el endpoint de la api, en runtime, para apuntar a diferentes endpoints de la api de pokemones.
-- Se pude obtener el historial de batallas, segun el nombre del usuario.
 
-# Demo
+- **Sistema de Matchmaking:** Los jugadores indican un nickname, reciben una asignación aleatoria de 3 Pokémon y entran a un lobby. La batalla inicia automáticamente al encontrar un contrincante.
+- **Combate por Turnos:** Solo un jugador puede atacar a la vez. El orden de inicio se determina por la velocidad del primer Pokémon de cada equipo.
+- **Condiciones de Victoria:** Un jugador gana al derrotar a todos los Pokémon del oponente o si este huye del combate.
+- **Configuración Dinámica:** El endpoint de la API se puede modificar en runtime para apuntar a diferentes servicios de datos.
+- **Historial:** Se puede obtener el historial de batallas según el nombre del usuario.
 
-Nota. La api de pokemones es configurable. Si el puerto es par, los nombres de pokemones tendran el sufijo "_API2".
+---
 
-# Estructura del Proyecto
-El proyecto consta de 5 Servicios:
-- Backend (API para listar pokemones y obtener detalles de pokemon)
-- Battle Service (web service con websocket support para gestionar las batallas real-time)
-- Frontend web (Frontend en react, con vite)
-- Frontend flutter (Frontend en flutter)
-- Mongo DB (Base de datos con soporte de change stream para notificaciones en tiempo real. Se incluye tambien mongo express para administrar la base de datos via dashboard web)
+## Ejecución
 
-# Ejecución
+El proyecto está dockerizado y se puede ejecutar usando Docker Compose:
 
-## Modo Despliegue
-El proyecto se encuentra dockerizado, por lo que se puede ejecutar usando docker compose:
+`docker compose --env-file .env.prod up --build -d`
 
-docker compose --env-file .env.prod up --build -d
-(En windows se encontró que debido a un bug de docker compose, quizas es necesario ejecutar esto antes de correr docker compose: '$env:DOCKER_BUILDKIT=0')
+**Nota para Windows:** Debido a un bug de Docker Compose, es posible que sea necesario ejecutar `$env:DOCKER_BUILDKIT=0` antes de correr el comando docker compose.
 
-Despues de ejecutar docker compose, se levantaran los siguientes servicios:
-### Frontends:
-- Frontend web: http://localhost:5000
-- Frontend flutter: http://localhost:5001
-- Mongo Express: http://localhost:8081
-### Servicios:
-- Backend API1: http://localhost:3001
-- Backend API2: http://localhost:3002
-- Battle Service: ws://localhost:3003 y http://localhost:3003
+### Servicios Levantados
 
-## Modo Desarrollo
-En el modo desarrollo, solo es necesario levantar con docker, los servicios de mongo
+| Servicio | URL / Protocolo |
+| :--- | :--- |
+| **Frontend React** | http://localhost:5000 |
+| **Frontend Flutter** | http://localhost:5001 |
+| **Mongo Express** | http://localhost:8081 |
+| **Backend API 1** | http://localhost:3001 |
+| **Backend API 2** | http://localhost:3002 |
+| **Battle Service** | ws://localhost:3003 y http://localhost:3003 |
+
+---
+
+## Demo
+
+### React Clients
+![React Demo](https://github.com/user-attachments/assets/ccbfd43f-8776-472d-bbd0-ed08cfafa128)
+
+### Mixed Clients (React & Flutter)
+![Mixed Demo](https://github.com/user-attachments/assets/54c9bd70-e303-444e-8000-a95e413377c3)
+
+*Nota: La API de Pokémon es configurable. Si el puerto es par, los nombres de los Pokémon tendrán el sufijo "_API2".*
+
+---
+
+## Estructura del Proyecto
+
+El proyecto consta de 5 servicios:
+- **Backend:** API para listar y obtener detalles de Pokémon.
+- **Battle Service:** Servicio para gestionar batallas en tiempo real con soporte WebSocket.
+- **Frontend Web:** Desarrollado en React con Vite.
+- **Frontend Flutter:** Frontend móvil/web en Flutter.
+- **MongoDB:** Base de datos con soporte de Change Streams y Mongo Express para administración.
+
+---
+
+## Ejecución en Modo Desarrollo
+
+Levantar únicamente los servicios de base de datos con Docker:
 `docker compose --env-file .env.prod up mongo mongo-init mongo-express --build`
 
-Los demas servicios se levantaran usando npm run dev desde el root del proyecto, segun lo requiera el desarrollador.
-`npm run dev -w backend -- -3001`
-`npm run dev -w backend -- -3002`
-`npm run dev -w battle-service`
-`npm run dev -w frontend`
-`npm run dev:flutter`
+Levantar los servicios restantes desde el root usando npm:
+- `npm run dev -w backend -- -3001`
+- `npm run dev -w backend -- -3002`
+- `npm run dev -w battle-service`
+- `npm run dev -w frontend`
+- `npm run dev:flutter`
 
-El workspace de shared no se ejecuta de forma independiente, ya que es una libreria que se utiliza en los otros servicios. Dicha libreria es para usar los mismos DTOs entre frontend (react) y backend, y forzar el ajuste del codigo de ambos servicios cuando se realizan cambios en los DTOs.
-Para compilar el workspace de shared (necesario para desarrollar en otros modulos) se debe usar el comando:
-`npm run build -w shared`.
+### Workspace Shared
+Es una librería compartida de DTOs entre frontend (React) y backend. Para compilarla:
+`npm run build -w shared`
 
-### Organizacion del proyecto
-El proyecto es un monorepo organizado en workspaces, por lo que se puede ejecutar usando npm run dev desde el root del proyecto, segun lo requiera el desarrollador (con los comandos especificados en la seccion de "Modo Desarrollo").
-
-- El proyecto flutter se encuentra en el root
-- Los proyectos backend, battle-service, frontend y shared se encuentran en la carpeta packages
+---
 
 # Arquitectura
 
