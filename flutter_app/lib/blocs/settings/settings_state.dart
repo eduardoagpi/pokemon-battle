@@ -9,9 +9,7 @@ class SettingsState extends Equatable {
 
   const SettingsState({
     this.status = SettingsStatus.initial,
-    this.baseUrlPath = const String.fromEnvironment(
-      'WEB_FLUTTER_INITIAL_API_URL',
-    ),
+    this.baseUrlPath = '',
     this.errorMessage,
   });
 

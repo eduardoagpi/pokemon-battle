@@ -32,7 +32,7 @@ class BattleView extends StatelessWidget {
           previous.message != current.message ||
           previous.shouldExit != current.shouldExit,
       listener: (context, state) {
-        if (state.message != null) {
+        if (state.message != null && state.battleResult == BattleResult.none) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(state.message!),
@@ -57,39 +57,64 @@ class BattleView extends StatelessWidget {
                   context.read<BattleBloc>().add(const ExitFight()),
               aEnabled: state.attackEnabled,
               screenContent: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // Opponent Area
                   Expanded(
                     child: Container(
                       color: Colors.red[50],
+                      alignment: Alignment.center,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            state.opponentPokemonName ?? 'Oponente',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 5),
-                          _remainingPokemons(state.opponentRemainingPokemons),
-                          const SizedBox(height: 5),
-                          if (state.opponentPokemonGraphicUrl != null)
-                            Image.network(
-                              state.opponentPokemonGraphicUrl!,
-                              height: 80,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.catching_pokemon, size: 60),
+                          if (state.battleResult == BattleResult.won ||
+                              state.battleResult ==
+                                  BattleResult.opponentDesertion)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: Text(
+                                state.message ?? '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green[800],
+                                  letterSpacing: 0.5,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             )
-                          else
-                            const Icon(
-                              Icons.catching_pokemon,
-                              size: 60,
-                              color: Colors.grey,
+                          else ...[
+                            Text(
+                              state.opponentPokemonName ?? 'Oponente',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          const SizedBox(height: 5),
-                          _hpBar(state.opponentHp),
+                            const SizedBox(height: 5),
+                            _remainingPokemons(state.opponentRemainingPokemons),
+                            const SizedBox(height: 5),
+                            if (state.opponentPokemonGraphicUrl != null)
+                              Image.network(
+                                state.opponentPokemonGraphicUrl!,
+                                height: 80,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(
+                                      Icons.catching_pokemon,
+                                      size: 60,
+                                    ),
+                              )
+                            else
+                              const Icon(
+                                Icons.catching_pokemon,
+                                size: 60,
+                                color: Colors.grey,
+                              ),
+                            const SizedBox(height: 5),
+                            _hpBar(state.opponentHp),
+                          ],
                         ],
                       ),
                     ),
@@ -99,34 +124,56 @@ class BattleView extends StatelessWidget {
                   Expanded(
                     child: Container(
                       color: Colors.blue[50],
+                      alignment: Alignment.center,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          _hpBar(state.myHp),
-                          const SizedBox(height: 5),
-                          if (state.myPokemonGraphicUrl != null)
-                            Image.network(
-                              state.myPokemonGraphicUrl!,
-                              height: 80,
-                              errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.catching_pokemon, size: 60),
+                          if (state.battleResult == BattleResult.lost)
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                              ),
+                              child: Text(
+                                state.message ?? '',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red[800],
+                                  letterSpacing: 0.5,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             )
-                          else
-                            const Icon(
-                              Icons.catching_pokemon,
-                              size: 60,
-                              color: Colors.blue,
+                          else ...[
+                            _hpBar(state.myHp),
+                            const SizedBox(height: 5),
+                            if (state.myPokemonGraphicUrl != null)
+                              Image.network(
+                                state.myPokemonGraphicUrl!,
+                                height: 80,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    const Icon(
+                                      Icons.catching_pokemon,
+                                      size: 60,
+                                    ),
+                              )
+                            else
+                              const Icon(
+                                Icons.catching_pokemon,
+                                size: 60,
+                                color: Colors.blue,
+                              ),
+                            const SizedBox(height: 5),
+                            _remainingPokemons(state.myRemainingPokemons),
+                            const SizedBox(height: 5),
+                            Text(
+                              state.myPokemonName ?? 'Mi Pokémon',
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          const SizedBox(height: 5),
-                          _remainingPokemons(state.myRemainingPokemons),
-                          const SizedBox(height: 5),
-                          Text(
-                            state.myPokemonName ?? 'Mi Pokémon',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          ],
                         ],
                       ),
                     ),

@@ -9,13 +9,7 @@ class BattleHistoryRemoteDataSource {
   BattleHistoryRemoteDataSource({required this.generalRepository});
 
   Future<List<BattleHistoryItemModel>> getBattleHistory(String nickname) async {
-    final savedUrl = generalRepository.getApiUrl();
-
-    String baseUrl = savedUrl ?? "";
-    if (baseUrl.isEmpty) {
-      baseUrl = const String.fromEnvironment('WEB_BATTLE_SERVER');
-    }
-
+    String baseUrl = const String.fromEnvironment('WEB_BATTLE_SERVER');
     final httpUrl = baseUrl.replaceFirst('ws', 'http');
 
     try {

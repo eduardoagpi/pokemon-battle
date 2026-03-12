@@ -61,10 +61,28 @@ class BattleBloc extends Bloc<BattleEvent, BattleState> {
           ),
         );
       } else if (domainEvent is domain.BattleWonEvent) {
-        final reason = domainEvent.reason == 'combat' ? 'combate' : 'deserción';
-        add(ShowBattleMessage('¡Has ganado! Motivo: $reason'));
+        if (domainEvent.reason == 'desertion') {
+          add(
+            const ShowBattleMessage(
+              'El oponente huyó, has ganado!!',
+              result: BattleResult.opponentDesertion,
+            ),
+          );
+        } else {
+          add(
+            const ShowBattleMessage(
+              'Enhorabuena, ganaste!!',
+              result: BattleResult.won,
+            ),
+          );
+        }
       } else if (domainEvent is domain.BattleLostEvent) {
-        add(ShowBattleMessage('¡Has perdido la batalla!'));
+        add(
+          const ShowBattleMessage(
+            'On no, Perdiste!',
+            result: BattleResult.lost,
+          ),
+        );
       }
     });
   }
@@ -94,7 +112,10 @@ class BattleBloc extends Bloc<BattleEvent, BattleState> {
     ShowBattleMessage event,
     Emitter<BattleState> emit,
   ) {
-    emit(state.copyWith(message: event.message));
+    final result = event.result != BattleResult.none
+        ? event.result
+        : state.battleResult;
+    emit(state.copyWith(message: event.message, battleResult: result));
   }
 
   void _onAttack(Attack event, Emitter<BattleState> emit) {

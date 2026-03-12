@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/battle_state.dart' as domain;
+import 'battle_state.dart';
 
 abstract class BattleEvent extends Equatable {
   const BattleEvent();
@@ -30,8 +31,10 @@ class UpdateBattleState extends BattleEvent {
 
 class ShowBattleMessage extends BattleEvent {
   final String message;
-  const ShowBattleMessage(this.message);
+  final BattleResult result;
+
+  const ShowBattleMessage(this.message, {this.result = BattleResult.none});
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [message, result];
 }

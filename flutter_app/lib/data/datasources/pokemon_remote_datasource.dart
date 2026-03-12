@@ -12,16 +12,10 @@ class PokemonRemoteDataSource {
     http.Client? client,
   }) : client = client ?? http.Client();
 
-  String get _baseUrl {
-    final savedUrl = generalRepository.getApiUrl();
-    if (savedUrl != null && savedUrl.isNotEmpty) {
-      return savedUrl;
-    }
-    return const String.fromEnvironment('WEB_FLUTTER_INITIAL_API_URL');
-  }
-
   Future<List<PokemonListItemResponse>> getPokemonList() async {
-    final response = await client.get(Uri.parse('$_baseUrl/list'));
+    final response = await client.get(
+      Uri.parse('${generalRepository.getApiUrl()}/list'),
+    );
 
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
@@ -34,7 +28,9 @@ class PokemonRemoteDataSource {
   }
 
   Future<PokemonResponse> getPokemonDetails(int id) async {
-    final response = await client.get(Uri.parse('$_baseUrl/list/$id'));
+    final response = await client.get(
+      Uri.parse('${generalRepository.getApiUrl()}/list/$id'),
+    );
 
     if (response.statusCode == 200) {
       final dynamic jsonMap = json.decode(response.body);

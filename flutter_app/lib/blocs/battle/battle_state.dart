@@ -2,8 +2,11 @@ import 'package:equatable/equatable.dart';
 
 enum BattleStatus { initial, inProgress, finished, error, unauthorized }
 
+enum BattleResult { none, won, lost, opponentDesertion }
+
 class BattleState extends Equatable {
   final BattleStatus status;
+  final BattleResult battleResult;
   final double myHp;
   final double opponentHp;
   final String? myPokemonName;
@@ -18,6 +21,7 @@ class BattleState extends Equatable {
 
   const BattleState({
     this.status = BattleStatus.initial,
+    this.battleResult = BattleResult.none,
     this.myHp = 1.0,
     this.opponentHp = 1.0,
     this.myPokemonName,
@@ -33,6 +37,7 @@ class BattleState extends Equatable {
 
   BattleState copyWith({
     BattleStatus? status,
+    BattleResult? battleResult,
     double? myHp,
     double? opponentHp,
     String? myPokemonName,
@@ -47,6 +52,7 @@ class BattleState extends Equatable {
   }) {
     return BattleState(
       status: status ?? this.status,
+      battleResult: battleResult ?? this.battleResult,
       myHp: myHp ?? this.myHp,
       opponentHp: opponentHp ?? this.opponentHp,
       myPokemonName: myPokemonName ?? this.myPokemonName,
@@ -59,13 +65,14 @@ class BattleState extends Equatable {
           opponentRemainingPokemons ?? this.opponentRemainingPokemons,
       attackEnabled: attackEnabled ?? this.attackEnabled,
       shouldExit: shouldExit ?? this.shouldExit,
-      message: message, // Allow setting to null to clear snackbar
+      message: message ?? this.message,
     );
   }
 
   @override
   List<Object?> get props => [
     status,
+    battleResult,
     myHp,
     opponentHp,
     myPokemonName,

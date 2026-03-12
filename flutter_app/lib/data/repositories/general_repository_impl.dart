@@ -28,7 +28,11 @@ class GeneralRepositoryImpl implements GeneralRepository {
 
   @override
   String? getApiUrl() {
-    return _prefs?.getString(_apiUrlKey);
+    final savedUrl = _prefs?.getString(_apiUrlKey);
+    if (savedUrl != null && savedUrl.isNotEmpty) {
+      return savedUrl;
+    }
+    return const String.fromEnvironment('WEB_FLUTTER_INITIAL_API_URL');
   }
 
   @override
