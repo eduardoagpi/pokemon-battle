@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/user_session.dart';
 
-enum LobbyStatus { initial, waiting, opponentFound, failure }
+enum LobbyStatus { initial, waiting, opponentFound, failure, unauthorized }
 
 class LobbyState extends Equatable {
   final LobbyStatus status;

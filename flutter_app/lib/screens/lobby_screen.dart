@@ -35,6 +35,8 @@ class LobbyView extends StatelessWidget {
             const SnackBar(content: Text('Opponent found! Opening battle...')),
           );
           Navigator.of(context).pushNamed('/battle');
+        } else if (state.status == LobbyStatus.unauthorized) {
+          Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
         }
       },
       child: Scaffold(

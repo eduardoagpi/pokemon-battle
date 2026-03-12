@@ -11,4 +11,5 @@ abstract class BattleRepository {
   Future<void> attack();
   Stream<BattleEvent> subscribeEvents();
   Stream<BattleState> subscribeState();
+  bool get isConnected;
 }

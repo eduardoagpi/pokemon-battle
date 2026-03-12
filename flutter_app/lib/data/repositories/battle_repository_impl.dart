@@ -98,4 +98,7 @@ class BattleRepositoryImpl implements BattleRepository {
 
   @override
   Stream<BattleState> subscribeState() => _stateController.stream;
+
+  @override
+  bool get isConnected => _channel != null;
 }

@@ -22,6 +22,19 @@ class BattleBloc extends Bloc<BattleEvent, BattleState> {
   }
 
   void _onStartBattle(StartBattle event, Emitter<BattleState> emit) {
+    final session = generalRepository.getSession();
+
+    if (session == null || !battleRepository.isConnected) {
+      emit(
+        state.copyWith(
+          status: BattleStatus.unauthorized,
+          message: 'Session or connection not found',
+          shouldExit: true,
+        ),
+      );
+      return;
+    }
+
     emit(state.copyWith(status: BattleStatus.inProgress));
 
     _stateSubscription?.cancel();

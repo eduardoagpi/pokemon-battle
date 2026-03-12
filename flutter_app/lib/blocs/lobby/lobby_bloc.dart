@@ -25,11 +25,13 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
   void _onStartWaiting(StartWaiting event, Emitter<LobbyState> emit) async {
     final session = getActiveSessionUseCase.execute();
 
-    if (session == null) {
+    if (session == null ||
+        session.nickname.isEmpty ||
+        session.pokemons.isEmpty) {
       emit(
         state.copyWith(
-          status: LobbyStatus.failure,
-          errorMessage: 'No active session found',
+          status: LobbyStatus.unauthorized,
+          errorMessage: 'Nickname or Pokemons not set',
         ),
       );
       return;

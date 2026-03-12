@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum BattleStatus { initial, inProgress, finished, error }
+enum BattleStatus { initial, inProgress, finished, error, unauthorized }
 
 class BattleState extends Equatable {
   final BattleStatus status;
