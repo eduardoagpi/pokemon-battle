@@ -19,7 +19,7 @@ Luego se podra ingresar a cualquiera de los 2 frontends (react o flutter)
 
 ## Características
 Reglas del juego:
-- **Matchmaking:** Los jugadores ingresarán un nickname. Al confirmarlo recibirán una asignación aleatoria de 3 Pokémones y entran a un lobby en espera de un contrincante. La batalla inicia automáticamente al encontrar un contrincante.
+- **Matchmaking:** Los jugadores ingresarán un nickname. Al confirmarlo recibirán una asignación aleatoria de 3 Pokémones y entran a un lobby en espera de un contrincante. La batalla inicia automáticamente al encontrar un contrincante. Los pokemones no se deben repetir entre combatientes. Si ese fuera el caso, se crea un nuevo hall, a la espera de otro combatiente sin pokemones repetidos (edge case)
 - **Combate por Turnos:** Solo un jugador puede atacar a la vez. El primer jugador en atacar sera aquel cuyo primer pokemon tenga la mayor velocidad.
 - **Condiciones de Victoria:** Un jugador gana al derrotar a todos los Pokémon del oponente o si este huye del combate.
 - **Configuración Dinámica:** El endpoint de la API se puede modificar en runtime para apuntar a diferentes servicios de datos.
@@ -93,7 +93,8 @@ Es necesario compilarla para que los demas proyectos funcionen:
 # Arquitectura
 
 ## Backend
-El servicio de backend es una API REST para exponer los endpoints de listar/detalles de pokemones. (Los datos se obtuvieron de scrappear https://pokeapi.co/ )
+Durante el desarrollo, se observo que la api https://pokemon-api-92034153384.us-central1.run.app/ , presentaba algunas intermitencias (endpoint not found)
+Para solventarlo se creeó este servicio API REST que expone los endpoints de listar/detalles de pokemones en el mismo formato especificado en el docuemnto de requerimientos. (Los datos se obtuvieron de scrappear https://pokeapi.co/ )
 Se creó este backend con 2 propósitos:
 - Evitar dependencia de apis externas al proyecto.
 - Agregar pequeña logica para que si el enpoint es impar, los pokemones regresan su nombre con el sufijo "_API2", y asi poder distinguir entre las 2 instancias del backend.
