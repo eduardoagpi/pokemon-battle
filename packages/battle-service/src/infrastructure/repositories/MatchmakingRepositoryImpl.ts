@@ -1,9 +1,9 @@
 import { Matchmaking } from "../../domain/entity/MatchMaking";
 import { Pokemon } from "../../domain/entity/Pokemon";
 import { MatchmakingRepository } from "../../domain/repository/MatchmakingRepository";
-import { MatchmakingDocToPendingMatch, PokemonToPokemonDoc } from "../mapper/dataToDomain";
-import { Collections, db } from "../mongoDb";
-import { MatchmakingDoc } from "../types";
+import { MatchmakingDocToPendingMatch, PokemonToPokemonDoc } from "../mappers/dataToDomain";
+import { Collections, db } from "../database/mongoDb";
+import { MatchmakingDoc } from "../database/types";
 
 export class MatchmakingRepositoryImpl implements MatchmakingRepository {
     async popMatchmakingOrNull(user: string): Promise<Matchmaking | null> {

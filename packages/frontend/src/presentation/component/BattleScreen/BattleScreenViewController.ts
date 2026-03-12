@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useBattleContext } from "../../context/BattleContext";
 import type { PokemonBattlingUi } from "./BattleScreenUI";
 import { useGeneralAppContext } from "../../context/GeneralAppContext";
@@ -7,6 +7,7 @@ export function useBattleScreenViewController() {
 
     const generalAppContext = useGeneralAppContext()
     const { battleState, battleMessage, disconnect, send } = useBattleContext()
+    const [battleFinishedMessage, setBattleFinishedMessage] = useState('')
 
     const myPokemon: PokemonBattlingUi | undefined = useMemo(() => {
         if (!battleState?.myPokemon) return undefined
@@ -28,13 +29,14 @@ export function useBattleScreenViewController() {
         }
     }, [battleState])
 
-    const message = useMemo(() => {
+    const temporalMessage = useMemo(() => {
         if (battleMessage?.type === 'notify_you_lost') {
-            return `Oh no! Has perdido!`
+            setBattleFinishedMessage('Oh no! Has perdido!')
+            return null;
         }
         if (battleMessage?.type === 'notify_you_won') {
-            if (battleMessage.reason === 'desertion') return `Tu oponente huyó. Has ganado!!`
-            return `Has ganado la batalla!!`
+            battleMessage.reason === 'desertion' ? setBattleFinishedMessage('Tu oponente huyó. Has ganado!!') : setBattleFinishedMessage('Has ganado la batalla!!')
+            return null;
         }
         if (battleMessage?.type === 'notify_oponent_pokemon_defeated') {
             return `Excelente, ${battleMessage.pokemonDefeated.pokemonName} ha sido derrotado`
@@ -54,12 +56,14 @@ export function useBattleScreenViewController() {
         send({ type: "attack" })
     }
 
+    const message = temporalMessage || battleFinishedMessage
+
     return {
         uiState: {
             myPokemon: myPokemon,
             opponent: opponent,
             message: message,
-            isAttackEnabled: battleState?.attackEnabled && !message,
+            isAttackEnabled: battleState?.attackEnabled && !temporalMessage,
         },
         actions: {
             onClickedMenu,

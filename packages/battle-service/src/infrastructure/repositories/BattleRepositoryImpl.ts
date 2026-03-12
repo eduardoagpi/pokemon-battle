@@ -1,10 +1,10 @@
 import { ObjectId } from "mongodb";
 import { Battle } from "../../domain/entity/Battle";
 import { BattleRepository } from "../../domain/repository/BattleRepository";
-import { BattleDocToBattle } from "../mapper/dataToDomain";
-import { BattleToBattleDoc } from "../mapper/domainToData";
-import { Collections, db } from "../mongoDb";
-import { BattleDoc } from "../types";
+import { BattleDocToBattle } from "../mappers/dataToDomain";
+import { BattleToBattleDoc } from "../mappers/domainToData";
+import { Collections, db } from "../database/mongoDb";
+import { BattleDoc } from "../database/types";
 
 export class BattleRepositoryImpl implements BattleRepository {
     async getBattle(battleId: string): Promise<Battle | null> {

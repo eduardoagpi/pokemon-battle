@@ -88,7 +88,7 @@ export const BattleScreen = () => {
                         </div>)}
 
                         {/* Battle message */}
-                        {uiState.message &&
+                        {Boolean(uiState.message) &&
                             (
                                 <span className='absolute bottom-0 text-gray-600 border border-gray-400 ring-4 ring-gray-400 rounded-none p-4 bg-white z-10'>{uiState.message}</span>
                             )

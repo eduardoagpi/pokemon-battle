@@ -1,19 +1,20 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import http from 'http';
-import { handleNewClientConnection } from './newConnectionHandler';
-import { MatchmakingRepositoryImpl } from '../data/repository/MatchmakingRepositoryImpl';
-import { MatchmakingRepository } from '../domain/repository/MatchmakingRepository';
-import { BattleRepository } from '../domain/repository/BattleRepository';
-import { BattleRepositoryImpl } from '../data/repository/BattleRepositoryImpl';
+import { handleNewClientConnection } from './incommingConnectionHandler';
+import express from 'express';
+import { MatchmakingRepository } from '../../domain/repository/MatchmakingRepository';
+import { MatchmakingRepositoryImpl } from '../repositories/MatchmakingRepositoryImpl';
+import { BattleRepository } from '../../domain/repository/BattleRepository';
+import { BattleRepositoryImpl } from '../repositories/BattleRepositoryImpl';
 
 export interface ExtWebSocket extends WebSocket {
     isAlive: boolean;
     nickname: string;
 }
 
-import express from 'express';
+const HEARTBEAT_INTERVAL_SECONDS = 10
 
-export function initWebSocketServer(app?: express.Express) {
+export function setupWebSocketServer(app?: express.Express) {
     const port = process.env.BATTLE_SERVICE_PORT;
     if (!port) {
         console.error("Puerto no definido")
@@ -35,7 +36,7 @@ export function initWebSocketServer(app?: express.Express) {
             extWs.isAlive = false;
             extWs.ping();
         });
-    }, 30000);
+    }, HEARTBEAT_INTERVAL_SECONDS * 1000);
 
     socketServer.on('close', () => {
         clearInterval(heartbeatInterval)
@@ -43,7 +44,7 @@ export function initWebSocketServer(app?: express.Express) {
 
 
     server.listen(port, () => {
-        console.log(`Battle service running on ws://localhost:${port}`);
+        console.log(`Battle Service : corriendo en: ws://localhost:${port}`);
     });
 
     return { server, socketServer };

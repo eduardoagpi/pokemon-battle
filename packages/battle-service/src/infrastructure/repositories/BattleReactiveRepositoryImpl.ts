@@ -1,8 +1,8 @@
 import { Battle } from "../../domain/entity/Battle";
 import { BattleReactiveRepository } from "../../domain/repository/BattleReactiveRepository";
-import { BattleDocToBattle } from "../mapper/dataToDomain";
-import { Collections, db } from "../mongoDb";
-import { BattleDoc } from "../types";
+import { BattleDocToBattle } from "../mappers/dataToDomain";
+import { Collections, db } from "../database/mongoDb";
+import { BattleDoc } from "../database/types";
 
 export class MongoBattleReactiveRepository implements BattleReactiveRepository {
 

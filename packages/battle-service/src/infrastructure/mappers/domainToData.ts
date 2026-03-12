@@ -1,5 +1,5 @@
 import { Battle } from "../../domain/entity/Battle";
-import { BattleDoc } from "../types";
+import { BattleDoc } from "../database/types";
 
 export function BattleToBattleDoc(battle: Battle): BattleDoc {
     return {

@@ -1,24 +1,24 @@
 import express from 'express';
 import cors from 'cors';
-import { initDB } from './data/mongoDb';
-import { initWebSocketServer } from './presentation/webSocket';
-import { BattleRepositoryImpl } from './data/repository/BattleRepositoryImpl';
+import { initDB } from './infrastructure/database/mongoDb';
+import { BattleRepositoryImpl } from './infrastructure/repositories/BattleRepositoryImpl';
 import { getBattleHistory } from './domain/usecase/GetBattleHistoryUseCase';
 import { BattleToBattleHistory } from './presentation/mapper/domainToUi.js';
+import { setupWebSocketServer } from './infrastructure/websocket/setup';
 
 async function start() {
     try {
-        // 1. Conectar a la base de datos
+
+        // DB init
         await initDB();
 
-        // 2. Configurar Express
+        // Configurar API rest
         const app = express();
         app.use(cors());
         app.use(express.json());
 
         const battleRepository = new BattleRepositoryImpl();
 
-        // 3. Endpoint de historial
         app.get('/history/:nickname', async (req, res) => {
             const { nickname } = req.params;
             console.log(`Get historial para: ${nickname}`);
@@ -32,8 +32,8 @@ async function start() {
             }
         });
 
-        // 4. Iniciar el servidor (HTTP + WebSockets)
-        initWebSocketServer(app);
+        // Iniciar servicio
+        setupWebSocketServer(app);
 
         console.log('Battle Service inicializado correctamente');
 

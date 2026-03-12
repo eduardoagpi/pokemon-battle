@@ -1,5 +1,5 @@
 import { NewConnectionSuccess } from "./HandleNewConnection";
-import BattleRepository from "../../data/repository/BattleRepositoryImpl";
+import BattleRepository from "../../infrastructure/repositories/BattleRepositoryImpl";
 import { Battle } from "../entity/Battle";
 
 export async function handleMatchMaking(

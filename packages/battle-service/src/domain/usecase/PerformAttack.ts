@@ -33,8 +33,7 @@ export async function performAttack(
     let damage = Math.max(20, pockemonAttacking.attackPoints - pokemonDeffending.defensePoints)
     pokemonDeffending.healthPoints = Math.max(0, pokemonDeffending.healthPoints - damage);
 
-    // Verify if all pokemons have been defeated
-    // finish battle if no more pokemons left
+    // Termina la batalla si no hay mas pokemones
     if (defenderPlayer.pokemonList.every(pokemon => {
         console.log("sanity check: ", pokemon.healthPoints)
         return pokemon.healthPoints === 0

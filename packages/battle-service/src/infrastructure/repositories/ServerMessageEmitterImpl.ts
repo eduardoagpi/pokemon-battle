@@ -1,6 +1,6 @@
 import { BattleWSServerMessage } from "@poke-albo/shared";
 import { ServerMessageEmitter } from "../../domain/repository/ServerMessageEmitter";
-import { ExtWebSocket } from "../../presentation/webSocket";
+import { ExtWebSocket } from "../websocket/setup";
 
 export class ServerMessageEmitterRepositoryImpl implements ServerMessageEmitter {
 
