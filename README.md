@@ -93,4 +93,4 @@ $ npm run dev -w frontend
 $ npm run dev:flutter
 
 ### Modo despliegue
-docker compose --env-file .env.dev up --build -d
+docker compose --env-file .env.prod up --build -d
