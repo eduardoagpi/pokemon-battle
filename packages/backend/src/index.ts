@@ -21,11 +21,6 @@ const showSufix = Number(port) % 2 == 0
 app.use(cors());
 app.use(express.json());
 
-app.get('/api/hello', (req: Request, res: Response) => {
-    logMessage('GET /api/hello request received');
-    res.json({ message: 'Hello from poke-albo backend!' });
-});
-
 app.get('/list', (req: Request, res: Response) => {
     try {
         const filePath = path.join(__dirname, 'assets', 'pokemon-list.json');
