@@ -38,10 +38,18 @@ El proyecto está dockerizado y se puede ejecutar usando Docker Compose:
 ## Demo
 
 ### React Clients
-![React Demo](https://github.com/user-attachments/assets/ccbfd43f-8776-472d-bbd0-ed08cfafa128)
+
+
+https://github.com/user-attachments/assets/4c490707-6181-40bc-829d-d0a6bdf24003
+
+
 
 ### Mixed Clients (React & Flutter)
-![Mixed Demo](https://github.com/user-attachments/assets/54c9bd70-e303-444e-8000-a95e413377c3)
+
+
+https://github.com/user-attachments/assets/a9908132-ec7a-4037-981f-8f3eca2b324a
+
+
 
 *Nota: La API de Pokémon es configurable. Si el puerto es par, los nombres de los Pokémon tendrán el sufijo "_API2".*
 
