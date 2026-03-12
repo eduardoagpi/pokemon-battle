@@ -6,10 +6,11 @@ class PokemonRemoteDataSource {
   final String baseUrl;
   final http.Client client;
 
-  PokemonRemoteDataSource({
-    this.baseUrl = 'http://localhost:3001',
-    http.Client? client,
-  }) : client = client ?? http.Client();
+  PokemonRemoteDataSource({String? baseUrl, http.Client? client})
+    : baseUrl =
+          baseUrl ??
+          const String.fromEnvironment('WEB_FLUTTER_INITIAL_API_URL'),
+      client = client ?? http.Client();
 
   Future<List<PokemonListItemResponse>> getPokemonList() async {
     final response = await client.get(Uri.parse('$baseUrl/list'));

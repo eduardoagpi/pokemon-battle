@@ -9,7 +9,9 @@ class SettingsState extends Equatable {
 
   const SettingsState({
     this.status = SettingsStatus.initial,
-    this.baseUrlPath = 'http://localhost:3000',
+    this.baseUrlPath = const String.fromEnvironment(
+      'WEB_FLUTTER_INITIAL_API_URL',
+    ),
     this.errorMessage,
   });
 

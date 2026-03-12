@@ -90,9 +90,7 @@ $ npm run dev -w backend -- -3001
 $ npm run dev -w backend -- -3002
 $ npm run dev -w battle-service
 $ npm run dev -w frontend
-
-$ (cd flutter_app && flutter run -d chrome)
-
+$ npm run dev:flutter
 
 ### Modo despliegue
 docker compose --env-file .env.dev up --build -d

@@ -54,7 +54,7 @@ class SettingsView extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: 'API URL',
                     border: OutlineInputBorder(),
-                    hintText: 'http://localhost:3000',
+                    hintText: 'Enter API URL (e.g. http://localhost:3001)',
                   ),
                 ),
                 const SizedBox(height: 20),

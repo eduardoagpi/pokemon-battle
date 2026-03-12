@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "flutter_app"
   ],
+  "scripts": {
+    "dev:flutter": "npm run dev -w flutter_app"
+  },
   "devDependencies": {
     "concurrently": "^9.2.1"
   }

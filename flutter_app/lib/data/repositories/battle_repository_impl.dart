@@ -8,7 +8,7 @@ import '../../domain/entities/pokemon.dart';
 import '../../domain/repositories/battle_repository.dart';
 
 class BattleRepositoryImpl implements BattleRepository {
-  final String _baseUrl = 'ws://localhost:3004';
+  final String _baseUrl = const String.fromEnvironment('WEB_BATTLE_SERVER');
   WebSocketChannel? _channel;
   final StreamController<BattleEvent> _eventController =
       StreamController<BattleEvent>.broadcast();

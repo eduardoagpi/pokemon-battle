@@ -111,6 +111,21 @@ services:
       - backend1
       - backend2
 
+  flutter-app:
+    build:
+      context: .
+      dockerfile: flutter_app/Dockerfile
+      args:
+        - WEB_FLUTTER_INITIAL_API_URL=${WEB_FLUTTER_INITIAL_API_URL}
+        - WEB_BATTLE_SERVER=${WEB_BATTLE_SERVER}
+    container_name: poke-albo-flutter-app
+    restart: always
+    ports:
+      - "${WEB_FLUTTER_PORT}:80"
+    depends_on:
+      - backend1
+      - backend2
+
 volumes:
   mongo_data:
   mongo_key:
