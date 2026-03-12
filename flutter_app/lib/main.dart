@@ -16,80 +16,46 @@ import 'screens/battle_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/history_screen.dart';
 
-void main() {
-  const apiUrl = String.fromEnvironment('WEB_FLUTTER_INITIAL_API_URL');
-  const wsUrl = String.fromEnvironment('WEB_BATTLE_SERVER');
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-  if (apiUrl.isEmpty || wsUrl.isEmpty) {
-    runApp(
-      MaterialApp(
-        home: Scaffold(
-          body: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.error_outline, color: Colors.red, size: 60),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Faltan variables de entorno críticas',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Asegúrate de definir WEB_FLUTTER_INITIAL_API_URL y WEB_BATTLE_SERVER '
-                    'usando --dart-define en el comando de ejecución o compilación.',
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 24),
-                  const Text(
-                    'Valores actuales:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  Text('API: ${apiUrl.isEmpty ? "FALTANTE" : apiUrl}'),
-                  Text('WS: ${wsUrl.isEmpty ? "FALTANTE" : wsUrl}'),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    return;
-  }
+  final generalRepository = GeneralRepositoryImpl();
+  await generalRepository.init();
 
-  runApp(const PokeAlboApp());
+  runApp(PokeAlboApp(generalRepository: generalRepository));
 }
 
 class PokeAlboApp extends StatelessWidget {
-  const PokeAlboApp({super.key});
+  final GeneralRepository generalRepository;
+  const PokeAlboApp({super.key, required this.generalRepository});
 
   @override
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
+        RepositoryProvider<GeneralRepository>(
+          create: (context) => generalRepository,
+        ),
         RepositoryProvider<PokemonRepository>(
           create: (context) => PokemonRepositoryImpl(
-            remoteDataSource: PokemonRemoteDataSource(),
+            remoteDataSource: PokemonRemoteDataSource(
+              generalRepository: generalRepository,
+            ),
           ),
-        ),
-        RepositoryProvider<GeneralRepository>(
-          create: (context) => GeneralRepositoryImpl(),
         ),
         RepositoryProvider<GetRandomPokemonsUseCase>(
           create: (context) => GetRandomPokemonsUseCase(
             pokemonRepository: context.read<PokemonRepository>(),
-            generalRepository: context.read<GeneralRepository>(),
+            generalRepository: generalRepository,
           ),
         ),
         RepositoryProvider<GetActiveSessionUseCase>(
-          create: (context) => GetActiveSessionUseCase(
-            generalRepository: context.read<GeneralRepository>(),
-          ),
+          create: (context) =>
+              GetActiveSessionUseCase(generalRepository: generalRepository),
         ),
         RepositoryProvider<BattleRepository>(
-          create: (context) => BattleRepositoryImpl(),
+          create: (context) =>
+              BattleRepositoryImpl(generalRepository: generalRepository),
         ),
         RepositoryProvider<ConnectToBattleUseCase>(
           create: (context) =>

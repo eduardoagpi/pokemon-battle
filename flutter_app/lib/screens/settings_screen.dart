@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../blocs/settings/settings_bloc.dart';
 import '../blocs/settings/settings_event.dart';
 import '../blocs/settings/settings_state.dart';
+import '../domain/repositories/general_repository.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -10,7 +11,9 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => SettingsBloc()..add(const LoadSettings()),
+      create: (context) =>
+          SettingsBloc(generalRepository: context.read<GeneralRepository>())
+            ..add(const LoadSettings()),
       child: const SettingsView(),
     );
   }
@@ -61,6 +64,7 @@ class SettingsView extends StatelessWidget {
                 Center(
                   child: ElevatedButton(
                     onPressed: () {
+                      context.read<SettingsBloc>().add(const SaveSettings());
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Settings Saved')),
                       );

@@ -18,3 +18,7 @@ class UpdateBaseUrl extends SettingsEvent {
   @override
   List<Object> get props => [baseUrl];
 }
+
+class SaveSettings extends SettingsEvent {
+  const SaveSettings();
+}

@@ -6,14 +6,46 @@ import '../../domain/entities/battle_event.dart';
 import '../../domain/entities/battle_state.dart';
 import '../../domain/entities/pokemon.dart';
 import '../../domain/repositories/battle_repository.dart';
+import '../../domain/repositories/general_repository.dart';
 
 class BattleRepositoryImpl implements BattleRepository {
-  final String _baseUrl = const String.fromEnvironment('WEB_BATTLE_SERVER');
+  final GeneralRepository generalRepository;
   WebSocketChannel? _channel;
   final StreamController<BattleEvent> _eventController =
       StreamController<BattleEvent>.broadcast();
   final StreamController<BattleState> _stateController =
       StreamController<BattleState>.broadcast();
+
+  BattleRepositoryImpl({required this.generalRepository});
+
+  String get _wsUrl {
+    final savedUrl = generalRepository.getApiUrl();
+    if (savedUrl != null && savedUrl.isNotEmpty) {
+      // Assuming if API is http://host:port, WS is ws://host:port/ws or similar.
+      // In the frontend, VITE_BATTLE_SERVER is a separate env var.
+      // However, the user asked to follow the same pattern.
+      // Let's check how the frontend does it exactly.
+      // Frontend context/BattleContext.tsx uses import.meta.env.VITE_BATTLE_SERVER.
+      // But for consistency, if API URL is changed, maybe WS should follow.
+      // If the user didn't specify a separate WS input, I'll try to derive it
+      // or just stay with the env var if it's more stable.
+      // Actually, if they change the API URL to http://192.168.1.5:3001,
+      // they probably want WS to be ws://192.168.1.5:3005 (or whatever).
+      // Let's stick to derive it if it starts with http, replace with ws.
+      try {
+        // Usually battle-service is on a different port than backend.
+        // Backend (API) is 3001, Battle Service (WS) is 3005 by default.
+        // If they only configure ONE URL in settings, we might need to be smart or
+        // add another configuration field.
+        // Frontend only has "API Endpoint".
+        // Let's see what VITE_BATTLE_SERVER is set to in the project.
+        return savedUrl.replaceFirst('http', 'ws');
+      } catch (e) {
+        return const String.fromEnvironment('WEB_BATTLE_SERVER');
+      }
+    }
+    return const String.fromEnvironment('WEB_BATTLE_SERVER');
+  }
 
   @override
   Future<StreamSubscription> connect(
@@ -28,7 +60,7 @@ class BattleRepositoryImpl implements BattleRepository {
       pokemonResponseList.map((p) => p.toJson()).toList(),
     );
     final url = Uri.parse(
-      '$_baseUrl?nickname=$nickname&pokemonList=$pokemonListJson',
+      '$_wsUrl?nickname=$nickname&pokemonList=$pokemonListJson',
     );
     _channel = WebSocketChannel.connect(url);
 
