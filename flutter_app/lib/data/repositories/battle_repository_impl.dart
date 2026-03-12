@@ -108,4 +108,11 @@ class BattleRepositoryImpl implements BattleRepository {
 
   @override
   bool get isConnected => _channel != null;
+
+  @override
+  void disconnect() {
+    _channel?.sink.close();
+    _channel = null;
+    print('WebSocket manually disconnected');
+  }
 }

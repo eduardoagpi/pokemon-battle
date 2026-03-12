@@ -12,4 +12,5 @@ abstract class BattleRepository {
   Stream<BattleEvent> subscribeEvents();
   Stream<BattleState> subscribeState();
   bool get isConnected;
+  void disconnect();
 }

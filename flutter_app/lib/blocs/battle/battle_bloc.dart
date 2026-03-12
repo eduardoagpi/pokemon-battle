@@ -131,6 +131,7 @@ class BattleBloc extends Bloc<BattleEvent, BattleState> {
   Future<void> close() {
     _stateSubscription?.cancel();
     _eventSubscription?.cancel();
+    battleRepository.disconnect();
     return super.close();
   }
 }

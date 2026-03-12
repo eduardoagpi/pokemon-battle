@@ -69,6 +69,7 @@ class LobbyBloc extends Bloc<LobbyEvent, LobbyState> {
   @override
   Future<void> close() {
     _battleSubscription?.cancel();
+    battleRepository.disconnect();
     return super.close();
   }
 }
