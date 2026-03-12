@@ -99,14 +99,19 @@ Este es un helper api, muy sencillo, por lo que no se agrego ninguna arquitectur
 ## Battle Service
 El battle service es un servicio que se encarga de gestionar las batallas pokemon en tiempo real. Se utiliza arquitectura por capas, separando la logica de negocio de la logica de persistencia de datos y la de presentacion.
 
-### Capa de datos
+### Capa de Infrastructura
+
+#### Datos
 En la capa de persistencia se utiliza mongoDB para persistir los datos de las batallas. Mongo DB se utiliza con change stream y de esta manera la BD es el source of truth de todo el sistema. Con esta estrategia se evita la gestion de estados en memoria, lo que hace que el servicio sea mas robusto y escalable horizontalmente.
+
+#### Conectividad
+Gestionar las conexiones de websocket: nuevas conecciones, envío y recepcion de mensajes con los clientes conectados
 
 ### Capa de negocio
 En la capa de negocio se agregaron repositories (abstracciones) y usecases. En ellos se maneja la logica del negocio: Crear salas de espera, crear batallas, gestionar eventos de batalla, etc.
 
 ### Capa de presentacion
-En la capa de presentacion se encuentra la logica de presentacion, que se encarga transformar los eventos de dominio en mensajes de websocket y viceversa. Ademas se encarga de gestionar las conexiones de websocket.
+En la capa de presentacion se encuentra la logica de presentacion, que se encarga transformar los eventos de dominio en mensajes de websocket y viceversa.
 
 ## Frontend (web)
 El frontend es una aplicacion react SPA que se encarga de mostrar la interfaz de usuario. La arquitectura elegida fue con el siguiente stack:
