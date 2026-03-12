@@ -5,7 +5,7 @@ const arg = process.argv[2];
 const port = arg ? arg.replace('-', '') : null;
 
 if (!port || isNaN(port)) {
-    console.error("\nERROR: Debes indicar el puerto. Ejemplo: npm run dev -w backend -- -3000\n");
+    console.error("\nERROR: Debes indicar el puerto. Ejemplo: npm run dev -w backend -- -3001\n");
     process.exit(1);
 }
 

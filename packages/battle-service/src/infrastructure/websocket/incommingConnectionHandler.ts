@@ -61,6 +61,8 @@ export async function handleNewClientConnection(
     // Cleanup cuando se desconecta el cliente
     extendedWebSocket.on('close', async () => {
         console.log(`Cliente ${nickname} desconectado`);
+        const waitingHallId = newConnectionResult.value.matchId;
+        await matchmakingRepository.deleteMatchmaking(waitingHallId);
         if (!battleId) {
             console.error(`No se encontro el id de la batalla para ${nickname}`);
             return;

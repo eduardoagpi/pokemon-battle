@@ -4,8 +4,13 @@ import { MatchmakingRepository } from "../../domain/repository/MatchmakingReposi
 import { MatchmakingDocToPendingMatch, PokemonToPokemonDoc } from "../mappers/dataToDomain";
 import { Collections, db } from "../database/mongoDb";
 import { MatchmakingDoc } from "../database/types";
+import { ObjectId } from "mongodb";
 
 export class MatchmakingRepositoryImpl implements MatchmakingRepository {
+    async deleteMatchmaking(matchId: string): Promise<void> {
+        const matchmakingCollection = db.collection<MatchmakingDoc>(Collections.MATCH_MAKING);
+        await matchmakingCollection.deleteOne({ _id: new ObjectId(matchId) });
+    }
     async popMatchmakingOrNull(user: string): Promise<Matchmaking | null> {
         const matchmakingCollection = db.collection<MatchmakingDoc>(Collections.MATCH_MAKING);
         const waitingPlayer = await matchmakingCollection.findOneAndDelete(
