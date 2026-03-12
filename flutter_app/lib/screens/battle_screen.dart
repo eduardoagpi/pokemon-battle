@@ -46,7 +46,7 @@ class BattleView extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Battalla en curso'),
+          title: const Text('Batalla en curso'),
           automaticallyImplyLeading: false,
         ),
         body: BlocBuilder<BattleBloc, BattleState>(
@@ -66,7 +66,7 @@ class BattleView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            state.opponentPokemonName ?? 'Opponent',
+                            state.opponentPokemonName ?? 'Oponente',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -121,7 +121,7 @@ class BattleView extends StatelessWidget {
                           _remainingPokemons(state.myRemainingPokemons),
                           const SizedBox(height: 5),
                           Text(
-                            state.myPokemonName ?? 'My Pokemon',
+                            state.myPokemonName ?? 'Mi Pokémon',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

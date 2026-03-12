@@ -28,7 +28,7 @@ class BattleBloc extends Bloc<BattleEvent, BattleState> {
       emit(
         state.copyWith(
           status: BattleStatus.unauthorized,
-          message: 'Session or connection not found',
+          message: 'Sesión o conexión no encontrada',
           shouldExit: true,
         ),
       );
@@ -49,18 +49,22 @@ class BattleBloc extends Bloc<BattleEvent, BattleState> {
       domainEvent,
     ) {
       if (domainEvent is domain.MyPokemonDefeatedEvent) {
-        add(ShowBattleMessage('Your ${domainEvent.pokemonName} was defeated!'));
+        add(
+          ShowBattleMessage(
+            '¡Tu pokemon ${domainEvent.pokemonName} ha sido derrotado!',
+          ),
+        );
       } else if (domainEvent is domain.OpponentPokemonDefeatedEvent) {
         add(
           ShowBattleMessage(
-            "Opponent's ${domainEvent.pokemonName} was defeated!",
+            "¡El ${domainEvent.pokemonName} del oponente ha sido derrotado!",
           ),
         );
       } else if (domainEvent is domain.BattleWonEvent) {
-        add(ShowBattleMessage('You won! ${domainEvent.reason}'));
-        // Status is handled by state subscription usually, but we can set it here too if needed
+        final reason = domainEvent.reason == 'combat' ? 'combate' : 'deserción';
+        add(ShowBattleMessage('¡Has ganado! Motivo: $reason'));
       } else if (domainEvent is domain.BattleLostEvent) {
-        add(ShowBattleMessage('You lost the battle!'));
+        add(ShowBattleMessage('¡Has perdido la batalla!'));
       }
     });
   }

@@ -150,7 +150,7 @@ class _HistoryItemTile extends StatelessWidget {
 
     String reasonText = '';
     if (item.reason != null) {
-      reasonText = item.reason == 'combat' ? 'Combate' : 'Desertión';
+      reasonText = item.reason == 'combat' ? 'Combate' : 'Deserción';
     }
 
     final color = isWin ? Colors.green : Colors.red;
@@ -191,7 +191,7 @@ class _HistoryItemTile extends StatelessWidget {
                   text: TextSpan(
                     style: const TextStyle(color: Colors.black, fontSize: 16),
                     children: [
-                      const TextSpan(text: 'vs '),
+                      const TextSpan(text: 'vs'),
                       TextSpan(
                         text: item.opponentNickname,
                         style: const TextStyle(fontWeight: FontWeight.bold),

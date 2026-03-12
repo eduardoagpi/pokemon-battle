@@ -32,7 +32,9 @@ class LobbyView extends StatelessWidget {
       listener: (context, state) {
         if (state.status == LobbyStatus.opponentFound) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Opponent found! Opening battle...')),
+            const SnackBar(
+              content: Text('¡Oponente encontrado! Iniciando batalla...'),
+            ),
           );
           Navigator.of(context).pushNamed('/battle');
         } else if (state.status == LobbyStatus.unauthorized) {
@@ -49,7 +51,7 @@ class LobbyView extends StatelessWidget {
               BlocBuilder<LobbyBloc, LobbyState>(
                 builder: (context, state) {
                   return Text(
-                    'Welcome, ${state.session?.nickname ?? 'Trainer'}!',
+                    '¡Bienvenido, ${state.session?.nickname ?? 'Entrenador'}!',
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -75,9 +77,9 @@ class LobbyView extends StatelessWidget {
               const SizedBox(height: 20),
               BlocBuilder<LobbyBloc, LobbyState>(
                 builder: (context, state) {
-                  String text = 'Finding match...';
+                  String text = 'Buscando oponente...';
                   if (state.status == LobbyStatus.opponentFound) {
-                    text = 'Match Ready!';
+                    text = '¡Partida Lista!';
                   }
                   return Text(
                     text,
@@ -90,7 +92,7 @@ class LobbyView extends StatelessWidget {
               ),
               const SizedBox(height: 40),
               const Text(
-                'Your Team:',
+                'Tus pokemones asignados:',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),

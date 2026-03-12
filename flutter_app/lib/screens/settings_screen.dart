@@ -27,7 +27,7 @@ class SettingsView extends StatelessWidget {
     final TextEditingController controller = TextEditingController();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: const Text('Configuración')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: BlocBuilder<SettingsBloc, SettingsState>(
@@ -45,7 +45,7 @@ class SettingsView extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'API Configuration',
+                  'Configuración de API',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 20),
@@ -55,9 +55,10 @@ class SettingsView extends StatelessWidget {
                     context.read<SettingsBloc>().add(UpdateBaseUrl(value));
                   },
                   decoration: const InputDecoration(
-                    labelText: 'API URL',
+                    labelText: 'URL de la API',
                     border: OutlineInputBorder(),
-                    hintText: 'Enter API URL (e.g. http://localhost:3001)',
+                    hintText:
+                        'Ingresa la URL de la API (ej. http://localhost:3001)',
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -66,10 +67,10 @@ class SettingsView extends StatelessWidget {
                     onPressed: () {
                       context.read<SettingsBloc>().add(const SaveSettings());
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Settings Saved')),
+                        const SnackBar(content: Text('Cambios aplicados')),
                       );
                     },
-                    child: const Text('Confirm'),
+                    child: const Text('Guardar'),
                   ),
                 ),
               ],

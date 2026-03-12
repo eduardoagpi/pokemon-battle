@@ -46,13 +46,13 @@ class NicknameView extends StatelessWidget {
               const DrawerHeader(
                 decoration: BoxDecoration(color: Colors.blue),
                 child: Text(
-                  'Menu',
+                  'Menú',
                   style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
+                title: const Text('Configuración'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/settings');
@@ -60,7 +60,7 @@ class NicknameView extends StatelessWidget {
               ),
               ListTile(
                 leading: const Icon(Icons.history),
-                title: const Text('Battle History'),
+                title: const Text('Historial de Batallas'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/history');
@@ -81,7 +81,7 @@ class NicknameView extends StatelessWidget {
                       context.read<NicknameBloc>().add(NicknameChanged(value));
                     },
                     decoration: InputDecoration(
-                      labelText: 'Enter your Nickname',
+                      labelText: 'Ingresa tu Nickname',
                       border: const OutlineInputBorder(),
                       errorText: state.status == NicknameStatus.failure
                           ? state.errorMessage
@@ -103,7 +103,7 @@ class NicknameView extends StatelessWidget {
                           },
                     child: state.status == NicknameStatus.loading
                         ? const CircularProgressIndicator()
-                        : const Text('Join Lobby'),
+                        : const Text('Ingresar al Lobby'),
                   );
                 },
               ),
