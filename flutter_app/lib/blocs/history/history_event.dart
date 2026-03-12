@@ -7,6 +7,18 @@ abstract class HistoryEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadHistory extends HistoryEvent {
-  const LoadHistory();
+class SearchNicknameChanged extends HistoryEvent {
+  final String nickname;
+  const SearchNicknameChanged(this.nickname);
+
+  @override
+  List<Object> get props => [nickname];
+}
+
+class SearchHistory extends HistoryEvent {
+  const SearchHistory();
+}
+
+class ClearHistory extends HistoryEvent {
+  const ClearHistory();
 }

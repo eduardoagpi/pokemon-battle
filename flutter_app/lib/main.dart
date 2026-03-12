@@ -10,6 +10,10 @@ import 'domain/repositories/pokemon_repository.dart';
 import 'domain/usecases/connect_to_battle_use_case.dart';
 import 'domain/usecases/get_active_session.dart';
 import 'domain/usecases/get_random_pokemons.dart';
+import 'data/datasources/battle_history_remote_datasource.dart';
+import 'data/repositories/battle_history_repository_impl.dart';
+import 'domain/repositories/battle_history_repository.dart';
+import 'domain/usecases/get_battle_history_usecase.dart';
 import 'screens/nickname_screen.dart';
 import 'screens/lobby_screen.dart';
 import 'screens/battle_screen.dart';
@@ -57,9 +61,20 @@ class PokeAlboApp extends StatelessWidget {
           create: (context) =>
               BattleRepositoryImpl(generalRepository: generalRepository),
         ),
+        RepositoryProvider<BattleHistoryRepository>(
+          create: (context) => BattleHistoryRepositoryImpl(
+            remoteDataSource: BattleHistoryRemoteDataSource(
+              generalRepository: generalRepository,
+            ),
+          ),
+        ),
         RepositoryProvider<ConnectToBattleUseCase>(
           create: (context) =>
               ConnectToBattleUseCase(context.read<BattleRepository>()),
+        ),
+        RepositoryProvider<GetBattleHistoryUseCase>(
+          create: (context) =>
+              GetBattleHistoryUseCase(context.read<BattleHistoryRepository>()),
         ),
       ],
       child: MaterialApp(
