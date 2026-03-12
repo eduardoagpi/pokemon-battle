@@ -15,6 +15,7 @@ class BattleRepositoryImpl implements BattleRepository {
       StreamController<BattleEvent>.broadcast();
   final StreamController<BattleState> _stateController =
       StreamController<BattleState>.broadcast();
+  BattleState? _lastBattleState;
 
   BattleRepositoryImpl({required this.generalRepository});
 
@@ -37,6 +38,7 @@ class BattleRepositoryImpl implements BattleRepository {
     final url = Uri.parse(
       '$_wsUrl?nickname=$nickname&pokemonList=$pokemonListJson',
     );
+    _lastBattleState = null;
     _channel = WebSocketChannel.connect(url);
 
     final subscription = _channel!.stream.listen(
@@ -65,6 +67,7 @@ class BattleRepositoryImpl implements BattleRepository {
           break;
         case 'updateBattleStatus':
           final battleState = BattleState.fromJson(data['battleState']);
+          _lastBattleState = battleState;
           _stateController.add(battleState);
           _eventController.add(UpdateBattleStatusEvent(battleState));
           break;
@@ -104,7 +107,12 @@ class BattleRepositoryImpl implements BattleRepository {
   Stream<BattleEvent> subscribeEvents() => _eventController.stream;
 
   @override
-  Stream<BattleState> subscribeState() => _stateController.stream;
+  Stream<BattleState> subscribeState() async* {
+    if (_lastBattleState != null) {
+      yield _lastBattleState!;
+    }
+    yield* _stateController.stream;
+  }
 
   @override
   bool get isConnected => _channel != null;
@@ -113,6 +121,7 @@ class BattleRepositoryImpl implements BattleRepository {
   void disconnect() {
     _channel?.sink.close();
     _channel = null;
+    _lastBattleState = null;
     print('WebSocket manually disconnected');
   }
 }
