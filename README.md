@@ -124,7 +124,7 @@ En la capa de negocio se agregaron repositories (abstracciones) y usecases. En e
 ### Capa de presentacion
 En la capa de presentacion se encuentra la logica de presentacion, que se encarga transformar los eventos de dominio en mensajes de websocket y viceversa.
 
-## Frontend (web)
+## Frontend ReactJs
 El frontend es una aplicacion react SPA que se encarga de mostrar la interfaz de usuario. La arquitectura elegida fue con el siguiente stack:
 - React Query (para gestion del estado del servidor. Llamadas a la API)
 - ReactContexts (para gestion del estado del cliente.)
@@ -132,21 +132,21 @@ El frontend es una aplicacion react SPA que se encarga de mostrar la interfaz de
 - ViewControllers, para ser el puente entre el estado de la app y la vista. Se encargan de exponer 2 atributos: state y actions. Y así, permitir que las views sean lo mas tontas posibles.
 - Views, son componentes react que se encargan de mostrar la interfaz de usuario. Son vistas puras sin logica, y unicamente se encargan de renderizar el estado recibido desde el viewcontroller y llamar a las acciones en consecuencia a las acciones del usuario.
 
-## Frontend (flutter)
-El frontend flutter genera una SPA y utiliza una clean architecture estricta, con el patron de presentacion BLoC
+## Frontend Flutter
+El frontend flutter genera una SPA y utiliza una clean architecture estricta, con el patron de presentacion BLoC.
 
 ### Capa de dominio
 - Entidades
 - Repositories (abstracciones)
-- UseCases
+- UseCases, con lógica de negocio
 
 ### Capa de datos
 - Repositories (implementaciones)
 - DataSources (remotos y locales)
 
 ### Capa de presentacion
-- BLoCs
-- Views
+- BLoCs, con logica de vista
+- Views tontas, unicamente encargadas de renderizar y capturar eventos del usuario
 
 ## Infraestructura y Dockerizacion
 El proyecto está completamente dockerizado.
@@ -158,6 +158,14 @@ El proyecto una vez levantado, consta de la siguiente infraestructura:
 <img height="530" alt="Dibujo sin título" src="https://github.com/user-attachments/assets/c75d7afd-a63b-4f84-b21e-1dc4584ee99c" />
 
 La dockerizacion crea dos instancias del backend, cada una en un puerto diferente, a fin de poder probar la funcionalidad de cambio de endpoint en runtime.
+
+Cada uno de los frontends se sirven a travez de servidores staticos ngnx
+
+### Dockerizacion en producción
+Para la dockerizacion en producción se utilizó el `docker-compose.prod`
+Es muy similar al docker compose para local, con la diferencia de que pone un servidor ngnx por enfrente para:
+- agregar capa de seguridad (http login)
+- exponer unicamente los servicios relevantes. La infraestructura (mongo) queda privada y accesible unicamente desde los servicios
 
 ### Variables de entorno
 Los archivos .env.xxx con las variables de entorno se agregaron al repositorio. Esto se hizo por ser un proyecto demo, pero **NUNCA** deberían de agregarse en un proyecto "real"
