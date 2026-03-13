@@ -8,16 +8,16 @@ El proyecto está dockerizado y se puede ejecutar usando Docker Compose:
 
 `docker compose --env-file .env.prod up --build -d`
 
-### It's alive!!! 🎉🎉🥳
-El proyecto puede correr ingresando a http://107.175.35.124/
-Porfavor escribe al desarrollador para obtener las credenciales de acceso
-
-
 **Nota para Windows:** Debido a un bug de Docker Compose, es posible que sea necesario ejecutar `$env:DOCKER_BUILDKIT=0` antes de correr el comando docker compose.
 
 Luego se podra ingresar a cualquiera de los 2 frontends (react o flutter)
 **Frontend React**: `http://localhost:5000`
 **Frontend Flutter**: `http://localhost:5001`
+
+### It's alive!!! 🎉🎉🥳
+El proyecto puede correr ingresando a http://107.175.35.124/
+Porfavor escribe al desarrollador para obtener las credenciales de acceso
+
 
 ---
 
