@@ -2,36 +2,28 @@
 
 Este es el repositorio para el proyecto **Poke-Albo**, un juego de batalla Pokémon en tiempo real.
 
----
-
-## Características
-
-- **Sistema de Matchmaking:** Los jugadores indican un nickname, reciben una asignación aleatoria de 3 Pokémon y entran a un lobby. La batalla inicia automáticamente al encontrar un contrincante.
-- **Combate por Turnos:** Solo un jugador puede atacar a la vez. El orden de inicio se determina por la velocidad del primer Pokémon de cada equipo.
-- **Condiciones de Victoria:** Un jugador gana al derrotar a todos los Pokémon del oponente o si este huye del combate.
-- **Configuración Dinámica:** El endpoint de la API se puede modificar en runtime para apuntar a diferentes servicios de datos.
-- **Historial:** Se puede obtener el historial de batallas según el nombre del usuario.
-
----
-
 ## Ejecución
 
 El proyecto está dockerizado y se puede ejecutar usando Docker Compose:
 
 `docker compose --env-file .env.prod up --build -d`
 
+
 **Nota para Windows:** Debido a un bug de Docker Compose, es posible que sea necesario ejecutar `$env:DOCKER_BUILDKIT=0` antes de correr el comando docker compose.
 
-### Servicios Levantados
+Luego se podra ingresar a cualquiera de los 2 frontends (react o flutter)
+**Frontend React**: `http://localhost:5000`
+**Frontend Flutter**: `http://localhost:5001`
 
-| Servicio | URL / Protocolo |
-| :--- | :--- |
-| **Frontend React** | http://localhost:5000 |
-| **Frontend Flutter** | http://localhost:5001 |
-| **Mongo Express** | http://localhost:8081 |
-| **Backend API 1** | http://localhost:3001 |
-| **Backend API 2** | http://localhost:3002 |
-| **Battle Service** | ws://localhost:3003 y http://localhost:3003 |
+---
+
+## Características
+Reglas del juego:
+- **Matchmaking:** Los jugadores ingresarán un nickname. Al confirmarlo recibirán una asignación aleatoria de 3 Pokémones y entran a un lobby en espera de un contrincante. La batalla inicia automáticamente al encontrar un contrincante. Los pokemones no se deben repetir entre combatientes. Si ese fuera el caso, se crea un nuevo hall, a la espera de otro combatiente sin pokemones repetidos (edge case)
+- **Combate por Turnos:** Solo un jugador puede atacar a la vez. El primer jugador en atacar sera aquel cuyo primer pokemon tenga la mayor velocidad.
+- **Condiciones de Victoria:** Un jugador gana al derrotar a todos los Pokémon del oponente o si este huye del combate.
+- **Configuración Dinámica:** El endpoint de la API se puede modificar en runtime para apuntar a diferentes servicios de datos.
+- **Historial:** Se puede obtener el historial de batallas según el nombre del usuario.
 
 ---
 
@@ -64,7 +56,19 @@ El proyecto consta de 5 servicios:
 - **Frontend Flutter:** Frontend móvil/web en Flutter.
 - **MongoDB:** Base de datos con soporte de Change Streams y Mongo Express para administración.
 
----
+Al levantar el Docker compose, los siguientes servicios se levantan
+
+### Servicios Levantados
+
+| Servicio | URL / Protocolo |
+| :--- | :--- |
+| **Frontend React** | http://localhost:5000 |
+| **Frontend Flutter** | http://localhost:5001 |
+| **Mongo Express** | http://localhost:8081 |
+| **Backend API 1** | http://localhost:3001 |
+| **Backend API 2** | http://localhost:3002 |
+| **Battle Service** | ws://localhost:3003 y http://localhost:3003 |
+
 
 ## Ejecución en Modo Desarrollo
 
@@ -78,8 +82,10 @@ Levantar los servicios restantes desde el root usando npm:
 - `npm run dev -w frontend`
 - `npm run dev:flutter`
 
-### Workspace Shared
-Es una librería compartida de DTOs entre frontend (React) y backend. Para compilarla:
+Adicinonalmente es necesario compilar el proyecto de `shared`
+Ese proyecto es una librería con DTOs (http rest & web sockets models) que son compartidos entre el frontend (React) y backend. El objetivo es evitar redefinir los mismos modelos entre esos proyectos. Como ventaja adicional, los proyectos siempre usaran los mismos modelos, forzando a ajustarlos en caso de que alguno de los DTOs cambie.
+
+Es necesario compilarla para que los demas proyectos funcionen:
 `npm run build -w shared`
 
 ---
@@ -87,8 +93,9 @@ Es una librería compartida de DTOs entre frontend (React) y backend. Para compi
 # Arquitectura
 
 ## Backend
-El backend es una API REST para exponer los endpoints de listar/detalles de pokemones. (Los datos se obtuvieron de scrappear https://pokeapi.co/ )
-Se creo este backend con 2 propósitos:
+Durante el desarrollo, se observo que la api https://pokemon-api-92034153384.us-central1.run.app/ , presentaba algunas intermitencias (endpoint not found)
+Para solventarlo se creeó este servicio API REST que expone los endpoints de listar/detalles de pokemones en el mismo formato especificado en el docuemnto de requerimientos. (Los datos se obtuvieron de scrappear https://pokeapi.co/ )
+Se creó este backend con 2 propósitos:
 - Evitar dependencia de apis externas al proyecto.
 - Agregar pequeña logica para que si el enpoint es impar, los pokemones regresan su nombre con el sufijo "_API2", y asi poder distinguir entre las 2 instancias del backend.
 
@@ -138,9 +145,9 @@ El frontend flutter genera una SPA y utiliza una clean architecture estricta, co
 - Views
 
 ## Infraestructura y Dockerizacion
-El proyecto está completamente dockerizadAo.
+El proyecto está completamente dockerizado.
 
-La base de datos es mongoDB, pero antes de levantarla, se requiere configurar una keyfile para el replica set, asi como la ejecucion de mongo-init para inicializar el replica set. Para dichos procesos se crearon los servicios de docker: `key-gen` y `mongo-init`.
+La base de datos es mongoDB con change streams habilitado, para soportar el realtime desde la BD. Para activar change streams es necesario habilitar replica set, y para ello configurar una keyfile para el replica set, asi como la ejecucion de mongo-init para inicializar el replica set. Para dichos procesos se crearon los servicios de docker: `key-gen` y `mongo-init`.
 
 El proyecto una vez levantado, consta de la siguiente infraestructura:
 
