@@ -29,7 +29,7 @@ export const useMessageQueue = <T>() => {
 
     const addMessage = useCallback((data: T, duration: number = 3000) => {
         const newMessage: QueuedMessage<T> = {
-            id: crypto.randomUUID(),
+            id: generateQuickId(),
             data,
             duration,
         };
@@ -50,4 +50,8 @@ export const useMessageQueue = <T>() => {
         addMessage,
         queueLength
     };
+};
+
+const generateQuickId = () => {
+    return 'id-' + Math.random().toString(36).substr(2, 16) + '-' + Date.now().toString(36);
 };
