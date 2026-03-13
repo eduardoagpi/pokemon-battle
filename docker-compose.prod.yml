@@ -42,7 +42,7 @@ services:
     container_name: mongo-express
     restart: always
     expose:
-      - "8081"
+      - "${MONGO_EXPRESS_PORT}"
     environment:
       - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo-server:27017/?authSource=admin&directConnection=true
       - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_DASHBOARD_USER}
@@ -77,9 +77,9 @@ services:
     container_name: poke-albo-backend1
     restart: always
     environment:
-      - PORT=3001
+      - PORT=${POKEMON_API_1_PORT}
     expose:
-      - "3001"
+      - "${POKEMON_API_1_PORT}"
     depends_on:
       mongo:
         condition: service_healthy
@@ -91,9 +91,9 @@ services:
     container_name: poke-albo-backend2
     restart: always
     environment:
-      - PORT=3002
+      - PORT=${POKEMON_API_2_PORT}
     expose:
-      - "3002"
+      - "${POKEMON_API_2_PORT}"
     depends_on:
       mongo:
         condition: service_healthy
@@ -105,10 +105,10 @@ services:
     container_name: poke-albo-battle-service
     restart: always
     environment:
-      - BATTLE_SERVICE_PORT=3004
+      - BATTLE_SERVICE_PORT=${BATTLE_SERVICE_PORT}
       - BATTLE_SERVICE_MONGO_CONNECTION_URL=${BATTLE_SERVICE_MONGO_CONNECTION_URL}
     expose:
-      - "3004"
+      - "${BATTLE_SERVICE_PORT}"
     depends_on:
       mongo:
         condition: service_healthy
@@ -118,25 +118,26 @@ services:
       context: .
       dockerfile: packages/frontend/Dockerfile
       args:
-        - VITE_INITIAL_API_URL=/api1
-        - VITE_BATTLE_SERVER=/battle
-        - VITE_PORT=80
+        - VITE_INITIAL_API_URL=${VITE_INITIAL_API_URL}
+        - VITE_BATTLE_SERVER=${VITE_BATTLE_SERVER}
+        - VITE_PORT=${VITE_PORT}
     container_name: poke-albo-frontend
     restart: always
     expose:
-      - "80"
+      - "${VITE_PORT}"
 
   flutter-app:
     build:
       context: .
       dockerfile: flutter_app/Dockerfile
       args:
-        - WEB_FLUTTER_INITIAL_API_URL=/api1
-        - WEB_BATTLE_SERVER=/battle
+        - WEB_FLUTTER_PORT=${WEB_FLUTTER_PORT}
+        - WEB_FLUTTER_INITIAL_API_URL=${WEB_FLUTTER_INITIAL_API_URL}
+        - WEB_BATTLE_SERVER=${WEB_BATTLE_SERVER}
     container_name: poke-albo-flutter-app
     restart: always
     expose:
-      - "80"
+      - "${WEB_FLUTTER_PORT}"
 
 volumes:
   mongo_data:
