@@ -1,0 +1,143 @@
+version: "3.9"
+
+services:
+  # --- INFRAESTRUCTURA DE DATOS ---
+  key-gen:
+    build:
+      context: .
+      dockerfile: Dockerfile.mongo.init
+    volumes:
+      - mongo_key:/mnt/shared
+
+  mongo:
+    image: mongo:6
+    container_name: mongo_db
+    hostname: mongo-server
+    depends_on:
+      key-gen:
+        condition: service_completed_successfully
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
+    volumes:
+      - mongo_data:/data/db
+      - mongo_key:/data/configdb
+    command: [ "mongod", "--replSet", "rs0", "--bind_ip_all", "--keyFile", "/data/configdb/keyfile" ]
+    healthcheck:
+      test: [ "CMD", "mongosh", "--eval", "db.adminCommand('ping')" ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  mongo-init:
+    image: mongo:6
+    depends_on:
+      mongo:
+        condition: service_healthy
+    entrypoint: >
+      mongosh --host mongo-server -u ${MONGO_ROOT_USER} -p ${MONGO_ROOT_PASSWORD} --authenticationDatabase admin --eval "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo-server:27017'}]}) }"
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    restart: always
+    expose:
+      - "8081"
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo-server:27017/?authSource=admin&directConnection=true
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_DASHBOARD_USER}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_DASHBOARD_PASSWORD}
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  # --- GATEWAY ---
+  gateway:
+    image: nginx:alpine
+    container_name: poke-albo-gateway
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./.htpasswd:/etc/nginx/.htpasswd:ro
+    depends_on:
+      - frontend
+      - flutter-app
+      - backend1
+      - backend2
+      - battle-service
+      - mongo-express
+
+  # --- APLICACIONES ---
+  backend1:
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+    container_name: poke-albo-backend1
+    restart: always
+    environment:
+      - PORT=3001
+    expose:
+      - "3001"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  backend2:
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+    container_name: poke-albo-backend2
+    restart: always
+    environment:
+      - PORT=3002
+    expose:
+      - "3002"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  battle-service:
+    build:
+      context: .
+      dockerfile: packages/battle-service/Dockerfile
+    container_name: poke-albo-battle-service
+    restart: always
+    environment:
+      - BATTLE_SERVICE_PORT=3004
+      - BATTLE_SERVICE_MONGO_CONNECTION_URL=${BATTLE_SERVICE_MONGO_CONNECTION_URL}
+    expose:
+      - "3004"
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: packages/frontend/Dockerfile
+      args:
+        - VITE_INITIAL_API_URL=/api1
+        - VITE_BATTLE_SERVER=/battle
+        - VITE_PORT=80
+    container_name: poke-albo-frontend
+    restart: always
+    expose:
+      - "80"
+
+  flutter-app:
+    build:
+      context: .
+      dockerfile: flutter_app/Dockerfile
+      args:
+        - WEB_FLUTTER_INITIAL_API_URL=/api1
+        - WEB_BATTLE_SERVER=/battle
+    container_name: poke-albo-flutter-app
+    restart: always
+    expose:
+      - "80"
+
+volumes:
+  mongo_data:
+  mongo_key:
