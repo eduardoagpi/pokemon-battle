@@ -8,6 +8,10 @@ El proyecto está dockerizado y se puede ejecutar usando Docker Compose:
 
 `docker compose --env-file .env.prod up --build -d`
 
+### It's alive!!! 🎉🎉🥳
+El proyecto puede correr ingresando a http://107.175.35.124/
+Porfavor escribe al desarrollador para obtener las credenciales de acceso
+
 
 **Nota para Windows:** Debido a un bug de Docker Compose, es posible que sea necesario ejecutar `$env:DOCKER_BUILDKIT=0` antes de correr el comando docker compose.
 
