@@ -24,11 +24,13 @@ RUN npm run build -w @poke-albo/shared
 # Build arguments for Vite (environment variables)
 ARG VITE_INITIAL_API_URL
 ARG VITE_BATTLE_SERVER
+ARG VITE_BATTLE_API
 ARG VITE_PORT
 
 # Inject build arguments into environment variables for Vite build
 ENV VITE_INITIAL_API_URL=$VITE_INITIAL_API_URL
 ENV VITE_BATTLE_SERVER=$VITE_BATTLE_SERVER
+ARG VITE_BATTLE_API=$VITE_BATTLE_API
 ENV VITE_PORT=$VITE_PORT
 
 # Build frontend

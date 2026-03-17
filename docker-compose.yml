@@ -102,6 +102,7 @@ services:
       args:
         - VITE_INITIAL_API_URL=${VITE_INITIAL_API_URL}
         - VITE_BATTLE_SERVER=${VITE_BATTLE_SERVER}
+        - VITE_BATTLE_API=${VITE_BATTLE_API}
         - VITE_PORT=${VITE_PORT}
     container_name: poke-albo-frontend
     restart: always
