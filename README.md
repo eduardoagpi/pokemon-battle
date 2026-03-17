@@ -2,11 +2,25 @@
 
 Este es el repositorio para el proyecto **Poke-Albo**, un juego de batalla Pokémon en tiempo real.
 
+## Its alive!! 🎉🎉🎉
+Se puede ingresar al proyecto ingresando la siguiente dirección:
+http://107.175.35.124/
+Por seguridad, se pedirán credenciales de acceso. Dichas credenciales han sido incluidas en el correo de la entrega, y pueden compartirse entre los testers de la aplicación.
+
 ## Ejecución
 
 El proyecto está dockerizado y se puede ejecutar usando Docker Compose:
 
+### En local:
+
 `docker compose --env-file .env.prod up --build -d`
+
+### En prod:
+El comando usado para despliegue en producción es:
+
+`docker compose -f docker-compose.prod.yml --env-file .env.prod2 up -d --build`
+
+El docker-compose de prod, varía solo un poco, para usar un servidor ngnx por dalante para redirigir el trafico a los diferentes servicios a través de una misma url
 
 
 **Nota para Windows:** Debido a un bug de Docker Compose, es posible que sea necesario ejecutar `$env:DOCKER_BUILDKIT=0` antes de correr el comando docker compose.
