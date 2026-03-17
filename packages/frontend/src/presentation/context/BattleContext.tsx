@@ -47,7 +47,9 @@ export function BattleContextProvider({ children }: { children: ReactNode }) {
         const wsBaseUrl = import.meta.env.VITE_BATTLE_SERVER;
         if (!wsBaseUrl) console.error(`WebSocket URl no válida`)
 
-        const socket = new WebSocket(`${wsBaseUrl}?nickname=${nickname}&pokemonList=${JSON.stringify(pokemonList)}`);
+        const connectionUrl = `${wsBaseUrl}?nickname=${nickname}&pokemonList=${JSON.stringify(pokemonList)}`
+        console.log("Conectará a: ", connectionUrl);
+        const socket = new WebSocket(connectionUrl);
 
         socket.onopen = () => {
             console.log("Conexión establecida");

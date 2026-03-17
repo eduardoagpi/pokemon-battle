@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { SnackbarContext } from '../context/SnackbarContext';
 
 export const useSnackbar = () => {
@@ -10,17 +10,16 @@ export const useSnackbar = () => {
 
     const { addSnackbar } = context;
 
-    const showSuccess = (message: string, duration = 3000) => {
+    const showSuccess = useCallback((message: string, duration = 3000) => {
         addSnackbar({ type: 'success', message, duration });
-    };
+    }, [addSnackbar]);
 
-    const showError = (message: string, duration = 3000) => {
+    const showError = useCallback((message: string, duration = 3000) => {
         addSnackbar({ type: 'error', message, duration });
-    };
+    }, [addSnackbar]);
 
-    const showInfo = (message: string, duration = 3000) => {
+    const showInfo = useCallback((message: string, duration = 3000) => {
         addSnackbar({ type: 'info', message, duration });
-    };
-
+    }, [addSnackbar]);
     return { showSuccess, showError, showInfo };
 };

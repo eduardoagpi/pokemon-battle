@@ -11,7 +11,7 @@ export async function getPokemonDetail(id: number): Promise<PokemonDetailRespons
 }
 
 export async function getBattleHistory(nickname: string): Promise<BattleHistoryItemResponse[]> {
-    const battleServerUrl = import.meta.env.VITE_BATTLE_SERVER || 'ws://localhost:3004';
+    const battleServerUrl = import.meta.env.VITE_BATTLE_SERVER;
     const httpUrl = battleServerUrl.replace('ws://', 'http://').replace('wss://', 'https://');
 
     const response = await axios.get<BattleHistoryItemResponse[]>(`${httpUrl}/history/${nickname}`);

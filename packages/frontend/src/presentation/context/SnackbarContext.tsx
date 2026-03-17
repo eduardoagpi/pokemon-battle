@@ -1,4 +1,4 @@
-import { createContext, useState, type ReactNode, useCallback } from 'react';
+import { createContext, useState, type ReactNode, useCallback, useMemo } from 'react';
 import { SnackbarContainer } from '../component/Snackbar/SnackbarContainer';
 
 export type SnackbarType = 'success' | 'error' | 'info';
@@ -30,8 +30,15 @@ export const SnackbarProvider = ({ children }: { children: ReactNode }) => {
         setSnackbars((prev) => prev.filter((snack) => snack.id !== id));
     }, []);
 
+    const value = useMemo(() => ({
+        snackbars,
+        addSnackbar,
+        removeSnackbar
+    }), [snackbars, addSnackbar, removeSnackbar]);
+
+
     return (
-        <SnackbarContext.Provider value={{ snackbars, addSnackbar, removeSnackbar }}>
+        <SnackbarContext.Provider value={value}>
             {children}
             <SnackbarContainer snackbars={snackbars} onClose={removeSnackbar} />
         </SnackbarContext.Provider>
