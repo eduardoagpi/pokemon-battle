@@ -47,6 +47,7 @@ services:
       - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_ROOT_USER}:${MONGO_ROOT_PASSWORD}@mongo-server:27017/?authSource=admin&directConnection=true
       - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_EXPRESS_DASHBOARD_USER}
       - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_EXPRESS_DASHBOARD_PASSWORD}
+      - ME_CONFIG_SITE_BASEURL=/mongo-admin/
     depends_on:
       mongo:
         condition: service_healthy
