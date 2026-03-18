@@ -5,6 +5,7 @@ Este es el repositorio para el proyecto **Poke-Albo**, un juego de batalla Poké
 ## Its alive!! 🎉🎉🎉
 Se puede ingresar al proyecto (react frontend) ingresando la siguiente dirección:
 http://107.175.35.124/
+
 Por seguridad, se pedirán credenciales de acceso. Dichas credenciales han sido incluidas en el correo de la entrega, y pueden compartirse entre los testers de la aplicación.
 
 Las apis desplegadas en produccion, (para probar el cambio de api at runtime) son:
@@ -70,7 +71,7 @@ https://github.com/user-attachments/assets/a9908132-ec7a-4037-981f-8f3eca2b324a
 ## Estructura del Proyecto
 
 El proyecto consta de 5 servicios:
-- **Backend:** API para listar y obtener detalles de Pokémon.
+- **Backend:** API para listar y obtener detalles de Pokémon. (se crean 2 instancias para testear el cambio de ambiente at runtime)
 - **Battle Service:** Servicio para gestionar batallas en tiempo real con soporte WebSocket.
 - **Frontend Web:** Desarrollado en React con Vite.
 - **Frontend Flutter:** Frontend móvil/web en Flutter.
@@ -111,7 +112,7 @@ Es necesario compilarla para que los demas proyectos funcionen:
 # Arquitectura
 
 ## Backend
-Durante el desarrollo, se observo que la api https://pokemon-api-92034153384.us-central1.run.app/ , presentaba algunas intermitencias (endpoint not found)
+Durante el desarrollo, se observó que la api https://pokemon-api-92034153384.us-central1.run.app/ , presentaba algunas intermitencias (endpoint not found)
 Para solventarlo se creeó este servicio API REST que expone los endpoints de listar/detalles de pokemones en el mismo formato especificado en el docuemnto de requerimientos. (Los datos se obtuvieron de scrappear https://pokeapi.co/ )
 Se creó este backend con 2 propósitos:
 - Evitar dependencia de apis externas al proyecto.
@@ -119,12 +120,12 @@ Se creó este backend con 2 propósitos:
 
 Los endpoints son solo /list y /list/:id
 
-Este es un helper api, muy sencillo, por lo que no se agrego ninguna arquitectura compleja.
+Este es un helper api, muy sencillo, por lo que no se agregó ninguna arquitectura compleja.
 
 ## Battle Service
 El battle service es un servicio que se encarga de gestionar las batallas pokemon en tiempo real. 
 
-Para ello utiliza WebSockets
+Para ello se utilizan WebSockets
 
 ### Arquitectura:
 Se utiliza arquitectura por capas, separando la logica de negocio de la logica de persistencia de datos y la de presentacion.
@@ -134,7 +135,8 @@ Para gestionar las conexiones con BD y con los clientes (websockets)
 
 #### Datos
 En la capa de persistencia se utiliza mongoDB para persistir los datos de las batallas. Mongo DB se utiliza con change stream y de esta manera la BD es el source of truth de todo el sistema. Con esta estrategia se evita la gestion de estados en memoria, lo que hace que el servicio sea mas robusto y escalable horizontalmente.
-Los change streams de mongo, son eventualmente reportados hacia los clients utilizando web sockets
+
+La información realtime (change streams de mongo), es eventualmente formateada y emitida y hacia los clients utilizando web sockets
 
 #### Conectividad
 Gestionar las conexiones de websocket: nuevas conecciones, envío y recepcion de mensajes con los clientes conectados
@@ -143,38 +145,44 @@ Gestionar las conexiones de websocket: nuevas conecciones, envío y recepcion de
 En la capa de negocio se agregaron repositories (abstracciones) y usecases. En ellos se maneja la logica del negocio: Crear salas de espera, crear batallas, gestionar eventos de batalla, etc.
 
 ### Capa de presentacion
-En la capa de presentacion se encuentra la logica de presentacion, que se encarga transformar los eventos de dominio en mensajes de websocket y viceversa.
+En la capa de presentacion se encuentra la logica para transformar los eventos de dominio, en mensajes de websocket y viceversa.
 
 
-## Frontend (web)
+## Frontends
+
+Se desarrollaron dos frontends: uno en React y otro en Flutter, cada uno siguiendo las prácticas más comunes de su ecosistema. En React se usaron functional components, hooks y Context; en Flutter, un enfoque de Clean Architecture con BLoC para el manejo de estado.
+
+## Frontend (React)
 El frontend es una aplicacion react SPA que se encarga de mostrar la interfaz de usuario. La arquitectura elegida fue con el siguiente stack:
-- React Query (para gestion del estado del servidor. Llamadas a la API)
+- React Query (para gestion del estado del servidor. Llamadas a la API, handling de errores de red, y caché de respuestas de servicio). Se utiliza axios como cliente rest.
+- WebSocket, para comunicación realtime y bidireccional con el servidor de batallas
 - ReactContexts (para gestion del estado del cliente.)
 - React Hooks. Con logica de negocio para realizar acciones relacionadas al negocio (getPokemonList, handleBattleState, getBattleHistory, etc...)
-- ViewControllers, para ser el puente entre el estado de la app y la vista. Se encargan de exponer 2 atributos: state y actions. Y así, permitir que las views sean lo mas tontas posibles.
-- Views, son componentes react que se encargan de mostrar la interfaz de usuario. Son vistas puras sin logica, y unicamente se encargan de renderizar el estado recibido desde el viewcontroller y llamar a las acciones en consecuencia a las acciones del usuario.
+- ViewControllers, para ser el puente entre el estado de la app y la vista. Se encargan de exponer 2 atributos: `state` y `actions`. Y así, permitir que las views sean lo mas tontas posibles.
+- Views, son componentes react que se encargan de mostrar la interfaz de usuario. Son vistas puras sin logica, y unicamente se encargan de renderizar el estado recibido desde el viewcontroller y llamar a los eventos del viewcontroller, en consecuencia a las acciones del usuario.
 
-
-## Frontend (flutter)
-El frontend flutter genera una SPA y utiliza una clean architecture estricta, con el patron de presentacion BLoC
+## Frontend (Flutter)
+El frontend flutter genera una SPA y utiliza una clean architecture **estricta**, usando BLoC como patrón de presentación.
 
 ### Capa de dominio
 - Entidades
 - Repositories (abstracciones)
-- UseCases
+- UseCases (lógica de negocio)
 
 ### Capa de datos
 - Repositories (implementaciones)
 - DataSources (remotos y locales)
 
 ### Capa de presentacion
-- BLoCs
-- Views
+- BLoCs (Lógica de vista)
+- Views (Declarativas, lógica nula o reducida)
 
 ## Infraestructura y Dockerizacion
 El proyecto está completamente dockerizado.
 
-La base de datos es mongoDB con change streams habilitado, para soportar el realtime desde la BD. Para activar change streams es necesario habilitar replica set, y para ello configurar una keyfile para el replica set, asi como la ejecucion de mongo-init para inicializar el replica set. Para dichos procesos se crearon los servicios de docker: `key-gen` y `mongo-init`.
+La base de datos es mongoDB con change streams habilitado, para soportar el realtime desde la BD.
+
+Para habilitar change streams, es necesario activar un replica set. Esto requiere configurar un keyfile para el replica set, así como ejecutar el proceso de inicialización (mongo-init). Para facilitar estos pasos, en el docker compose, se crearon los servicios de  `key-gen` y `mongo-init`.
 
 El proyecto una vez levantado, consta de la siguiente infraestructura:
 
@@ -190,3 +198,8 @@ Los archivos .env.xxx con las variables de entorno se agregaron al repositorio. 
 Se agrega un servicio de `mongo-express` para administrar la base de datos via dashboard web.
 
 <img width="2556" height="1093" alt="Screenshot 2026-03-12 121151" src="https://github.com/user-attachments/assets/7c3fed4c-49d1-434a-a83e-48724d60b714" />
+
+### Production deployment
+Para el despliegue en producción se utiliza `docker-compose.prod.yml`, similar a docker-compose.yml, pero incorporando un reverse proxy con Nginx. 
+
+Esto permite centralizar el acceso al frontend y a las APIs a través del puerto 80, reduciendo los puntos expuestos a la red y facilitando la gestión de seguridad, el enrutamiento y la configuración de políticas como autenticación.
