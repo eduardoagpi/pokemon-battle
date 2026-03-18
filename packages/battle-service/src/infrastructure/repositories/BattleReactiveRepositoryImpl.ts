@@ -12,26 +12,6 @@ export class MongoBattleReactiveRepository implements BattleReactiveRepository {
 
     private lastBattleState: Battle | null = null;
 
-    /*
-    subscribeToBattleCreation(callback: (battle: Battle) => void): void {
-        const collection = db.collection<BattleDoc>(Collections.BATTLE);
-        const changeStream = collection.watch([
-            {
-                $match: {
-                    operationType: 'insert',
-                    'fullDocument.matchmakingId': this.matchId
-                }
-            }
-        ]);
-
-        changeStream.on('change', (change) => {
-            if (change.operationType === 'insert') {
-                callback(BattleDocToBattle(change.fullDocument));
-                changeStream.close();
-            }
-        });
-    }*/
-
     subscribeToBattle(callback: (previousBattleState: Battle, currentBattleState: Battle) => void): void {
         const collection = db.collection<BattleDoc>(Collections.BATTLE);
         const changeStream = collection.watch([

@@ -1,4 +1,3 @@
-// context/WebSocketContext.tsx
 import { createContext, useContext, useRef, useState, type ReactNode, useCallback } from 'react';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useGeneralAppContext } from './GeneralAppContext';

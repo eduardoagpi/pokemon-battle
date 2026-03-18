@@ -1,5 +1,7 @@
-import { createContext, useContext, useState, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import type { PokemonDetailResponse } from '@poke-albo/shared';
+
+const FIRST_TIME_FLAG = 'has_opened_before';
 
 interface GeneralContextType {
     nickname: string;
@@ -17,6 +19,14 @@ export const GeneralAppContextProvider = ({ children }: { children: ReactNode })
     const [nickname, setNicknameState] = useState<string>('');
     const [selectedPokemons, setSelectedPokemonsState] = useState<PokemonDetailResponse[]>([]);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    useEffect(() => {
+        const hasOpenedBefore = localStorage.getItem(FIRST_TIME_FLAG);
+        if (!hasOpenedBefore) {
+            setIsMenuOpen(true);
+            localStorage.setItem(FIRST_TIME_FLAG, 'true');
+        }
+    }, []);
 
     const setNickname = (name: string) => setNicknameState(name);
     const setSelectedPokemons = (pokemons: PokemonDetailResponse[]) => setSelectedPokemonsState(pokemons);
