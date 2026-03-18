@@ -127,19 +127,6 @@ services:
     expose:
       - "${VITE_PORT}"
 
-  flutter-app:
-    build:
-      context: .
-      dockerfile: flutter_app/Dockerfile
-      args:
-        - WEB_FLUTTER_PORT=${WEB_FLUTTER_PORT}
-        - WEB_FLUTTER_INITIAL_API_URL=${WEB_FLUTTER_INITIAL_API_URL}
-        - WEB_BATTLE_SERVER=${WEB_BATTLE_SERVER}
-    container_name: poke-albo-flutter-app
-    restart: always
-    expose:
-      - "${WEB_FLUTTER_PORT}"
-
 volumes:
   mongo_data:
   mongo_key:
